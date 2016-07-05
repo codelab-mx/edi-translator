@@ -1,50 +1,55 @@
-CRM
+EDI Translator V. 0.5.1
 =============
 
-Software para la administración de la relación con los clientes en base a la nube creado con el framework de Django,
+Software para traducción de documentos en formato EDI
 
-    Todas las herramientas utilizadas para la creación de este proyecto deben ser OpenSource.
+    Todas las herramientas utilizadas para la creación de este proyecto son OpenSource.
 
 Características:
 -------
 
-0. Admin LTE como tema base para el dashboard
-0. Página de inicio de sesión en /login
-0. Página de cierre de sesión en /logout
-0. Página de dashboard en /home
+0. Administración y logeo seguro
+0. Decodificación de ficheros en texto plano con codificación edi
+0. Codificación de ficheros en texto plano con codificación edi
+0. Registro de usuarios
 
 
-Más información en <http://codelab.mx>`.
+Más información en <http://consulta-its.com>`.
 
 RAMAS
 -------
-CoffeeMilk - Es la rama principal. Contiene el repositorio que se encuentra publicado en producción, por lo que debe estar siempre estable.
+Master - Es la rama principal. Contiene el repositorio que se encuentra publicado en producción, por lo que debe estar siempre estable.
 
-BlackCoffee - Rama de integración, todas las nuevas funcionalidades se deben integrar en esta rama.
+Development - Rama de integración, todas las nuevas funcionalidades se deben integrar en esta rama.
 
-Espresso - Rama de nuevas características, cada nueva característica debe tener sus propias ramas las cuales al finalizar deberán añadirse al canal BlackCoffee
+Features - Rama de nuevas características, cada nueva característica debe tener sus propias ramas las cuales al finalizar deberán añadirse al canal Development
 
-ChaiLatte - Son bugs que surgen en producción, por lo que se deben arreglar y publicar de forma urgente.
+Hotfix - Son bugs que surgen en producción, por lo que se deben arreglar y publicar de forma urgente.
 
 Requisitos
 -----------
 
-Solamente se requiere el framework de Django instalado en la versión 1.9.7
+Un servidor Linux / Unix o Windows con Nginx y Django como framework
 
-
+Inicio rápido
 ```
 pip install django
 ```
+En el directorio principal del software con django previamente instalado
+```
+python manage.py runserver
+```
+
+	Acceder por medio de localhost:8000/ en el navegador
 
 Soporte
 ------------
-Para ayuda sobre como clonar el proyecto y editarlo consulte con http://codelab.mxl.
+Para ayuda sobre como clonar el proyecto y editarlo consulte con http://codelab.mx
 
 
 Soporte Adicional
 ------------
 
-Este proyecto es creado por 'Codelab MX' Grupo Teklan S.R.L. de C.V. 
+Este proyecto es creado por 'Codelab MX' en colaboración con Consulta-ITS
 Si se tiene alguna duda del funcionamiento del mismo favor de contactar a:
-info@codelab.mx.
-
+ftejeda@consulta-its.com
