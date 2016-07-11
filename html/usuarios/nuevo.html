@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Nuevo {{ grupo }}{% endblock %}
+{% block menu.usuarios %}active{% endblock %}
+{% block page.header %}Añadir {{ grupo }}{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">
+	{% if group == 0 %}
+		<div class="col-lg-3 col-xs-6">
+			<div class="small-box bg-red">
+		  		<div class="inner">
+		  			<h3>Error</h3>
+		  			<p>Base de datos Corrupta</p>
+		  		</div>
+		  		<a href="mailto:info@codelab.mx?subject=EDI-Translator" class="small-box-footer">
+		  			Contacte a soporte <i class="fa fa-arrow-circle-right"></i>
+		  		</a>
+		  	</div>
+		</div>
+	{% elif  group > 0 %}
+		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Registrar un {{ grupo }} nuevo al sistema</p>
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.username.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.username }}
+	    		<span class="fa fa-user form-control-feedback"></span>
+	    		{{ form.username.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.first_name.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.first_name }}
+	    		<span class="fa fa-cube form-control-feedback"></span>
+	    		{{ form.first_name.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.last_name.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.last_name }}
+	    		<span class="fa fa-cubes form-control-feedback"></span>
+	    		{{ form.last_name.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.password.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.password }}
+	    		<span class="fa fa-lock form-control-feedback"></span>
+	    		{{ form.password.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.password2.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.password2 }}
+	    		<span class="fa fa-unlock-alt form-control-feedback"></span>
+	    		{{ form.password2.errors }}
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+</div>
+	{% endif %}
+	</div>
+{% endblock %}

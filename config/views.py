@@ -25,13 +25,6 @@ def login_crm(request):
 			return HttpResponseRedirect("/")
 		return render(request, 'auth/login.html', {"form":form})
 
-def register_crm(request):
-	if request.user.is_authenticated():
-		logout(request)
-		return HttpResponseRedirect("/")
-	else:
-		return HttpResponseRedirect("/login/")
-
 def logout_crm(request):
 	if request.user.is_authenticated():
 		logout(request)

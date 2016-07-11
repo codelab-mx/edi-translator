@@ -3,8 +3,8 @@
   <div class="wrapper">
     <header class="main-header">
       <a href="/" class="logo">
-        <span class="logo-mini"><b>{ }</b></span>
-        <span class="logo-lg"><img src="/static/img/logo.png" alt="Home" style="max-height: 50px; max-width: 200px"></span>
+        <span class="logo-mini"><img src="/static/img/logo-min.png" alt="Home"></span>
+        <span class="logo-lg"><img src="/static/img/logo-blank.png" alt="Home" style="max-height: 50px; max-width: 200px"></span>
       </a>
       <nav class="navbar navbar-static-top" role="navigation">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
@@ -12,7 +12,6 @@
           <ul class="nav navbar-nav">
           <!-- Menu -->
             <li><a href="/logout"><i class="fa fa-sign-out"></i><span class="hidden-xs"> Cerrar Sesión</span></a></li>
-            <li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>
           </ul>
         </div>
       </nav>
@@ -26,7 +25,7 @@
           </div>
           <div class="pull-left info">
             <p>{{ request.user.first_name }} {{ request.user.last_name }}</p>
-            <a href="#"><i class="fa fa-circle text-success"></i> Administrador</a>
+            <a href="#"><i class="fa fa-circle text-success"></i> {{ request.user.groups.first|default_if_none:"Developer"|capfirst }}</a>
           </div>
         </div>
         <form action="#" method="get" class="sidebar-form">
@@ -38,13 +37,10 @@
           </div>
         </form>
         <ul class="sidebar-menu">
-          <li class="{% block menu.inicio %}{% endblock %}"><a href="/"><i class="fa fa-dashboard"></i>Inicio</a></li>
-          <li class="{% block menu.clientes %}{% endblock %}"><a href="/clientes"><i class="fa fa-users"></i> Clientes</a></li>
-          <li class="{% block menu.empleados %}{% endblock %}"><a href="#empleados"><i class="fa fa-users"></i> Empleados</a></li>
-          <li class="{% block menu.departamento %}{% endblock %}"><a href="#departamentos"><i class="fa fa-university"></i> Departamentos</a></li>
-          <li class="{% block menu.biblioteca %}{% endblock %}"><a href="#library"><i class="fa fa-book"></i> Biblioteca</a></li>
-          <li class="{% block menu.configuracion %}{% endblock %}"><a href="#ajustes"><i class="fa fa-wrench"></i> Configuración</a></li>
-          <li class="{% block menu.perfil %}{% endblock %}"><a href="#perfil"><i class="fa fa-user"></i> Perfil</a></li>
+          <li class="{% block menu.inicio %}{% endblock %}"><a href="/"><i class="fa fa-dashboard"></i><span> Inicio</span></a></li>
+          <li class="{% block menu.usuarios %}{% endblock %}"><a href="/usuarios"><i class="fa fa-users"></i><span> Usuarios</span></a></li>
+          <li class="{% block menu.configuracion %}{% endblock %}"><a href="#ajustes"><i class="fa fa-wrench"></i><span> Configuración</span></a></li>
+          <li class="{% block menu.perfil %}{% endblock %}"><a href="#perfil"><i class="fa fa-user"></i><span> Perfil</span></a></li>
         </ul>
       </section>
     </aside>
@@ -59,59 +55,15 @@
       </section>
       <section class="content">
         <div class="row">
-          <div class="col-xs-12">
           {% block page.content %}
           {% endblock %}
-          </div>
         </div>
       </section>
     </div>
     <footer class="main-footer">
       <div class="pull-right hidden-xs">Todos los derechos Reservados.</div>
-      <strong>Copyright &copy; {% now "Y" %} |</strong> <a href="http://consulta-its.com" target="_blank">consulta-its</a>.
+      <strong>Copyright &copy; Böllhoff {% now "Y" %} |</strong> <a href="http://consulta-its.com" target="_blank">consulta-its</a>.
     </footer>
-    <aside class="control-sidebar control-sidebar-dark">
-      <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-        <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="control-sidebar-home-tab">
-          <h3 class="control-sidebar-heading">Recent Activity</h3>
-          <ul class="control-sidebar-menu">
-            <li>
-              <a href="javascript::;"><i class="menu-icon fa fa-birthday-cake bg-red"></i>
-                <div class="menu-info">
-                  <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-                  <p>Will be 23 on April 24th</p>
-                </div>
-              </a>
-            </li>
-          </ul>
-          <h3 class="control-sidebar-heading">Tasks Progress</h3>
-          <ul class="control-sidebar-menu">
-            <li>
-              <a href="javascript::;">
-                <h4 class="control-sidebar-subheading">Custom Template Design<span class="label label-danger pull-right">70%</span></h4>
-                <div class="progress progress-xxs"><div class="progress-bar progress-bar-danger" style="width: 70%"></div></div>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-        <div class="tab-pane" id="control-sidebar-settings-tab">
-          <form method="post">
-            <h3 class="control-sidebar-heading">General Settings</h3>
-            <div class="form-group">
-              <label class="control-sidebar-subheading">Report panel usage
-                <input type="checkbox" class="pull-right" checked>
-              </label>
-              <p>Some information about this general settings option</p>
-            </div>
-          </form>
-        </div>
-      </div>
-    </aside>
     <div class="control-sidebar-bg"></div>
   </div>
 {% endblock %}
