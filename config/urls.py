@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
 	url(r'^$', views.home),
+	url(r'^edi/', include('data_mining.urls')),
 	url(r'^usuarios/', include('usuarios.urls')),
 	url(r'^login/', views.login_crm, name='login'),
 	url(r'^logout/', views.logout_crm),

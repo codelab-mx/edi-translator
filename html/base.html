@@ -39,20 +39,18 @@
         <ul class="sidebar-menu">
           <li class="{% block menu.inicio %}{% endblock %}"><a href="/"><i class="fa fa-dashboard"></i><span> Inicio</span></a></li>
 
-       <li class="treeview">
+       <li class="treeview {% block menu.edi %}{% endblock %}">
           <a href="#">
             <i class="fa fa-clone"></i> <span>EDI</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-edit"></i> Generar EDI</a></li>
-            <li><a href="pages/forms/advanced.html"><i class="fa fa-language"></i> Traducir EDI</a></li>
+            <li class="{% block menu.edi.ver %}{% endblock %}"><a href="/edi/"><i class="fa fa-table"></i> Ver EDI</a></li>
+            <li class="{% block menu.edi.generar %}{% endblock %}"><a href="/edi/generar/"><i class="fa fa-edit"></i> Generar EDI</a></li>
+            <li class="{% block menu.edi.traducir %}{% endblock %}"><a href="/edi/traducir/"><i class="fa fa-language"></i> Traducir EDI</a></li>
           </ul>
         </li>
-
-        {% ifequal user.groups.all.0 'administrador' %}
           <li class="{% block menu.usuarios %}{% endblock %}"><a href="/usuarios"><i class="fa fa-users"></i><span> Usuarios</span></a></li>
-          {% endifequal%}
           <li class="{% block menu.perfil %}{% endblock %}"><a href="#perfil"><i class="fa fa-user"></i><span> Perfil</span></a></li>
           <li class="{% block menu.configuracion %}{% endblock %}"><a href="#ajustes"><i class="fa fa-wrench"></i><span> Configuración</span></a></li>
           <li><a href="/logout/"><i class="fa fa-sign-out"></i><span> Cerrar Sesión</span></a></li>

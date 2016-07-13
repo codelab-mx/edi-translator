@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
-
 from django.db import models
+
+class edi_address(models.Model):
+	edi_name = models.CharField(max_length= 50)
+	edi_file = models.FileField(upload_to='edi/')
 
 
 class data_segments_master(models.Model):
-
 	GS_6 = models.CharField(primary_key = True, max_length = 50)
 	GS_1 = models.CharField(blank = True, max_length = 50)
 	GS_2 = models.CharField(blank = True, max_length = 50)
@@ -36,7 +38,6 @@ class data_segments_master(models.Model):
 
 
 class data_segments_BFR(models.Model):
-
 	BFR_1 = models.CharField(blank = True, max_length = 50)
 	BFR_2 = models.CharField(blank = True, max_length = 50)
 	BFR_3 = models.CharField(blank = True, max_length = 50)
