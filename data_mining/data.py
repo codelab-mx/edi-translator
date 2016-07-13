@@ -12,7 +12,9 @@ from data_mining.models import data_segments_master, data_segments_BFR, data_seg
 
 def get_file_address():
 	global path, files
-	path = '/home/zardain/Documents/Proyectos/edi-translator/media/28057'   
+	#path = '/home/zardain/Documents/Proyectos/edi-translator/media/28057'
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	path = os.path.join(BASE_DIR, "media/28057") 
 	files = glob.glob(path)
 	model_ini()
 
