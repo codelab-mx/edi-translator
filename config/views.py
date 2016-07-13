@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import auth
 from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.core.context_processors import csrf
@@ -7,8 +8,10 @@ from django.template.loader import get_template
 from .forms import UserLoginForm
 
 def home(request):
-	if request.user.is_authenticated():
+	if request.user.is_authenticated() and request.user.is_active:
 		return render(request, 'index/index.html', {})
+	elif request.user.is_authenticated() and not request.user.is_active:
+		return HttpResponseRedirect("/logout/")
 	else:
 		return HttpResponseRedirect("/login/")
 
