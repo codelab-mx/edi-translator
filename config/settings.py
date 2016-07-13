@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'data_mining.apps.DataMiningConfig', 
 	'usuarios.apps.UsuariosConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -68,7 +69,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'sql/database.sqlite3'),
     }
 }
 
