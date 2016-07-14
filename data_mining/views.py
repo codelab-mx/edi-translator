@@ -45,11 +45,11 @@ def edi_generator(request):
 
 def edi_translator(request):
 	if request.user.is_active:
-		form = DocumentForm(request.GET, request.FILES)
+		form = DocumentForm(request.POST, request.FILES)
 		if form.is_valid():
-			new_file = edi_address(file = request.FILES['file'])
+			new_file = edi_address(edi_file = request.FILES['docfile'])
 			print "succes"
-			newdoc.save()
+			new_file.save()
 			return HttpResponseRedirect('/edi')
 		#elif:
 		#form = DocumentForm()

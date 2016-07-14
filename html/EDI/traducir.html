@@ -7,10 +7,10 @@
 <div class="col-xs-12">		
 <div class="register-box">
 	<div class="register-box-body">
-	    <form method="POST" action="">{% csrf_token %}
-	    	{{ form }}
+	    <form id="upload"  enctype="multipart/form-data" method="post">{% csrf_token %}
+	    
 	    	<button type="submit" class="btn btn-primary btn-block btn-flat">Traducir</button>
-	    	<input type="hidden" name="next" value="Upload" />
+	    	<input id="upload" type="file" name="docfile"/>
 	    </form>
 
 
@@ -18,3 +18,4 @@
 </div>
 </div>
 {% endblock %}
+
