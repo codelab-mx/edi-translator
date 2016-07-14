@@ -2,17 +2,27 @@ import glob
 import errno
 import os
 import sys
-from django.db import connection 
-sys.path.append('/home/zardain/Documents/Proyectos/edi-translator/')
+from django.db import connection
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 import django
 django.setup()
 
-from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST
+from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, edi_address
 
 def get_file_address():
 	global path, files
-	path = '/home/zardain/Documents/Proyectos/edi-translator/media/28057'   
+	status = edi_address()
+	#read_file = edi_address.objects.latest('id')
+	#read_file = edi_address.objects.order_by('-id')[0]
+	object_read_file = edi_address.objects.values_list('id', 'edi_file').order_by('-id')[0]
+	print object_read_file[1]
+	#path = '/home/zardain/Documents/Proyectos/edi-translator/media/26317'
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	#path = os.path.join(BASE_DIR, "media/edi/26743")
+	path = os.path.join(BASE_DIR, "media/{}".format(object_read_file[1])) 
+	print path
 	files = glob.glob(path)
 	model_ini()
 
