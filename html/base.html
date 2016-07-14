@@ -50,7 +50,9 @@
             <li class="{% block menu.edi.traducir %}{% endblock %}"><a href="/edi/traducir/"><i class="fa fa-language"></i> Traducir EDI</a></li>
           </ul>
         </li>
+        {% if perms.auth.add_user %}
           <li class="{% block menu.usuarios %}{% endblock %}"><a href="/usuarios"><i class="fa fa-users"></i><span> Usuarios</span></a></li>
+          {% endif %}
           <li class="{% block menu.perfil %}{% endblock %}"><a href="#perfil"><i class="fa fa-user"></i><span> Perfil</span></a></li>
           <li class="{% block menu.configuracion %}{% endblock %}"><a href="#ajustes"><i class="fa fa-wrench"></i><span> Configuración</span></a></li>
           <li><a href="/logout/"><i class="fa fa-sign-out"></i><span> Cerrar Sesión</span></a></li>

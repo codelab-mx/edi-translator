@@ -8,5 +8,6 @@ urlpatterns = [
 	url(r'^usuarios/', include('usuarios.urls')),
 	url(r'^login/', views.login_crm, name='login'),
 	url(r'^logout/', views.logout_crm),
+	url(r'^setup/', views.setup, name='setup'),
 	url(r'^admin/', admin.site.urls),
 ]
