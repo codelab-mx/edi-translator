@@ -1,33 +1,43 @@
-import glob
-import errno
-import os
-import sys
-from django.db import connection
+"""
+Empresa: Codelab
+Proyecto: Edi-Transalator
+Author: Gonzalo Zardain
+Fecha: 14 de Julio de 2016
+
+Reseña: data.py lee los datos de un archivo edi que tiene informacion bajo la norma MAGNA 830 y 862
+Los guarda en una base de datos para despues poder ser comparada.
+
+"""
+import glob, errno, os, sys, django
+
+###########################
+# Configuracion de django #
+###########################
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-import django
 django.setup()
 
+###############################
+# Importar los modelos a usar #
+###############################
 from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, edi_address
 
+###########################################
+# Obtiene la direccion del archivo a leer #
+###########################################
 def get_file_address():
 	global path, files
-	status = edi_address()
-	#read_file = edi_address.objects.latest('id')
-	#read_file = edi_address.objects.order_by('-id')[0]
 	object_read_file = edi_address.objects.values_list('id', 'edi_file').order_by('-id')[0]
-	print object_read_file[1]
-	#path = '/home/zardain/Documents/Proyectos/edi-translator/media/26317'
 	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	#path = os.path.join(BASE_DIR, "media/edi/26743")
 	path = os.path.join(BASE_DIR, "media/{}".format(object_read_file[1])) 
-	print path
 	files = glob.glob(path)
 	model_ini()
 
+#################################
+# Segmenta el archivo por linea #
+#################################
 def read_file():
-	#print "reading file"
 	global path, files, lines, cont
 	lines = []
 	for name in files:
@@ -38,11 +48,11 @@ def read_file():
 		while (cont < num_lineas):
 			segment_lines()
 			cont = cont + 1
-			#print cont
 	return
-
+#############################################
+# segmenta las lineas por palabras filtra * #
+#############################################
 def segment_lines():
-	#print "segment line"
 	global lines, cont, segment_text, flag, name
 	texto = str(lines[cont])
 	segment_text = texto.split("*")
@@ -51,36 +61,35 @@ def segment_lines():
 	if flag == True:
 		flow_830()
 
-
+#############################
+# Flujo para un archivo 830 #
+#############################
 def flow_830():
-	#print "determing EDI type"
 	global cont, name, cont_FST
-	if segment_text[0] == "sjbfvjsd":
-		print "hi"
-
-	else:
-
-		lista = {'GS':GS,
-			 	'ST':ST,
-			 	'BFR':BFR,
-			 	'N1':N,
-			 	'LIN':LIN,
-			 	'UIT':UIT,
-			 	'FST':FST,
-			 	'SHP':SHP,
-			 	'CTT':CTT,
-			 	'SE':SE,
-			 	'GE':GE,
-			 	'IEA':IEA,
+	lista = {'GS':GS,
+			 'ST':ST,
+			 'BFR':BFR,
+			 'N1':N,
+			 'LIN':LIN,
+			 'UIT':UIT,
+			 'FST':FST,
+			 'SHP':SHP,
+			 'CTT':CTT,
+			 'SE':SE,
+			 'GE':GE,
+			 'IEA':IEA,
 
 
 			 
-				}
-		strcont = segment_text[0]
-		trigger = lista[strcont]
-		trigger()
+			}
+	strcont = segment_text[0]
+	trigger = lista[strcont]
+	trigger()
 	return
 
+##########################################
+# inicializacion de los modelos globales #
+##########################################
 def model_ini():
 	global model_master, model_BFR, model_830LIN
 	model_master = data_segments_master()
@@ -88,15 +97,9 @@ def model_ini():
 	model_830LIN = data_segments_830LIN()
 	read_file()
 
-def model_save():
-	global model
-	model.save()
-
-
 #############################
 #  FUNCTIONAL GROUP HEADER  #
 #############################
-
 def GS():
 	global segment_text, model_master, primary_key
 	model_master.GS_1 = segment_text[1]
@@ -114,7 +117,6 @@ def GS():
 #############################
 #  TRANSACTION SET HEADER   #
 #############################
-
 def ST():
 	global segment_text, model_1
 	model_master.ST_1 = segment_text[1]
@@ -122,11 +124,9 @@ def ST():
 	model_master.save()
 	return
 
-
 #######################
 #  Beginning Segment  #
 #######################
-
 def BFR():
 	global segment_text, model_BFR
 	try:
@@ -157,8 +157,6 @@ def BFR():
 ##################
 #  Name Segment  #
 ##################
-
-
 def N():
 	global segment_text, primary_key
 	model_N1 = data_segments_N()
@@ -172,8 +170,9 @@ def N():
 	model_N1.save()
 	return
 
-
-
+#####################
+# Forecast Schedule #
+#####################
 def FST():
 	global segment_text, primary_key
 	model_FST = data_segments_FST()
@@ -193,8 +192,9 @@ def FST():
 	model_FST.save()
 	return
 
-
-
+#######################
+# Item Identification #
+#######################
 def LIN():
 	global model_830LIN
 	model_830LIN.LIN_1 = segment_text[1]
@@ -215,6 +215,9 @@ def LIN():
 	model_830LIN.save()
 	return
 
+###############
+# Unit Detail #
+###############
 def UIT():
 	try:
 
@@ -227,6 +230,9 @@ def UIT():
 		model_master.save()
 	return
 
+################################
+# Shipped/Received Information #
+################################
 def SHP():
 	global model_master
 	try:
@@ -246,6 +252,9 @@ def SHP():
 		model_master.save()
 	return
 
+#######################
+# Transaction Totals  #
+#######################
 def CTT():
 	global model_master
 	try:
@@ -258,7 +267,9 @@ def CTT():
 		model_master.save()
 	return
 
-	
+###########################
+# Transaction Set Trailer #
+###########################
 def SE():
 	global model_master
 	model_master.SE_1 = segment_text[1]
