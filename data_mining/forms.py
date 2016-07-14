@@ -1,7 +1,7 @@
 from django import forms
-
-class DocumentForm(forms.Form):
-    docfile = forms.FileField(
-        label='Selecciona un archivo EDI',
-        
-    )
+from models import edi_address
+class DocumentForm(forms.ModelForm):
+    docfile = forms.FileField()
+    class Meta:
+    	model = edi_address
+    	fields = ["docfile",]

@@ -7,8 +7,13 @@
 <div class="col-xs-12">		
 <div class="register-box">
 	<div class="register-box-body">
-    	<p class="login-box-msg">Coming Sun</p>
-	    
+	    <form method="POST" action="">{% csrf_token %}
+	    	{{ form }}
+	    	<button type="submit" class="btn btn-primary btn-block btn-flat">Traducir</button>
+	    	<input type="hidden" name="next" value="Upload" />
+	    </form>
+
+
     </div>
 </div>
 </div>

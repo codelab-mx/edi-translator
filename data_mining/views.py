@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from django.template.loader import get_template
 from django.shortcuts import render
+from forms import DocumentForm
+from models import edi_address
 
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
@@ -43,9 +45,17 @@ def edi_generator(request):
 
 def edi_translator(request):
 	if request.user.is_active:
-		groups = Group.objects.all()
-		return render(request, 'EDI/traducir.html', {})
+		form = DocumentForm(request.GET, request.FILES)
+		if form.is_valid():
+			new_file = edi_address(file = request.FILES['file'])
+			print "succes"
+			newdoc.save()
+			return HttpResponseRedirect('/edi')
+		#elif:
+		#form = DocumentForm()
+		return render(request, 'EDI/traducir.html', {'form': form})
 	elif not request.user.is_active:
 		return HttpResponseRedirect("/logout/")
 	else:
 		return HttpResponseRedirect("/")
+
