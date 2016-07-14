@@ -116,15 +116,11 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = ''
 STATICFILES_DIRS = ( os.path.join('static/'), )
 #STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-<<<<<<< HEAD
-#MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_ROOT = ''
 FIXTURE_DIRS = ( os.path.join('fixtures/'), )
 
-=======
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 #MEDIA_ROOT = ''
->>>>>>> e954fcbc8b2d227f8c6639cc9f7256e47bb6b7e2
 
 #For email
 
