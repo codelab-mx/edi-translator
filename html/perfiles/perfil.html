@@ -3,8 +3,7 @@
 {% block menu.usuarios %}active{% endblock %}
 {% block page.header %}Usuarios{% endblock %}
 {% block page.content %}
-
-{% if user|length == 1%}
+{% if user %}
 {% for profile in user %}
 <div class="col-md-3">
   <!-- Profile Image -->
@@ -24,9 +23,13 @@
             <b>Cuenta</b> <a class="pull-right">{% if profile.is_active == True %}Habilitada{% else %}Deshabilitada{% endif %} </a>
           </li>
         </ul>
-        {% if profile.is_active == True  %}
+        {% if is_admin and profile.is_active == True  %}
           <a href="#" class="btn btn-primary btn-block"><b>Deshabilitar</b></a>
-        {% elif profile.is_active == False %}
+        {% elif request.user.is_superuser and profile.is_active == True%}
+          <a href="#" class="btn btn-primary btn-block"><b>Deshabilitar</b></a>
+        {% elif is_admin and profile.is_active == False  %}
+          <a href="#" class="btn btn-primary btn-block"><b>Habilitar</b></a>
+        {% elif request.user.is_superuser and profile.is_active == False%}
           <a href="#" class="btn btn-primary btn-block"><b>Habilitar</b></a>
         {% endif %}
       </div>
@@ -37,9 +40,11 @@
  <div class="col-md-9">
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
-      <li class="active"><a  href="#timeline" data-toggle="tab">Historial</a></li>
+      <li class="active"><a  href="#timeline" data-toggle="tab">Timeline</a></li>
+      {% if is_admin %}
         <li><a href="#settings" data-toggle="tab">Editar Perfil</a></li>
         <li><a href="#password" data-toggle="tab">Cambiar contraseña</a></li>
+      {% endif %}
     </ul>
     <div class="tab-content"><div class="tab-pane active" id="timeline">
       <ul class="timeline timeline-inverse">
@@ -105,6 +110,7 @@
       </ul>
               </div>
               <!-- /.tab-pane -->
+{% if is_admin %}
               <div class="tab-pane" id="settings">
                 <form class="form-horizontal">
                   <div class="form-group">
@@ -190,7 +196,7 @@
                 </form>
               </div>
 
-
+              {% endif %}
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -198,17 +204,8 @@
           <!-- /.nav-tabs-custom -->
         </div>
 
-{% else %}
-<div class="col-xs-12">   
-<div class="register-box">
-  <div class="register-box-body">
-      <p class="login-box-msg">Lo sentimos, el usuario <strong>{{ user_name }}</strong> no existe </p>
-      <a href="/usuarios"><button type="button" class="btn btn-block btn-primary btn-flat">Ver usuarios</button></a>
-    </div>
-</div>
-</div>
-
 {% endif %}
+
 
 {% endblock %}
 {% block aditional.css %}<link rel="stylesheet" href="/static/js/plugins/datatables/dataTables.bootstrap.css">{% endblock %}

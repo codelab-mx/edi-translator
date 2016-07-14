@@ -118,6 +118,8 @@ STATICFILES_DIRS = ( os.path.join('static/'), )
 #STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 #MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_ROOT = ''
+FIXTURE_DIRS = ( os.path.join('fixtures/'), )
+
 
 #For email
 

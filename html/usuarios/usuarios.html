@@ -4,12 +4,10 @@
 {% block page.header %}Usuarios{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">
-{% if users %}
+{% if users|length > 1 %}
 <div class="box">
-	<div class="box-header">
- 
-{% if groups and is_admin or request.user.is_superuser %}
-
+  <div class="box-header">
+  {% if groups %}
      <div class="input-group-btn">
       <button aria-expanded="false" type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">Crear
         <span class="fa fa-caret-down"></span>
@@ -19,11 +17,8 @@
         <li><a href="nuevo/{{ group.name }}">{{ group.name|capfirst }}</a></li>
         {% endfor %}
       </ul>
-      </div>
-  
-
-{% endif %}
-
+    </div>
+  {% endif %}
   </div>
 	<div class="box-body">
     <table id="example1" class="table table-bordered table-striped">
@@ -40,7 +35,7 @@
       <tbody>
         {% for user in users %}
           <tr>
-            <td><a href="ver/{{ user.id }}">{{ user.username }}</a></td>
+            <td><a href="ver/{{ user.username }}">{{ user.username }}</a></td>
             <td>{{ user.first_name }}</td>
             <td>{{ user.last_name }}</td>
             <td>{{ user.groups.all.0|capfirst }}</td>
@@ -53,24 +48,15 @@
   </div>
 </div>
 {% else %}
-{% if groups %}
 <div class="register-box">
   <div class="register-box-body">
-      <p class="login-box-msg">Aún no hay usuarios en el sistema<br>Sólo los usuarios pueden generar traducciones</p>
-      <p></p>
-     <div class="input-group-btn">
-      <button aria-expanded="false" type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown">Crear
-        <span class="fa fa-caret-down"></span>
-      </button>
-      <ul class="dropdown-menu">
-        {% for group in groups %}
-        <li><a href="nuevo/{{ group.name }}">{{ group.name|capfirst }}</a></li>
-        {% endfor %}
-      </ul>
-      </div>
+    <p class="login-box-msg">Aún no hay usuarios en el sistema<br>Sólo los usuarios pueden generar traducciones<br>¡Crea tu primer usuario!</p>
+    <div class="input-group-btn">
+      <a href="nuevo/usuario"><button type="button" class="btn btn-block btn-primary btn-flat">Crear usuario</button></a>
     </div>
+  </div>
 </div>
-{% endif %}
+
 {% endif %}
 </div>
 {% endblock %}
