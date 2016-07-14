@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
 from django.db import models
+from validators import file_size
 
 class edi_address(models.Model):
 	edi_name = models.CharField(max_length= 50)
-	edi_file = models.FileField(upload_to='edi/')
+	edi_file = models.FileField(upload_to='edi/', validators=[file_size])
 
 
 class data_segments_master(models.Model):
