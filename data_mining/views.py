@@ -8,7 +8,7 @@ from django.shortcuts import render
 from forms import DocumentForm
 from models import edi_address
 from . import models
-
+from data import init_data
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
 #############################
@@ -49,13 +49,25 @@ def edi_translator(request):
 		form = DocumentForm(request.POST, request.FILES)
 		if form.is_valid():
 			new_file = edi_address(edi_file = request.FILES['docfile'])
-			print new_file.id
 			new_file.save()
-			return HttpResponseRedirect('/edi')
-		#elif:
-		#form = DocumentForm()
+			print new_file.id
+			return HttpResponseRedirect(('{}').format(new_file.id))
 		return render(request, 'EDI/traducir.html', {'form': form})
 	elif not request.user.is_active:
 		return HttpResponseRedirect("/logout/")
 	else:
 		return HttpResponseRedirect("/")
+
+def edi_translate(request, edi):
+	if request.user.is_active:
+		edi_files = models.edi_address.objects.filter(id=edi)
+		for edi in edi_files:
+			id_edi_local = edi.id
+			address_local = edi.edi_file
+			flag_local = edi.flag
+		if flag_local == False:
+			print 'id_edi_local', id_edi_local
+			init_data(id_edi_local, address_local, flag_local)
+		else:
+			return HttpResponseRedirect("/edi/")	
+	return render(request, 'EDI/traducir.html', {'edi_files':edi_files})

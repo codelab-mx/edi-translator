@@ -23,18 +23,15 @@ django.setup()
 ###############################
 # Importar los modelos a usar #
 ###############################
-from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, edi_address
-
+from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST
+from models import edi_address
 ###########################################
 # Obtiene la direccion del archivo a leer #
 ###########################################
 def get_file_address():
-	global path, files, id_edi
-	#object_read_file = edi_address.objects.values_list('id', 'edi_file').order_by('-id')[0]
-	#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	#path = os.path.join(BASE_DIR, "media/{}".format(object_read_file[1]))
-	id_edi = 2
-	path = "/home/zardain/Documents/Proyectos/edi-translator/media/edi/27185"
+	global path, files, id_edi, address
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	path = os.path.join(BASE_DIR, "media/{}".format(address))
 	files = glob.glob(path)
 	model_ini()
 
@@ -82,10 +79,7 @@ def flow_830():
 			 'CTT':CTT,
 			 'SE':SE,
 			 'GE':GE,
-			 'IEA':IEA,
-
-
-			 
+			 'IEA':IEA, 
 			}
 	strcont = segment_text[0]
 	trigger = lista[strcont]
@@ -136,7 +130,6 @@ def ST():
 def BFR():
 	global segment_text, model_BFR, id_edi
 	try:
-
 		model_BFR.BFR_1 = segment_text[1]
 		model_BFR.BFR_2 = segment_text[2]
 		model_BFR.BFR_3 = segment_text[3]
@@ -168,7 +161,6 @@ def BFR():
 def N():
 	global segment_text, primary_key, id_edi
 	model_N1 = data_segments_N()
-	#primary = edi_address.objects.get(GS_6=primary_key)
 	primary = data_segments_master.objects.get(id=id_edi)
 	model_N1.prim = primary
 	model_N1.N_0 = segment_text[0]
@@ -230,7 +222,6 @@ def LIN():
 ###############
 def UIT():
 	try:
-
 		model_master.UIT_1 = segment_text[1]
 		model_master.UIT_2 = segment_text[2]
 		model_master.UIT_3 = segment_text[3]
@@ -268,7 +259,6 @@ def SHP():
 def CTT():
 	global model_master
 	try:
-
 		model_master.CT_1 = segment_text[1]
 		model_master.CT_2 = segment_text[2]
 		model_master.save()
@@ -301,6 +291,16 @@ def IEA():
 	model_master.save()
 	return
 
+def init_data(id_edi_local, address_local, flag_local):
+	global flag, name, cont, cont_FST, id_edi, address, flag
+	cont = 1
+	flag = False
+	name = 0
+	cont_FST = 0
+	id_edi = id_edi_local
+	address = str(address_local)
+	flag = flag_local
+	get_file_address()
 
 if __name__ == '__main__':
 	global flag, name, cont, cont_FST
