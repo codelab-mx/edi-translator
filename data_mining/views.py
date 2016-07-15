@@ -6,7 +6,8 @@ from django.shortcuts import render, render_to_response
 from django.template.loader import get_template
 from django.shortcuts import render
 from forms import DocumentForm
-from models import edi_address
+#from models import edi_address
+from . import models
 
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
@@ -18,8 +19,8 @@ is_admin es una variable que nos permite filtrar si el usuario es administrador
 '''
 def edi_index(request):
 	if request.user.is_active:
-		groups = Group.objects.all()
-		return render(request, 'EDI/ver.html', {})
+		edi_files = models.edi_address.objects.all()
+		return render(request, 'EDI/ver.html', {'edi_files':edi_files})
 	elif not request.user.is_active:
 		return HttpResponseRedirect("/logout/")
 	else:

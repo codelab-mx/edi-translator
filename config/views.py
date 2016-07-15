@@ -10,7 +10,6 @@ from .forms import UserLoginForm, UserRegister
 import subprocess, os
 
 def home(request):
-	#if request.user.is_authenticated() and request.user.is_active:
 	if request.user.is_active:
 		return render(request, 'index/index.html', {})
 	elif not request.user.is_active:

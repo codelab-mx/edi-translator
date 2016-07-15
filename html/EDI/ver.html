@@ -5,11 +5,49 @@
 {% block page.header %}Ver archivos EDI{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">		
-<div class="register-box">
+<div class="box">
 	<div class="register-box-body">
-    	<p class="login-box-msg">Coming Sun</p>
-	    
+		{% if edi_files %}
+			<table id="example1" class="table table-bordered table-striped">
+				<thead>
+				<tr>
+			        <th>ID</th>
+			        <th>Archivo</th>
+			        <th>Ubicación</th>
+			        <th>Editar</th>
+		        </tr>
+		        </thead>
+		        <tbody>
+		        {% for file in edi_files %}
+		        	<tr>
+		        		<td><a href="ver/{{ file.id }}">{{ file.id }}</a></td>
+		        		<td>{{ file.filename }}</td>
+		        		<td>{{ file.edi_file.url }}</td>
+		        		<td>Botón</td>
+		        	</tr>
+		        {% endfor %}
+		      </tbody>
+		    </table>
+		{% endif %}
     </div>
 </div>
 </div>
+{% endblock %}
+{% block aditional.css %}<link rel="stylesheet" href="/static/js/plugins/datatables/dataTables.bootstrap.css">{% endblock %}
+{% block aditional.js %}
+<script src="/static/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
 {% endblock %}
