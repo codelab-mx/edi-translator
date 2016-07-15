@@ -49,7 +49,7 @@ def edi_translator(request):
 		form = DocumentForm(request.POST, request.FILES)
 		if form.is_valid():
 			new_file = edi_address(edi_file = request.FILES['docfile'])
-			print "succes"
+			print new_file.id
 			new_file.save()
 			return HttpResponseRedirect('/edi')
 		#elif:
@@ -59,8 +59,3 @@ def edi_translator(request):
 		return HttpResponseRedirect("/logout/")
 	else:
 		return HttpResponseRedirect("/")
-
-
-def jdbkjas():
-
-	data()
