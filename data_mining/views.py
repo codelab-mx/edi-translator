@@ -6,7 +6,7 @@ from django.shortcuts import render, render_to_response
 from django.template.loader import get_template
 from django.shortcuts import render
 from forms import DocumentForm
-#from models import edi_address
+from models import edi_address
 from . import models
 
 #############################
@@ -60,3 +60,7 @@ def edi_translator(request):
 	else:
 		return HttpResponseRedirect("/")
 
+
+def jdbkjas():
+
+	data()

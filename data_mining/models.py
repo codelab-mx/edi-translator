@@ -6,6 +6,7 @@ import os
 class edi_address(models.Model):
 	#edi_name = models.CharField(max_length= 50)
 	edi_file = models.FileField(upload_to='edi/', validators=[file_size])
+	flag = models.BooleanField(default= False)
 	def filename(self):
 		return os.path.basename(self.edi_file.name)
 
@@ -43,6 +44,7 @@ class data_segments_master(models.Model):
 
 
 class data_segments_BFR(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
 	BFR_1 = models.CharField(blank = True, max_length = 50)
 	BFR_2 = models.CharField(blank = True, max_length = 50)
 	BFR_3 = models.CharField(blank = True, max_length = 50)
@@ -62,6 +64,7 @@ class data_segments_N(models.Model):
 	N_4 = models.CharField(blank = True, max_length = 50)
 
 class data_segments_830LIN(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
 	LIN_1 = models.CharField(blank = True, max_length = 50)
 	LIN_2 = models.CharField(blank = True, max_length = 50)
 	LIN_3 = models.CharField(blank = True, max_length = 50)

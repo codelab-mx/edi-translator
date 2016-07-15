@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Empresa: Codelab
 Proyecto: Edi-Transalator
@@ -27,10 +29,12 @@ from data_mining.models import data_segments_master, data_segments_BFR, data_seg
 # Obtiene la direccion del archivo a leer #
 ###########################################
 def get_file_address():
-	global path, files
-	object_read_file = edi_address.objects.values_list('id', 'edi_file').order_by('-id')[0]
-	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	path = os.path.join(BASE_DIR, "media/{}".format(object_read_file[1])) 
+	global path, files, id_edi
+	#object_read_file = edi_address.objects.values_list('id', 'edi_file').order_by('-id')[0]
+	#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	#path = os.path.join(BASE_DIR, "media/{}".format(object_read_file[1]))
+	id_edi = 2
+	path = "/home/zardain/Documents/Proyectos/edi-translator/media/edi/27185"
 	files = glob.glob(path)
 	model_ini()
 
@@ -38,7 +42,7 @@ def get_file_address():
 # Segmenta el archivo por linea #
 #################################
 def read_file():
-	global path, files, lines, cont
+	global path, files, lines, cont, model_edi, id_edi
 	lines = []
 	for name in files:
 		with open(name) as f:
@@ -48,6 +52,7 @@ def read_file():
 		while (cont < num_lineas):
 			segment_lines()
 			cont = cont + 1
+	edi_address.objects.filter(id=id_edi).update(flag=True)
 	return
 #############################################
 # segmenta las lineas por palabras filtra * #
@@ -101,7 +106,7 @@ def model_ini():
 #  FUNCTIONAL GROUP HEADER  #
 #############################
 def GS():
-	global segment_text, model_master, primary_key
+	global segment_text, model_master, primary_key, id_edi
 	model_master.GS_1 = segment_text[1]
 	model_master.GS_2 = segment_text[2]
 	model_master.GS_3 = segment_text[3]
@@ -110,7 +115,8 @@ def GS():
 	model_master.GS_6 = segment_text[6]
 	model_master.GS_7 = segment_text[7]
 	model_master.GS_8 = segment_text[8]
-	primary_key = segment_text[6]
+	model_master.edi = edi_address.objects.get(id = id_edi)
+	model_master.id = id_edi
 	model_master.save()
 	return
 
@@ -128,7 +134,7 @@ def ST():
 #  Beginning Segment  #
 #######################
 def BFR():
-	global segment_text, model_BFR
+	global segment_text, model_BFR, id_edi
 	try:
 
 		model_BFR.BFR_1 = segment_text[1]
@@ -140,6 +146,7 @@ def BFR():
 		model_BFR.BFR_7 = segment_text[7]
 		model_BFR.BFR_8 = segment_text[8]
 		model_BFR.BFR_11 = segment_text[11]
+		model_BFR.prim = data_segments_master.objects.get(id=id_edi)
 		model_BFR.save()
 
 	except:
@@ -151,6 +158,7 @@ def BFR():
 		model_BFR.BFR_6 = segment_text[6]
 		model_BFR.BFR_7 = segment_text[7]
 		model_BFR.BFR_8 = segment_text[8]
+		model_BFR.prim = data_segments_master.objects.get(id=id_edi)
 		model_BFR.save()
 	return
 
@@ -158,9 +166,10 @@ def BFR():
 #  Name Segment  #
 ##################
 def N():
-	global segment_text, primary_key
+	global segment_text, primary_key, id_edi
 	model_N1 = data_segments_N()
-	primary = data_segments_master.objects.get(GS_6=primary_key)
+	#primary = edi_address.objects.get(GS_6=primary_key)
+	primary = data_segments_master.objects.get(id=id_edi)
 	model_N1.prim = primary
 	model_N1.N_0 = segment_text[0]
 	model_N1.N_1 = segment_text[1]
@@ -174,9 +183,9 @@ def N():
 # Forecast Schedule #
 #####################
 def FST():
-	global segment_text, primary_key
+	global segment_text, primary_key, id_edi
 	model_FST = data_segments_FST()
-	primary = data_segments_master.objects.get(GS_6=primary_key)
+	primary = data_segments_master.objects.get(id=id_edi)
 	model_FST.prim = primary
 	model_FST.FST_0 = segment_text[0]
 	model_FST.FST_1 = segment_text[1]
@@ -196,7 +205,7 @@ def FST():
 # Item Identification #
 #######################
 def LIN():
-	global model_830LIN
+	global model_830LIN, id_edi
 	model_830LIN.LIN_1 = segment_text[1]
 	model_830LIN.LIN_2 = segment_text[2]
 	model_830LIN.LIN_3 = segment_text[3]
@@ -212,6 +221,7 @@ def LIN():
 	model_830LIN.LIN_13= segment_text[13]
 	model_830LIN.LIN_14= segment_text[14]
 	model_830LIN.LIN_15= segment_text[15]
+	model_830LIN.prim = data_segments_master.objects.get(id=id_edi)
 	model_830LIN.save()
 	return
 
