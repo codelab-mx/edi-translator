@@ -11,12 +11,13 @@ class edi_address(models.Model):
 
 
 class data_segments_master(models.Model):
-	GS_6 = models.CharField(primary_key = True, max_length = 50)
+	edi = models.ForeignKey(edi_address, on_delete= models.CASCADE)
 	GS_1 = models.CharField(blank = True, max_length = 50)
 	GS_2 = models.CharField(blank = True, max_length = 50)
 	GS_3 = models.CharField(blank = True, max_length = 50)
 	GS_4 = models.CharField(blank = True, max_length = 50)
 	GS_5 = models.CharField(blank = True, max_length = 50)
+	GS_6 = models.CharField(blank = True, max_length = 50)
 	GS_7 = models.CharField(blank = True, max_length = 50)
 	GS_8 = models.CharField(blank = True, max_length = 50)
 	ST_1 = models.CharField(blank = True, max_length = 50)

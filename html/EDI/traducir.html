@@ -8,7 +8,6 @@
 <div class="register-box">
 	<div class="register-box-body">
 	    <form id="upload"  enctype="multipart/form-data" method="post">{% csrf_token %}
-	    
 	    	<button type="submit" class="btn btn-primary btn-block btn-flat">Traducir</button>
 	    	<input id="upload" type="file" name="docfile"/>
 	    </form>
@@ -18,4 +17,11 @@
 </div>
 </div>
 {% endblock %}
-
+{% block aditional.js %}
+ <script>
+ $(function () {
+var div = document.createElement('div');
+return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)
+});</script>
+<script type="text/javascript">$(function (){return 'FormData' in window;});</script>
+{% endblock %}
