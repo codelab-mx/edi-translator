@@ -7,41 +7,16 @@
 <div class="col-xs-12">		
 <div class="login-box">
 	<div class="register-box-body">
-    	<p class="login-box-msg">La base de datos está preparada<br> Es necesario registrar un usuario <strong>administrador</strong></p>
-	    <form method="POST" action="">{% csrf_token %}
-	    	<div class="form-group has-feedback {% if reg_form.username.errors %}has-error{% else %}{% endif %}">
-	    		{{ reg_form.username }}
-	    		<span class="fa fa-user form-control-feedback"></span>
-	    		{{ reg_form.username.errors }}
-	    	</div>
-	    	<div class="form-group has-feedback {% if reg_form.first_name.errors %}has-error{% else %}{% endif %}">
-	    		{{ reg_form.first_name }}
-	    		<span class="fa fa-cube form-control-feedback"></span>
-	    		{{ reg_form.first_name.errors }}
-	    	</div>
-	    	<div class="form-group has-feedback {% if reg_form.last_name.errors %}has-error{% else %}{% endif %}">
-	    		{{ reg_form.last_name }}
-	    		<span class="fa fa-cubes form-control-feedback"></span>
-	    		{{ reg_form.last_name.errors }}
-	    	</div>
-	    	<div class="form-group has-feedback {% if reg_form.password.errors %}has-error{% else %}{% endif %}">
-	    		{{ reg_form.password }}
-	    		<span class="fa fa-lock form-control-feedback"></span>
-	    		{{ reg_form.password.errors }}
-	    	</div>
-	    	<div class="form-group has-feedback {% if reg_form.password2.errors %}has-error{% else %}{% endif %}">
-	    		{{ reg_form.password2 }}
-	    		<span class="fa fa-unlock-alt form-control-feedback"></span>
-	    		{{ reg_form.password2.errors }}
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-8"></div>
-	    		<div class="col-xs-4">
-	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
-	    			<input type="hidden" name="next" value="{{ next }}" />
-	    		</div>
-	    	</div>
-	    </form>
+	<div class="login-logo">
+        <img src="/static/img/logo.png" alt="Home" style="max-width: 100%;">
+      </div>
+      <p style="text-align: center;">EDI Translator V 0.5.1</p>
+    	<p class="login-box-msg">La plataforma se ha instalado correctamente, es necesario sincronizar la base de datos </p>
+    	<form action="#" method="POST">{% csrf_token %}
+    		<input type="hidden" value="1" name="mytextbox"/>
+    		<button name="mybtn" type="submit" class="btn btn-primary btn-block btn-flat">Sincronizar</button>
+    		<input type="hidden" name="mybtn" value="Click" />
+    	</form>
     </div>
 </div>
 </div>
