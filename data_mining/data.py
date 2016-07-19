@@ -23,7 +23,7 @@ django.setup()
 ###############################
 # Importar los modelos a usar #
 ###############################
-from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST
+from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, data_segments_BSS, data_segments_862LIN
 from models import edi_address
 ###########################################
 # Obtiene la direccion del archivo a leer #
@@ -62,6 +62,36 @@ def segment_lines():
 		flag = True
 	if flag == True:
 		flow_830()
+	elif segment_text[1] == "SS":
+		flag = False
+	if flag == False:
+		flow_862()
+
+
+#############################
+# Flujo para un archivo 862 #
+#############################
+def flow_862():
+	global cont, name, cont_FST
+	lista = {'GS':GS,
+			 'ST':ST,
+			 'BSS':BSS,
+			 'N1':N,
+			 'LIN':LIN_862,
+			 'UIT':UIT,
+			 'FST':FST,
+			 'SHP':SHP,
+			 'CTT':CTT,
+			 'SE':SE,
+			 'GE':GE,
+			 'IEA':IEA, 
+			}
+	strcont = segment_text[0]
+	trigger = lista[strcont]
+	trigger()
+	return
+
+		
 
 #############################
 # Flujo para un archivo 830 #
@@ -72,7 +102,7 @@ def flow_830():
 			 'ST':ST,
 			 'BFR':BFR,
 			 'N1':N,
-			 'LIN':LIN,
+			 'LIN':LIN_830,
 			 'UIT':UIT,
 			 'FST':FST,
 			 'SHP':SHP,
@@ -90,10 +120,12 @@ def flow_830():
 # inicializacion de los modelos globales #
 ##########################################
 def model_ini():
-	global model_master, model_BFR, model_830LIN
+	global model_master, model_BFR, model_830LIN, model_BSS, model_862LIN
 	model_master = data_segments_master()
 	model_BFR = data_segments_BFR()
+	model_BSS = data_segments_BSS()
 	model_830LIN = data_segments_830LIN()
+	model_862LIN = data_segments_862LIN()
 	read_file()
 
 #############################
@@ -127,6 +159,37 @@ def ST():
 #######################
 #  Beginning Segment  #
 #######################
+def BSS():
+	global segment_text, model_BSS, id_edi
+	try:
+		model_BSS.BSS_1 = segment_text[1]
+		model_BSS.BSS_2 = segment_text[2]
+		model_BSS.BSS_3 = segment_text[3]
+		model_BSS.BSS_4 = segment_text[4]
+		model_BSS.BSS_5 = segment_text[5]
+		model_BSS.BSS_6 = segment_text[6]
+		model_BSS.BSS_7 = segment_text[7]
+		model_BSS.BSS_8 = segment_text[8]
+		model_BSS.BSS_11 = segment_text[11]
+		model_BSS.prim = data_segments_master.objects.get(id=id_edi)
+		model_BSS.save()
+
+	except:
+		model_BSS.BSS_1 = segment_text[1]
+		model_BSS.BSS_2 = segment_text[2]
+		model_BSS.BSS_3 = segment_text[3]
+		model_BSS.BSS_4 = segment_text[4]
+		model_BSS.BSS_5 = segment_text[5]
+		model_BSS.BSS_6 = segment_text[6]
+		model_BSS.BSS_7 = segment_text[7]
+		model_BSS.BSS_8 = segment_text[8]
+		model_BSS.prim = data_segments_master.objects.get(id=id_edi)
+		model_BSS.save()
+	return
+
+#######################
+#  Beginning Segment  #
+#######################
 def BFR():
 	global segment_text, model_BFR, id_edi
 	try:
@@ -154,6 +217,7 @@ def BFR():
 		model_BFR.prim = data_segments_master.objects.get(id=id_edi)
 		model_BFR.save()
 	return
+
 
 ##################
 #  Name Segment  #
@@ -196,7 +260,7 @@ def FST():
 #######################
 # Item Identification #
 #######################
-def LIN():
+def LIN_830():
 	global model_830LIN, id_edi
 	model_830LIN.LIN_1 = segment_text[1]
 	model_830LIN.LIN_2 = segment_text[2]
@@ -215,6 +279,30 @@ def LIN():
 	model_830LIN.LIN_15= segment_text[15]
 	model_830LIN.prim = data_segments_master.objects.get(id=id_edi)
 	model_830LIN.save()
+	return
+
+#######################
+# Item Identification #
+#######################
+def LIN_862():
+	global model_862LIN, id_edi
+	model_862LIN.LIN_1 = segment_text[1]
+	model_862LIN.LIN_2 = segment_text[2]
+	model_862LIN.LIN_3 = segment_text[3]
+	model_862LIN.LIN_4 = segment_text[4]
+	model_862LIN.LIN_5 = segment_text[5]
+	model_862LIN.LIN_6 = segment_text[6]
+	model_862LIN.LIN_7 = segment_text[7]
+	#model_862LIN.LIN_8 = segment_text[8]
+	#model_862LIN.LIN_9 = segment_text[9]
+	#model_862LIN.LIN_10 = segment_text[10]
+	#model_862LIN.LIN_11= segment_text[11]
+	#model_862LIN.LIN_12= segment_text[12]
+	#model_862LIN.LIN_13= segment_text[13]
+	#model_862LIN.LIN_14= segment_text[14]
+	#model_862LIN.LIN_15= segment_text[15]
+	model_862LIN.prim = data_segments_master.objects.get(id=id_edi)
+	model_862LIN.save()
 	return
 
 ###############

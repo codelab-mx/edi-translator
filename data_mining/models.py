@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
 from validators import file_size
@@ -6,6 +7,7 @@ import os
 class edi_address(models.Model):
 	#edi_name = models.CharField(max_length= 50)
 	edi_file = models.FileField(upload_to='edi/', validators=[file_size])
+	upload_date = models.DateTimeField(auto_now_add = True)
 	flag = models.BooleanField(default= False)
 	def filename(self):
 		return os.path.basename(self.edi_file.name)
@@ -43,6 +45,18 @@ class data_segments_master(models.Model):
 	IEA_2 = models.CharField(blank = True, max_length = 50)
 
 
+class data_segments_BSS(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
+	BSS_1 = models.CharField(blank = True, max_length = 50)
+	BSS_2 = models.CharField(blank = True, max_length = 50)
+	BSS_3 = models.CharField(blank = True, max_length = 50)
+	BSS_4 = models.CharField(blank = True, max_length = 50)
+	BSS_5 = models.CharField(blank = True, max_length = 50)
+	BSS_6 = models.CharField(blank = True, max_length = 50)
+	BSS_7 = models.CharField(blank = True, max_length = 50)
+	BSS_8 = models.CharField(blank = True, max_length = 50)
+	BSS_11 = models.CharField(blank = True, max_length = 50)
+
 class data_segments_BFR(models.Model):
 	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
 	BFR_1 = models.CharField(blank = True, max_length = 50)
@@ -63,7 +77,26 @@ class data_segments_N(models.Model):
 	N_3 = models.CharField(blank = True, max_length = 50)
 	N_4 = models.CharField(blank = True, max_length = 50)
 
+
 class data_segments_830LIN(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
+	LIN_1 = models.CharField(blank = True, max_length = 50)
+	LIN_2 = models.CharField(blank = True, max_length = 50)
+	LIN_3 = models.CharField(blank = True, max_length = 50)
+	LIN_4 = models.CharField(blank = True, max_length = 50)
+	LIN_5 = models.CharField(blank = True, max_length = 50)
+	LIN_6 = models.CharField(blank = True, max_length = 50)
+	LIN_7 = models.CharField(blank = True, max_length = 50)
+	LIN_8 = models.CharField(blank = True, max_length = 50)
+	LIN_9 = models.CharField(blank = True, max_length = 50)
+	LIN_10 = models.CharField(blank = True, max_length = 50)
+	LIN_11 = models.CharField(blank = True, max_length = 50)
+	LIN_12 = models.CharField(blank = True, max_length = 50)
+	LIN_13 = models.CharField(blank = True, max_length = 50)
+	LIN_14 = models.CharField(blank = True, max_length = 50)
+	LIN_15 = models.CharField(blank = True, max_length = 50)
+
+class data_segments_862LIN(models.Model):
 	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
 	LIN_1 = models.CharField(blank = True, max_length = 50)
 	LIN_2 = models.CharField(blank = True, max_length = 50)
