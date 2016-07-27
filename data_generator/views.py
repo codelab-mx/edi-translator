@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template.loader import get_template
-from .forms import ASN_Heading, ASN_Shipment, ASN_Order
-from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order
+from .forms import ASN_Heading, ASN_Shipment, ASN_Order, ASN_Item
+from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order, Data_Generator_I_CLD
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from . import models
@@ -23,18 +23,21 @@ def ASN_New(request):
 		master.DTM02 = form.cleaned_data.get('BST03')
 		master.DTM03 = form.cleaned_data.get('BST04')
 		master.DTM04 = form.cleaned_data.get('DTM04')
-		master.DTM04 = "21"
+		master.DTM05 = "21"
 		master.save()
+		cont = 0
 		print master.id
-		return HttpResponseRedirect(('{}/shipment').format(master.id))
+		return HttpResponseRedirect(('{}/shipment/{}/').format(master.id, cont))
 	return render(request, 'EDI/generar/heading.html', {'form':form,})
 
-def ASN_New_Shipment(request, master_id):
+def ASN_New_Shipment(request, master_id , cont):
 	global master, hierarchial
+	cont_integer = int(cont)
+	cont_integer = cont_integer + 1
+
 	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
 	for master_id in master_files:
 		m_id = master.id
-	print m_id
 	hierarchial = Data_Generator_Hierarchial()
 	form = ASN_Shipment(request.POST or None)
 	if form.is_valid():
@@ -65,29 +68,23 @@ def ASN_New_Shipment(request, master_id):
 		master.REF01 = form.cleaned_data.get('REF01')
 		master.REF01 = form.cleaned_data.get('REF01')
 		master.save()
-		#master_id = master.id
 		hierarchial.save()
-		#save_hierarchial()
-		return HttpResponseRedirect(('/crear/856/{}/order').format(master.id))
-		#return HttpResponseRedirect(('./{}/order').format(master.id))
+		return HttpResponseRedirect(('/crear/856/{}/order/{}/').format(master.id, cont_integer))
 	return render(request, 'EDI/generar/shipment.html', {'form':form, 'master_files':master_files})
 
-def save_hierarchial():
-	global hierarchial, master_id
-	#hierarchial.PRIM = Data_Generator_Master.objects.get(id = master_id)
-	hierarchial.save()
 
-
-def ASN_New_Order(request, master_id):
+def ASN_New_Order(request, master_id, cont):
+	cont_integer = int(cont)
+	cont_integer = cont_integer + 1
 	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
 	for master_id in master_files:
 		m_id = master.id
-	print "order", m_id
 	hierarchial_order = Data_Generator_Hierarchial()
 	order = Data_Generator_Order()
 	form = ASN_Order(request.POST or None)
 	if form.is_valid():
 		hierarchial_order.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+		hierarchial_order.HL01 = str(cont_integer)
 		hierarchial_order.HL02 = "1"
 		hierarchial_order.HL03 = "O"
 		order.LIN02 = form.cleaned_data.get('LIN02')
@@ -98,5 +95,33 @@ def ASN_New_Order(request, master_id):
 		order.PRF01 = form.cleaned_data.get('PRF01')
 		order.save()
 		hierarchial_order.save()
-		return HttpResponseRedirect("./item")
+		return HttpResponseRedirect(("/crear/856/{}/item/{}/").format(master.id, cont_integer))
 	return render(request, 'EDI/generar/order.html', {'form':form,})
+
+def ASN_New_Item(request, master_id, cont):
+	cont_integer = int(cont)
+	cont_integer_mas = cont_integer + 1
+	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
+	for master_id in master_files:
+		m_id = master.id
+	hierarchial_order = Data_Generator_Hierarchial()
+	form = ASN_Item(request.POST or None)
+	item_cld = Data_Generator_I_CLD()
+	if form.is_valid():
+		hierarchial_order.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+		hierarchial_order.HL01 = str(cont_integer_mas)
+		hierarchial_order.HL02 = cont_integer
+		hierarchial_order.HL03 = "I"
+		hierarchial_order.CLD01 = form.cleaned_data.get('CLD01')
+		hierarchial_order.CLD02 = form.cleaned_data.get('CLD02')
+		hierarchial_order.CLD03 = form.cleaned_data.get('CLD03')
+		hierarchial_order.save()
+		if (request.POST.get('next')):
+			return HttpResponseRedirect('/')
+		if (request.POST.get('order')):
+			return HttpResponseRedirect(('/crear/856/{}/order/{}/').format(master.id, cont_integer_mas))
+		if (request.POST.get('item')):
+			return HttpResponseRedirect(('/crear/856/{}/item/{}/').format(master.id, cont_integer_mas))
+
+
+	return render(request, 'EDI/generar/item.html', {'form':form,})

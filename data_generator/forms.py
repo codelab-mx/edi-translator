@@ -1,6 +1,6 @@
 #aqui van las formas chingonas
 from django import forms
-from models import Data_Generator_Master, Data_Generator_Order
+from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_I_CLD, Data_Generator_Hierarchial
 from django.core.validators import RegexValidator
 
 class ASN_Heading(forms.ModelForm):
@@ -64,3 +64,12 @@ class ASN_Order(forms.ModelForm):
 	class Meta:
 		model = Data_Generator_Order
 		fields = ["LIN02", "LIN03", "SN102", "SN103", "SN104", "PRF01"]
+
+
+class ASN_Item(forms.ModelForm):
+	CLD01 = forms.CharField(label='Number of Loads', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	CLD02 = forms.CharField(label='Units Shipped', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	CLD03 = forms.CharField(label='Packaging Code', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	class Meta:
+		model = Data_Generator_Hierarchial
+		fields = ["CLD01", "CLD02", "CLD03"]

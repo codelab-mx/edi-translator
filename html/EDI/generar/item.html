@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Nuevo {{ grupo }}{% endblock %}
+{% block menu.usuarios %}active{% endblock %}
+{% block page.header %}Añadir {{ grupo }}{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">New Order Form</p>
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.username.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.CLD01.label }}
+	    		{{ form.CLD01 }}
+	    		{{ form.CLD01.errors }}
+	    		{{ form.CLD02.label }}
+	    		{{ form.CLD02 }}
+	    		{{ form.CLD02.errors }}
+	    		{{ form.CLD03.label }}
+	    		{{ form.CLD03 }}
+	    		{{ form.CLD03.errors }}
+	    		<span class="fa fa-user form-control-feedback"></span>
+	    	<div class="row">
+	    		<div class="col-xs-4">
+	    			<input type="submit" value="Save" name="next" />
+	    		</div>
+	    		<div class="col-xs-4">
+	    			<input type="submit" value="add order" name="order"  />
+	    		</div>
+	    		<div class="col-xs-4">
+	    			<input type="submit" value="add item" name="item"  />
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+</div>
+</div>
+{% endblock %}
