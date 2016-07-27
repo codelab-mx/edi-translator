@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Nuevo {{ grupo }}{% endblock %}
+{% block menu.usuarios %}active{% endblock %}
+{% block page.header %}Añadir {{ grupo }}{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">New Order Form</p>
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.username.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.HL01 }}
+	    		{{ form.HL02 }}
+	    		{{ form.HL03 }}
+	    		{{ form.HL01 }}
+	    		{{ form.LIN02.label }}
+	    		<select name="LIN02">
+	    			<option value="BP">Buyers Part Number</option>
+	    			<option value="CH">Country Of Origin Code</option>
+	    			<option value="EC">Engineering Change Level</option>
+	    			<option value="RC">Returnable Container Number</option>
+	    			<option value="VO">Vendors Order Number</option>
+	    			<option value="VP">Vendors Part Number</option>
+	    		</select>
+	    		{{ form.LIN03.label }}
+	    		{{ form.LIN03 }}
+	    		{{ form.SN102.label }}
+	    		{{ form.SN102 }}
+	    		{{ form.SN103.label }}
+	    		{{ form.SN103 }}
+	    		{{ form.SN104.label }}
+	    		{{ form.SN104 }}
+	    		{{ form.PRF01.label }}
+	    		{{ form.PRF01 }}
+	    		<span class="fa fa-user form-control-feedback"></span>
+	    		{{ form.errors }}
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Save</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+</div>
+</div>
+{% endblock %}

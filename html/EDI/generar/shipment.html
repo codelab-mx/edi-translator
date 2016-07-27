@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Nuevo {{ grupo }}{% endblock %}
+{% block menu.usuarios %}active{% endblock %}
+{% block page.header %}Añadir {{ grupo }}{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">New ASN Form</p>
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.username.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.HL01 }}
+	    		{{ form.HL02 }}
+	    		{{ form.HL03 }}
+	    		{{ form.HL01 }}
+	    		{{ form.MEA01 }}
+	    		{{ form.MEA02.label }}
+	    		<select name="MEA02">
+	    			<option value="G"> Gross Weight</option>
+	    			<option value="N">Actual Net Weight</option>
+	    			<option value="T">Tare Weight</option>
+	    		</select>
+	    		{{ form.MEA03.label }}
+	    		{{ form.MEA03 }}
+	    		{{ form.MEA04.label }}
+	    		{{ form.MEA04 }}
+	    		{{ form.TD101.label }}
+	    		{{ form.TD101 }}
+	    		{{ form.TD102.label }}
+	    		{{ form.TD102 }}
+	    		{{ form.TD501 }}
+	    		{{ form.TD502 }}
+	    		{{ form.TD503.label }}
+	    		{{ form.TD503 }}
+	    		{{ form.TD504.label }}
+	    		{{ form.TD504 }}
+	    		{{ form.TD507.label }}
+	    		<select name="TD507">
+	    			<option value=""> None</option>
+	    			<option value="OR">Origin</option>
+	    			<option value="PP">Pool Point</option>
+	    		</select>
+	    		{{ form.TD508.label }}
+	    		{{ form.TD508 }}
+	    		{{ form.TD301.label }}
+	    		{{ form.TD301 }}
+	    		{{ form.TD302.label }}
+	    		{{ form.TD302 }}
+	    		{{ form.TD303.label }}
+	    		{{ form.TD303 }}
+	    		{{ form.TD401.label }}
+	    		{{ form.TD401 }}
+	    		{{ form.TD402.label }}
+	    		{{ form.TD402 }}
+	    		{{ form.TD403.label }}
+	    		{{ form.TD403 }}
+	    		{{ form.TD404.label }}
+	    		{{ form.TD404 }}
+	    		{{ form.TD405.label }}
+	    		{{ form.TD405 }}
+	    		{{ form.REF01.label }}
+	    		<select name="REF01">
+	    			<option value="AO"> Appoinment</option>
+	    			<option value="AW">Air Waybill Number</option>
+	    			<option value="BM">Bill of Lading Number</option>
+	    			<option value="JA">Beginning Job Sequence Number</option>
+	    			<option value="JE">Ending Job Sequence Number</option>
+	    			<option value="MB">Master Bill of Lading</option>
+	    			<option value="PK">Packing List Number (Required)</option>
+	    		</select>
+	    		{{ form.REF02.label }}
+	    		{{ form.REF02 }}
+	    		<span class="fa fa-user form-control-feedback"></span>
+	    		{{ form.errors }}
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Save</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+</div>
+</div>
+{% endblock %}
