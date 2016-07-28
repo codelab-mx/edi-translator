@@ -3,84 +3,265 @@
 {% block menu.usuarios %}active{% endblock %}
 {% block page.header %}Añadir {{ grupo }}{% endblock %}
 {% block page.content %}
-<div class="col-xs-12">		
-<div class="register-box">
-	<div class="register-box-body">
-    	<p class="login-box-msg">New ASN Form</p>
-	    <form method="POST" action="">{% csrf_token %}
-	    	<div class="form-group has-feedback {% if form.username.errors %}has-error{% else %}{% endif %}">
-	    		{{ form.HL01 }}
-	    		{{ form.HL02 }}
-	    		{{ form.HL03 }}
-	    		{{ form.HL01 }}
-	    		{{ form.MEA01 }}
-	    		{{ form.MEA02.label }}
-	    		<select name="MEA02">
-	    			<option value="G"> Gross Weight</option>
-	    			<option value="N">Actual Net Weight</option>
-	    			<option value="T">Tare Weight</option>
-	    		</select>
-	    		{{ form.MEA03.label }}
-	    		{{ form.MEA03 }}
-	    		{{ form.MEA04.label }}
-	    		{{ form.MEA04 }}
-	    		{{ form.TD101.label }}
-	    		{{ form.TD101 }}
-	    		{{ form.TD102.label }}
-	    		{{ form.TD102 }}
-	    		{{ form.TD501 }}
-	    		{{ form.TD502 }}
-	    		{{ form.TD503.label }}
-	    		{{ form.TD503 }}
-	    		{{ form.TD504.label }}
-	    		{{ form.TD504 }}
-	    		{{ form.TD507.label }}
-	    		<select name="TD507">
-	    			<option value=""> None</option>
-	    			<option value="OR">Origin</option>
-	    			<option value="PP">Pool Point</option>
-	    		</select>
-	    		{{ form.TD508.label }}
-	    		{{ form.TD508 }}
-	    		{{ form.TD301.label }}
-	    		{{ form.TD301 }}
-	    		{{ form.TD302.label }}
-	    		{{ form.TD302 }}
-	    		{{ form.TD303.label }}
-	    		{{ form.TD303 }}
-	    		{{ form.TD401.label }}
-	    		{{ form.TD401 }}
-	    		{{ form.TD402.label }}
-	    		{{ form.TD402 }}
-	    		{{ form.TD403.label }}
-	    		{{ form.TD403 }}
-	    		{{ form.TD404.label }}
-	    		{{ form.TD404 }}
-	    		{{ form.TD405.label }}
-	    		{{ form.TD405 }}
-	    		{{ form.REF01.label }}
-	    		<select name="REF01">
-	    			<option value="AO"> Appoinment</option>
-	    			<option value="AW">Air Waybill Number</option>
-	    			<option value="BM">Bill of Lading Number</option>
-	    			<option value="JA">Beginning Job Sequence Number</option>
-	    			<option value="JE">Ending Job Sequence Number</option>
-	    			<option value="MB">Master Bill of Lading</option>
-	    			<option value="PK">Packing List Number (Required)</option>
-	    		</select>
-	    		{{ form.REF02.label }}
-	    		{{ form.REF02 }}
-	    		<span class="fa fa-user form-control-feedback"></span>
-	    		{{ form.errors }}
-	    	<div class="row">
+<div class="col-xs-12">
+
+<div class="box box-danger">
+	<div class="box-header with-border">
+		<h3 class="box-title">Basic Information</h3>
+	</div>
+	<div class="box-body">
+		<form method="POST" action="">{% csrf_token %}
+		{{ form.HL01 }}{{ form.HL02 }}{{ form.HL03 }}{{ form.HL01 }}{{ form.MEA01 }}{{ form.TD501 }}{{ form.TD502 }}
+        	<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.MEA02.label }}</label>
+                	<div class="input-group">
+                		<select name="MEA02">
+                			<option value="G"> Gross Weight</option>
+                			<option value="N">Actual Net Weight</option>
+                			<option value="T">Tare Weight</option>
+                		</select>
+	                </div>
+	                {{ form.MEA02.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.MEA03.label }}</label>
+                	<div class="input-group">
+                		{{ form.MEA03 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+
+	                {{ form.MEA03.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.MEA04.label }}</label>
+                	<div class="input-group">
+                		{{ form.MEA04 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.MEA04.errors }}
+                </div>
+            </div>
+            <div class="row margin-bottom">
+            	<div class="col-xs-4">
+                	<label>{{ form.TD101.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD101 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD101.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD102.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD102 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD102.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD503.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD503 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD503.errors }}
+                </div>
+            </div>
+            <div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.TD504.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD504 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD504.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD507.label }}</label>
+                	<div class="input-group">
+                		<select name="TD507">
+                			<option value=""> None</option>
+                			<option value="OR">Origin</option>
+                			<option value="PP">Pool Point</option>
+                		</select>
+                	</div>
+	                {{ form.TD507.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD508.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD508 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD508.errors }}
+                </div>
+			</div>
+			<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.TD301.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD301 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD301.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD302.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD302 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD302.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD303.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD303 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD303.errors }}
+            	</div>
+            </div>
+			<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.REF01.label }}</label>
+                	<div class="input-group">
+                		<select name="REF01">
+			    			<option value="AO"> Appoinment</option>
+			    			<option value="AW">Air Waybill Number</option>
+			    			<option value="BM">Bill of Lading Number</option>
+			    			<option value="JA">Beginning Job Sequence Number</option>
+			    			<option value="JE">Ending Job Sequence Number</option>
+			    			<option value="MB">Master Bill of Lading</option>
+			    			<option value="PK">Packing List Number (Required)</option>
+			    		</select>
+	                </div>
+	                {{ form.REF01.errors }}
+                </div>
+	    		<div class="col-xs-4">
+                	<label>{{ form.REF02.label }}</label>
+                	<div class="input-group">
+                		{{ form.REF02 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.REF02.errors }}
+                </div>
+                <div class="col-xs-8">
+                	<div class="form-group">
+                	<label></label>
+                	</div>
+            	</div>
+            </div>
+
+            <div class="box-group" id="accordion">
+            	<div class="panel box box-primary">
+            		<div class="box-header with-border">
+            			<h4 class="box-title">
+            				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            					Optional Additional Data
+            				</a>
+            			</h4>
+            		</div>
+            		<div id="collapseOne" class="panel-collapse collapse">
+            			<div class="box-body">
+            				<div class="row margin-bottom">
+            					<div class="col-xs-4">
+            						<label>{{ form.TD401.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD401 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-hashtag"></i>
+            							</div>
+            						</div>
+            						{{ form.TD401.errors }}
+            					</div>
+            					<div class="col-xs-4">
+            						<label>{{ form.TD402.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD402 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-hashtag"></i>
+            							</div>
+            						</div>
+            						{{ form.TD402.errors }}
+            					</div>
+            					<div class="col-xs-4">
+            						<label>{{ form.TD403.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD403 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-hashtag"></i>
+            							</div>
+            						</div>
+            						{{ form.TD403.errors }}
+            					</div>
+            				</div>
+            				<div class="row margin-bottom">
+            					<div class="col-xs-4">
+            						<label>{{ form.TD404.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD404 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-hashtag"></i>
+            							</div>
+            						</div>
+            						{{ form.TD404.errors }}
+            					</div>
+            					<div class="col-xs-4">
+            						<label>{{ form.TD405.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD405 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-hashtag"></i>
+            							</div>
+            						</div>
+            						{{ form.TD405.errors }}
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <div class="row">
 	    		<div class="col-xs-8"></div>
 	    		<div class="col-xs-4">
-	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Save</button>
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Save and continue</button>
 	    			<input type="hidden" name="next" value="{{ next }}" />
 	    		</div>
 	    	</div>
-	    </form>
-    </div>
+            </div>
+        </form>
+
 </div>
+          
+
+        
+   
 </div>
+
+              
+            
 {% endblock %}
