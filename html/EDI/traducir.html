@@ -5,23 +5,43 @@
 {% block page.header %}Traducir archivo EDI{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">		
-<div class="register-box">
-	<div class="register-box-body">
-	    <form id="upload"  enctype="multipart/form-data" method="post">{% csrf_token %}
-	    	<button type="submit" class="btn btn-primary btn-block btn-flat">Traducir</button>
-	    	<input id="upload" type="file" name="docfile"/>
-	    </form>
-
-
+<div class="register-box box-primary">
+	
+    
+    <div class="box box-primary">
+    	<div class="box-header">
+    		<h3 class="box-title">Cargar Archivo EDI</h3>
+    	</div>
+    	<div class="box-body">
+    		<form id="upload" enctype="multipart/form-data" method="post">
+    			{% csrf_token %}
+    			<div class="box-body">
+    				<input id="upload" type="file" name="docfile" class="inputfile inputfile-5" data-multiple-caption="{count} files selected" multiple />
+    			</div>
+    			<button type="submit" class="btn btn-primary btn-block btn-flat">Traducir</button>
+    		</form>
+    	</div>
+    	<!--
+        <div class="overlay ">
+        	<i class="fa fa-refresh fa-spin" style="color:#3c8dbc"></i>
+        </div>-->
     </div>
 </div>
 </div>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
+{% block aditional.css%}
+{% load staticfiles %}<link rel="stylesheet" type="text/css" href="{% static "css/component.css" %}"/>
+
 {% endblock %}
 {% block aditional.js %}
- <script>
- $(function () {
-var div = document.createElement('div');
-return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)
-});</script>
-<script type="text/javascript">$(function (){return 'FormData' in window;});</script>
+
 {% endblock %}

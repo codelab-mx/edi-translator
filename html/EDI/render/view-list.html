@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Visualizar EDI{% endblock %}
-{% block menu.edi %}active{% endblock %}
-{% block menu.edi.ver %}active{% endblock %}
+
+{% block menu.generar %}active{% endblock %}
+{% block menu.generar.ver %}active{% endblock %}
 {% block page.header %}Ver archivos EDI{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">
@@ -21,14 +22,14 @@
 		        {% for file in edi_files %}
 		        	<tr>
 		        	<td>{{ forloop.counter }}</td>
-              <td><a href="ver/{{ file.id }}">{{ file.filename }} </a></td>
-		        	<td>{{ file.upload_date|date:"d M Y" }}</td>
+              <td><a href="{{ file.id }}">{{ file.BST03 }}-{{ file.BST04 }}</a></td>
+		        	<td>{{ file.BST03|slice:"6:" }} - {{ file.BST03|slice:"4:-2" }} - {{ file.BST03|slice:":4" }}</td>
 		        	<td align="center">
 		        	{% if file.flag == 0 %} 
 		        		<a href="/edi/traducir/{{ file.id }}"><button type="button" class="btn btn-danger">Traducir</button></a>
 		        	{% else %}
 		        		<div class="btn-group">
-		        			<a href="ver/{{ file.id }}"  class="btn btn-primary btn-flat">Ver</a>
+		        			<a href="{{ file.id }}"  class="btn btn-primary btn-flat">Ver</a>
 		        			<button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
@@ -50,9 +51,9 @@
     {% else %}
     <div class="register-box">
     	<div class="register-box-body">
-    		<p class="login-box-msg">No se encontraron archivos.<br>¡Sube tu primer archivo!</p>
+    		<p class="login-box-msg">No se encontraron archivos.<br>¡Crea tu primer archivo!</p>
     <div class="input-group-btn">
-      <a href="/edi/traducir/"><button type="button" class="btn btn-block btn-primary btn-flat">Subir Archivo</button></a>
+      <a href="/crear/856/"><button type="button" class="btn btn-block btn-primary btn-flat">Crear Archivo</button></a>
     </div>
   </div>
 </div>

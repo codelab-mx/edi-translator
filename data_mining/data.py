@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 
 """
 Empresa: Codelab
 Proyecto: Edi-Transalator
@@ -23,18 +22,15 @@ django.setup()
 ###############################
 # Importar los modelos a usar #
 ###############################
-from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, edi_address
-
+from data_mining.models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, data_segments_BSS, data_segments_862LIN, data_segments_ATH, data_segments_SHP
+from models import edi_address
 ###########################################
 # Obtiene la direccion del archivo a leer #
 ###########################################
 def get_file_address():
-	global path, files, id_edi
-	#object_read_file = edi_address.objects.values_list('id', 'edi_file').order_by('-id')[0]
-	#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	#path = os.path.join(BASE_DIR, "media/{}".format(object_read_file[1]))
-	id_edi = 2
-	path = "/home/zardain/Documents/Proyectos/edi-translator/media/edi/27185"
+	global path, files, id_edi, address
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	path = os.path.join(BASE_DIR, "media/{}".format(address))
 	files = glob.glob(path)
 	model_ini()
 
@@ -65,6 +61,36 @@ def segment_lines():
 		flag = True
 	if flag == True:
 		flow_830()
+	elif segment_text[1] == "SS":
+		flag = False
+	if flag == False:
+		flow_862()
+
+
+#############################
+# Flujo para un archivo 862 #
+#############################
+def flow_862():
+	global cont, name, cont_FST
+	lista = {'GS':GS,
+			 'ST':ST,
+			 'BSS':BSS,
+			 'N1':N,
+			 'LIN':LIN_862,
+			 'UIT':UIT,
+			 'FST':FST,
+			 'SHP':SHP,
+			 'CTT':CTT,
+			 'SE':SE,
+			 'GE':GE,
+			 'IEA':IEA, 
+			}
+	strcont = segment_text[0]
+	trigger = lista[strcont]
+	trigger()
+	return
+
+		
 
 #############################
 # Flujo para un archivo 830 #
@@ -74,18 +100,23 @@ def flow_830():
 	lista = {'GS':GS,
 			 'ST':ST,
 			 'BFR':BFR,
+			 'DTM':DTM,
 			 'N1':N,
-			 'LIN':LIN,
+			 'N3':N3,
+			 'N4':N4,
+			 'LIN':LIN_830,
+			 'PID':PID,
 			 'UIT':UIT,
+			 'REF':REF,
+			 'PER':PER,
+			 'ATH':ATH,
+			 'SDP':SDP,
 			 'FST':FST,
 			 'SHP':SHP,
 			 'CTT':CTT,
 			 'SE':SE,
 			 'GE':GE,
-			 'IEA':IEA,
-
-
-			 
+			 'IEA':IEA, 
 			}
 	strcont = segment_text[0]
 	trigger = lista[strcont]
@@ -96,10 +127,13 @@ def flow_830():
 # inicializacion de los modelos globales #
 ##########################################
 def model_ini():
-	global model_master, model_BFR, model_830LIN
+	global model_master, model_BFR, model_830LIN, model_BSS, model_862LIN, model_ATH
 	model_master = data_segments_master()
 	model_BFR = data_segments_BFR()
+	model_BSS = data_segments_BSS()
 	model_830LIN = data_segments_830LIN()
+	model_862LIN = data_segments_862LIN()
+	model_ATH = data_segments_ATH()
 	read_file()
 
 #############################
@@ -130,13 +164,89 @@ def ST():
 	model_master.save()
 	return
 
+##########################
+#  DATE TIME REFERENCE   #
+##########################
+def DTM():
+	global segment_text, model_1
+	model_master.DTM_1 = segment_text[1]
+	model_master.DTM_2 = segment_text[2]
+	model_master.DTM_3 = segment_text[3]
+	model_master.save()
+	return
+
+############################
+#  SHIP/DELIVERY PATTERN   #
+############################
+def SDP():
+	global segment_text, model_1
+	model_master.SPD_1 = segment_text[1]
+	model_master.SPD_2 = segment_text[2]
+	model_master.save()
+	return
+
+#######################
+#  REFERENCE NUMBERS  #
+#######################
+
+def REF():
+	global segment_text, model_1
+	model_master.REF_1 = segment_text[1]
+	model_master.REF_2 = segment_text[2]
+	model_master.save()
+	return
+
+########################
+#  ADMINISTRATIVE COM  #
+########################
+
+def PER():
+	global segment_text, model_1
+	model_master.PER_1 = segment_text[1]
+	model_master.PER_2 = segment_text[2]
+	model_master.PER_3 = segment_text[3]
+	model_master.PER_4 = segment_text[4]
+	model_master.save()
+	return
+
+
+#######################
+#  Beginning Segment  #
+#######################
+def BSS():
+	global segment_text, model_BSS, id_edi
+	try:
+		model_BSS.BSS_1 = segment_text[1]
+		model_BSS.BSS_2 = segment_text[2]
+		model_BSS.BSS_3 = segment_text[3]
+		model_BSS.BSS_4 = segment_text[4]
+		model_BSS.BSS_5 = segment_text[5]
+		model_BSS.BSS_6 = segment_text[6]
+		model_BSS.BSS_7 = segment_text[7]
+		model_BSS.BSS_8 = segment_text[8]
+		model_BSS.BSS_11 = segment_text[11]
+		model_BSS.prim = data_segments_master.objects.get(id=id_edi)
+		model_BSS.save()
+
+	except:
+		model_BSS.BSS_1 = segment_text[1]
+		model_BSS.BSS_2 = segment_text[2]
+		model_BSS.BSS_3 = segment_text[3]
+		model_BSS.BSS_4 = segment_text[4]
+		model_BSS.BSS_5 = segment_text[5]
+		model_BSS.BSS_6 = segment_text[6]
+		model_BSS.BSS_7 = segment_text[7]
+		model_BSS.BSS_8 = segment_text[8]
+		model_BSS.prim = data_segments_master.objects.get(id=id_edi)
+		model_BSS.save()
+	return
+
 #######################
 #  Beginning Segment  #
 #######################
 def BFR():
 	global segment_text, model_BFR, id_edi
 	try:
-
 		model_BFR.BFR_1 = segment_text[1]
 		model_BFR.BFR_2 = segment_text[2]
 		model_BFR.BFR_3 = segment_text[3]
@@ -162,13 +272,13 @@ def BFR():
 		model_BFR.save()
 	return
 
+
 ##################
 #  Name Segment  #
 ##################
 def N():
 	global segment_text, primary_key, id_edi
 	model_N1 = data_segments_N()
-	#primary = edi_address.objects.get(GS_6=primary_key)
 	primary = data_segments_master.objects.get(id=id_edi)
 	model_N1.prim = primary
 	model_N1.N_0 = segment_text[0]
@@ -179,11 +289,55 @@ def N():
 	model_N1.save()
 	return
 
+##################
+#  Name3 Segment  #
+##################
+def N3():
+	global segment_text, primary_key, id_edi
+	#model_N1 = data_segments_N()
+	#primary = data_segments_master.objects.get(id=id_edi)
+	#model_N1.N3_0 = segment_text[0]
+	#model_N1.N3_1 = segment_text[1]
+	#model_N1.save()
+	return
+
+##################
+#  Name4 Segment  #
+##################
+def N4():
+	global segment_text, primary_key, id_edi
+	#model_N1 = data_segments_N()
+	#primary = data_segments_master.objects.get(id=id_edi)
+	#model_N1.N4_0 = segment_text[0]
+	#model_N1.N4_1 = segment_text[1]
+	#model_N1.N4_2 = segment_text[2]
+	#model_N1.N4_3 = segment_text[3]
+	#model_N1.save()
+	return
+
+############################
+#  Resource Authorization  #
+############################
+
+def ATH():
+	global segment_text, primary_key, id_edi
+	model_ATH = data_segments_ATH()
+	primary = data_segments_master.objects.get(id=id_edi)
+	model_ATH.prim = primary
+	model_ATH.ATH_0 = segment_text[0]
+	model_ATH.ATH_1 = segment_text[1]
+	model_ATH.ATH_2 = segment_text[2]
+	model_ATH.ATH_3 = segment_text[3]
+	model_ATH.ATH_4 = segment_text[4]
+	model_ATH.ATH_4 = segment_text[5]
+	model_ATH.save()
+	return
+
 #####################
 # Forecast Schedule #
 #####################
 def FST():
-	global segment_text, primary_key, id_edi
+	global segment_text, primary_key, id_edi, RLIN_3, RLIN_15
 	model_FST = data_segments_FST()
 	primary = data_segments_master.objects.get(id=id_edi)
 	model_FST.prim = primary
@@ -192,8 +346,8 @@ def FST():
 	model_FST.FST_2 = segment_text[2]
 	model_FST.FST_3 = segment_text[3]
 	model_FST.FST_4 = segment_text[4]
-	#model_FST.FST_5 = segment_text[5]
-	#model_FST.FST_6 = segment_text[6]
+	model_FST.FST_5 = RLIN_3
+	model_FST.FST_6 = RLIN_15
 	#model_FST.FST_7 = segment_text[7]
 	#model_FST.FST_8 = segment_text[8]
 	#model_FST.FST_9 = segment_text[9]
@@ -204,25 +358,78 @@ def FST():
 #######################
 # Item Identification #
 #######################
-def LIN():
-	global model_830LIN, id_edi
-	model_830LIN.LIN_1 = segment_text[1]
-	model_830LIN.LIN_2 = segment_text[2]
-	model_830LIN.LIN_3 = segment_text[3]
-	model_830LIN.LIN_4 = segment_text[4]
-	model_830LIN.LIN_5 = segment_text[5]
-	model_830LIN.LIN_6 = segment_text[6]
-	model_830LIN.LIN_7 = segment_text[7]
-	model_830LIN.LIN_8 = segment_text[8]
-	model_830LIN.LIN_9 = segment_text[9]
-	model_830LIN.LIN_10 = segment_text[10]
-	model_830LIN.LIN_11= segment_text[11]
-	model_830LIN.LIN_12= segment_text[12]
-	model_830LIN.LIN_13= segment_text[13]
-	model_830LIN.LIN_14= segment_text[14]
-	model_830LIN.LIN_15= segment_text[15]
-	model_830LIN.prim = data_segments_master.objects.get(id=id_edi)
-	model_830LIN.save()
+def LIN_830():
+	global  id_edi, RLIN_3, RLIN_15
+	model_830LIN = data_segments_830LIN()
+	try:
+
+		model_830LIN.LIN_1 = segment_text[1]
+		model_830LIN.LIN_2 = segment_text[2]
+		model_830LIN.LIN_3 = segment_text[3]
+		model_830LIN.LIN_4 = segment_text[4]
+		model_830LIN.LIN_5 = segment_text[5]
+		model_830LIN.LIN_6 = segment_text[6]
+		model_830LIN.LIN_7 = segment_text[7]
+		model_830LIN.LIN_8 = segment_text[8]
+		model_830LIN.LIN_9 = segment_text[9]
+		model_830LIN.LIN_10 = segment_text[10]
+		model_830LIN.LIN_11= segment_text[11]
+		model_830LIN.LIN_12= segment_text[12]
+		model_830LIN.LIN_13= segment_text[13]
+		model_830LIN.LIN_14= segment_text[14]
+		model_830LIN.LIN_15= segment_text[15]
+		RLIN_3 = segment_text[3]
+		RLIN_15 = segment_text[15]
+		model_830LIN.prim = data_segments_master.objects.get(id=id_edi)
+		model_830LIN.save()
+	except:
+		model_830LIN.LIN_1 = segment_text[1]
+		model_830LIN.LIN_2 = segment_text[2]
+		model_830LIN.LIN_3 = segment_text[3]
+		model_830LIN.LIN_4 = segment_text[4]
+		model_830LIN.LIN_5 = segment_text[5]
+		model_830LIN.LIN_6 = segment_text[6]
+		model_830LIN.LIN_7 = segment_text[7]
+		RLIN_3 = segment_text[3]
+		model_830LIN.prim = data_segments_master.objects.get(id=id_edi)
+		model_830LIN.save()
+
+	return
+
+#######################
+# Item Identification #
+#######################
+def LIN_862():
+	global model_862LIN, id_edi, RLIN_3, RLIN_15
+	model_862LIN.LIN_1 = segment_text[1]
+	model_862LIN.LIN_2 = segment_text[2]
+	model_862LIN.LIN_3 = segment_text[3]
+	model_862LIN.LIN_4 = segment_text[4]
+	model_862LIN.LIN_5 = segment_text[5]
+	model_862LIN.LIN_6 = segment_text[6]
+	model_862LIN.LIN_7 = segment_text[7]
+	#model_862LIN.LIN_8 = segment_text[8]
+	#model_862LIN.LIN_9 = segment_text[9]
+	#model_862LIN.LIN_10 = segment_text[10]
+	#model_862LIN.LIN_11= segment_text[11]
+	#model_862LIN.LIN_12= segment_text[12]
+	#model_862LIN.LIN_13= segment_text[13]
+	#model_862LIN.LIN_14= segment_text[14]
+	#model_862LIN.LIN_15= segment_text[15]
+	RLIN_3 = segment_text[3]
+	RLIN_15 = ""
+	model_862LIN.prim = data_segments_master.objects.get(id=id_edi)
+	model_862LIN.save()
+	return
+
+
+
+#############################
+#  TRANSACTION SET HEADER   #
+#############################
+def PID():
+	global segment_text, model_1, RLIN_15
+	RLIN_15 = segment_text[5]
 	return
 
 ###############
@@ -230,7 +437,6 @@ def LIN():
 ###############
 def UIT():
 	try:
-
 		model_master.UIT_1 = segment_text[1]
 		model_master.UIT_2 = segment_text[2]
 		model_master.UIT_3 = segment_text[3]
@@ -244,22 +450,26 @@ def UIT():
 # Shipped/Received Information #
 ################################
 def SHP():
-	global model_master
+	global id_edi
+	model_SHP = data_segments_SHP()
+	primary = data_segments_master.objects.get(id=id_edi)
 	try:
-		model_master.SHP_1 = segment_text[1]
-		model_master.SHP_2 = segment_text[2]
-		model_master.SHP_3 = segment_text[3]
-		model_master.SHP_4 = segment_text[4]
-		model_master.SHP_4 = segment_text[5]
-		model_master.SHP_4 = segment_text[6]
-		model_master.SHP_4 = segment_text[7]
-		model_master.save()
+		model_SHP.prim = data_segments_master.objects.get(id=id_edi)
+		model_SHP.SHP_1 = segment_text[1]
+		model_SHP.SHP_2 = segment_text[2]
+		model_SHP.SHP_3 = segment_text[3]
+		model_SHP.SHP_4 = segment_text[4]
+		model_SHP.SHP_5 = segment_text[5]
+		model_SHP.SHP_6 = segment_text[6]
+		model_SHP.SHP_7 = segment_text[7]
+		model_SHP.save()
 	except:
-		model_master.SHP_1 = segment_text[1]
-		model_master.SHP_2 = segment_text[2]
-		model_master.SHP_3 = segment_text[3]
-		model_master.SHP_4 = segment_text[4]
-		model_master.save()
+		model_SHP.prim = data_segments_master.objects.get(id=id_edi)
+		model_SHP.SHP_1 = segment_text[1]
+		model_SHP.SHP_2 = segment_text[2]
+		model_SHP.SHP_3 = segment_text[3]
+		model_SHP.SHP_4 = segment_text[4]
+		model_SHP.save()
 	return
 
 #######################
@@ -268,7 +478,6 @@ def SHP():
 def CTT():
 	global model_master
 	try:
-
 		model_master.CT_1 = segment_text[1]
 		model_master.CT_2 = segment_text[2]
 		model_master.save()
@@ -301,6 +510,16 @@ def IEA():
 	model_master.save()
 	return
 
+def init_data(id_edi_local, address_local, flag_local):
+	global flag, name, cont, cont_FST, id_edi, address, flag
+	cont = 1
+	flag = False
+	name = 0
+	cont_FST = 0
+	id_edi = id_edi_local
+	address = str(address_local)
+	flag = flag_local
+	get_file_address()
 
 if __name__ == '__main__':
 	global flag, name, cont, cont_FST

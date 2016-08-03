@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+{% block title %}Nuevo {{ grupo }}{% endblock %}
+{% block menu.usuarios %}active{% endblock %}
+{% block page.header %}Información de Envío{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">
+<div class="box box-danger">
+	<div class="box-header with-border">
+		<h3 class="box-title">Shipment Information</h3>
+	</div>
+	<div class="box-body">
+		<form method="POST" action="">{% csrf_token %}
+		{{ form.HL01 }}{{ form.HL02 }}{{ form.HL03 }}{{ form.HL01 }}{{ form.MEA01 }}{{ form.TD501 }}{{ form.TD502 }}
+        	<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.MEA02.label }}</label>
+                	<div class="form-group">
+                		<select name="MEA02" class="form-control select2" style="width:100%;">
+                			<option value="G"> Gross Weight</option>
+                			<option value="N">Actual Net Weight</option>
+                			<option value="T">Tare Weight</option>
+                		</select>
+	                </div>
+	                {{ form.MEA02.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.MEA03.label }}</label>
+                	<div class="input-group">
+                		{{ form.MEA03 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-calculator"></i>
+                		</div>
+	                </div>
+
+	                {{ form.MEA03.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.MEA04.label }}</label>
+                	<div class="input-group">
+                		{{ form.MEA04 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-balance-scale"></i>
+                		</div>
+	                </div>
+	                {{ form.MEA04.errors }}
+                </div>
+            </div>
+            <div class="row margin-bottom">
+            	<div class="col-xs-4">
+                	<label>{{ form.TD101.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD101 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-barcode"></i>
+                		</div>
+	                </div>
+	                {{ form.TD101.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD102.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD102 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-cubes"></i>
+                		</div>
+	                </div>
+	                {{ form.TD102.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD503.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD503 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-keyboard-o"></i>
+                		</div>
+	                </div>
+	                {{ form.TD503.errors }}
+                </div>
+            </div>
+            <div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.TD504.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD504 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-truck"></i>
+                		</div>
+	                </div>
+	                {{ form.TD504.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD507.label }}</label>
+                	<div class="form-group">
+                		<select name="TD507" class="form-control select2" style="width:100%;">
+                			<option value=""> None</option>
+                			<option value="OR">Origin</option>
+                			<option value="PP">Pool Point</option>
+                		</select>
+                	</div>
+	                {{ form.TD507.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD508.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD508 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-compass"></i>
+                		</div>
+	                </div>
+	                {{ form.TD508.errors }}
+                </div>
+			</div>
+			<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.TD301.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD301 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-share-alt"></i>
+                		</div>
+	                </div>
+	                {{ form.TD301.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD302.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD302 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-share-alt-square"></i>
+                		</div>
+	                </div>
+	                {{ form.TD302.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.TD303.label }}</label>
+                	<div class="input-group">
+                		{{ form.TD303 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.TD303.errors }}
+            	</div>
+            </div>
+			<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.REF01.label }}</label>
+                	<div class="form-group">
+                		<select name="REF01" class="form-control select2" style="width:100%;">
+			    			<option value="AO"> Appoinment</option>
+			    			<option value="AW">Air Waybill Number</option>
+			    			<option value="BM">Bill of Lading Number</option>
+			    			<option value="JA">Beginning Job Sequence Number</option>
+			    			<option value="JE">Ending Job Sequence Number</option>
+			    			<option value="MB">Master Bill of Lading</option>
+			    			<option value="PK">Packing List Number (Required)</option>
+			    		</select>
+	                </div>
+	                {{ form.REF01.errors }}
+                </div>
+	    		<div class="col-xs-4">
+                	<label>{{ form.REF02.label }}</label>
+                	<div class="input-group">
+                		{{ form.REF02 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-newspaper-o"></i>
+                		</div>
+	                </div>
+	                {{ form.REF02.errors }}
+                </div>
+                <div class="col-xs-8">
+                	<div class="form-group">
+                	<label></label>
+                	</div>
+            	</div>
+            </div>
+            <div class="row margin-bottom">
+                <div class="col-xs-4">
+                    <label>Ship to:</label>
+                    <div class="form-group">
+                        <select name="REF01" class="form-control select2" style="width:100%;">
+                            <option value="AO"> </option>
+                            <option value="AW">Air Waybill Number</option>
+                            <option value="BM">Bill of Lading Number</option>
+                            <option value="JA">Beginning Job Sequence Number</option>
+                            <option value="JE">Ending Job Sequence Number</option>
+                            <option value="MB">Master Bill of Lading</option>
+                            <option value="PK">Packing List Number (Required)</option>
+                        </select>
+                    </div>
+                    {{ form.REF01.errors }}
+                </div>
+                <div class="col-xs-4">
+                    <label>Identification code</label>
+                    <div class="input-group">
+                        {{ form.REF02 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-newspaper-o"></i>
+                        </div>
+                    </div>
+                    {{ form.REF02.errors }}
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                    <label></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-group" id="accordion">
+            	<div class="panel box box-primary">
+            		<div class="box-header with-border">
+            			<h4 class="box-title">
+            				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            					Optional Additional Data <small>Special Handling Shipment</small>
+            				</a>
+            			</h4>
+            		</div>
+            		<div id="collapseOne" class="panel-collapse collapse">
+            			<div class="box-body">
+            				<div class="row margin-bottom">
+            					<div class="col-xs-4">
+            						<label>{{ form.TD401.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD401 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-qrcode"></i>
+            							</div>
+            						</div>
+            						{{ form.TD401.errors }}
+            					</div>
+            					<div class="col-xs-4">
+            						<label>{{ form.TD402.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD402 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-exclamation-triangle"></i>
+            							</div>
+            						</div>
+            						{{ form.TD402.errors }}
+            					</div>
+            					<div class="col-xs-4">
+            						<label>{{ form.TD403.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD403 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-barcode"></i>
+            							</div>
+            						</div>
+            						{{ form.TD403.errors }}
+            					</div>
+            				</div>
+            				<div class="row margin-bottom">
+            					<div class="col-xs-4">
+            						<label>{{ form.TD404.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD404 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-info"></i>
+            							</div>
+            						</div>
+            						{{ form.TD404.errors }}
+            					</div>
+            					<div class="col-xs-4">
+            						<label>{{ form.TD405.label }}</label>
+            						<div class="input-group">
+            							{{ form.TD405 }}
+            							<div class="input-group-addon">
+            								<i class="fa fa-check-square-o"></i>
+            							</div>
+            						</div>
+            						{{ form.TD405.errors }}
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Save and continue</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+        </form>
+    </div>
+</div>   
+</div> 
+{% endblock %}
+
+{% block aditional.js %}
+<script src="/static/js/plugins/select2/select2.full.min.js"></script>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+
+    //Datemask dd/mm/yyyy
+    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+    //Datemask2 mm/dd/yyyy
+    $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+    //Money Euro
+    $("[data-mask]").inputmask();
+
+    //Date range picker
+    $('#reservation').daterangepicker();
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+        {
+          ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          },
+          startDate: moment().subtract(29, 'days'),
+          endDate: moment()
+        },
+        function (start, end) {
+          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+    );
+
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass: 'iradio_minimal-red'
+    });
+    //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    });
+
+    //Colorpicker
+    $(".my-colorpicker1").colorpicker();
+    //color picker with addon
+    $(".my-colorpicker2").colorpicker();
+
+    //Timepicker
+    $(".timepicker").timepicker({
+      showInputs: false
+    });
+  });
+</script>
+{% endblock %}

@@ -39,15 +39,24 @@
         <ul class="sidebar-menu">
           <li class="{% block menu.inicio %}{% endblock %}"><a href="/"><i class="fa fa-dashboard"></i><span> Inicio</span></a></li>
 
-       <li class="treeview {% block menu.edi %}{% endblock %}">
+        <li class="treeview {% block menu.edi %}{% endblock %}">
           <a href="#">
-            <i class="fa fa-clone"></i> <span>EDI</span>
+            <i class="fa fa-clone"></i> <span>Traduccion</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="{% block menu.edi.ver %}{% endblock %}"><a href="/edi/"><i class="fa fa-table"></i> Ver EDI</a></li>
-            <li class="{% block menu.edi.generar %}{% endblock %}"><a href="/edi/generar/"><i class="fa fa-edit"></i> Generar EDI</a></li>
-            <li class="{% block menu.edi.traducir %}{% endblock %}"><a href="/edi/traducir/"><i class="fa fa-language"></i> Traducir EDI</a></li>
+            <li class="{% block menu.edi.ver %}{% endblock %}"><a href="/edi/"><i class="fa fa-table"></i> Ver Traducciones</a></li>
+            <li class="{% block menu.edi.traducir %}{% endblock %}"><a href="/edi/traducir/"><i class="fa fa-language"></i> Traducir Nuevo Archivo</a></li>
+          </ul>
+        </li>
+        <li class="treeview {% block menu.generar %}{% endblock %}">
+          <a href="#">
+            <i class="fa fa-clone"></i> <span>Generar</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{% block menu.generar.ver %}{% endblock %}"><a href="/crear/ver"><i class="fa fa-table"></i> Ver Archivos Generados</a></li>
+            <li class="{% block menu.generar.nuevo %}{% endblock %}"><a href="/crear/856"><i class="fa fa-language"></i> Generar Nuevo Archivo</a></li>
           </ul>
         </li>
         {% if perms.auth.add_user %}
@@ -59,26 +68,31 @@
         </ul>
       </section>
     </aside>
+    
     <div class="content-wrapper">
+      {% block extra.content %}
       <section class="content-header">
         <h1>{% block page.header %}Home{% endblock %}</h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+
           <li>Breadcrmb</li>
           <li class="active">Here</li>
         </ol>
       </section>
-      <section class="content">
+      {% block message %}{% endblock %}
+      <section class="{% block section.class %}content{% endblock %}">
         <div class="row">
           {% block page.content %}
           {% endblock %}
         </div>
       </section>
+      {% endblock %}
+    <div class="clearfix"></div>
     </div>
-    <footer class="main-footer">
+    <footer class="main-footer no-print">
       <div class="pull-right hidden-xs">Todos los derechos Reservados.</div>
       <strong>Copyright &copy; Böllhoff {% now "Y" %} |</strong> <a href="http://consulta-its.com" target="_blank">consulta-its</a>.
     </footer>
-    <div class="control-sidebar-bg"></div>
   </div>
 {% endblock %}

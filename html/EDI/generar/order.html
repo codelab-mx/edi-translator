@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}Nuevo {{ grupo }}{% endblock %}
+{% block menu.usuarios %}active{% endblock %}
+{% block page.header %}Información de la Orden{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">
+<div class="box box-danger">
+	<div class="box-header with-border">
+		<h3 class="box-title">Order Information</h3>
+	</div>
+	<div class="box-body">
+		<form method="POST" action="">{% csrf_token %}
+		{{ form.HL01 }}{{ form.HL02 }}{{ form.HL03 }}{{ form.HL01 }}
+        	<div class="row margin-bottom">
+                <div class="col-xs-4">
+                	<label>{{ form.LIN02.label }}</label>
+                	<div class="form-group">
+                		<select name="LIN02" class="form-control select2" style="width:100%;">
+                			<option value="BP">Buyers Part Number</option>
+			    			<option value="CH">Country Of Origin Code</option>
+			    			<option value="EC">Engineering Change Level</option>
+			    			<option value="RC">Returnable Container Number</option>
+			    			<option value="VO">Vendors Order Number</option>
+			    			<option value="VP">Vendors Part Number</option>
+                		</select>
+	                </div>
+	                {{ form.LIN02.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.LIN03.label }}</label>
+                	<div class="input-group">
+                		{{ form.LIN03 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-calculator"></i>
+                		</div>
+	                </div>
+	                {{ form.LIN03.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.SN102.label }}</label>
+                	<div class="input-group">
+                		{{ form.SN102 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-hashtag"></i>
+                		</div>
+	                </div>
+	                {{ form.SN102.errors }}
+                </div>
+            </div>
+            <div class="row margin-bottom">
+            	<div class="col-xs-4">
+                	<label>{{ form.SN103.label }}</label>
+                	<div class="input-group">
+                		{{ form.SN103 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-barcode"></i>
+                		</div>
+	                </div>
+	                {{ form.SN103.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.SN104.label }}</label>
+                	<div class="input-group">
+                		{{ form.SN104 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-cubes"></i>
+                		</div>
+	                </div>
+	                {{ form.SN104.errors }}
+                </div>
+                <div class="col-xs-4">
+                	<label>{{ form.PRF01.label }}</label>
+                	<div class="input-group">
+                		{{ form.PRF01 }}
+                		<div class="input-group-addon">
+                			<i class="fa fa-bars"></i>
+                		</div>
+	                </div>
+	                {{ form.PRF01.errors }}
+                </div>
+            </div>
+            <div class="row margin-bottom">
+                <div class="col-xs-4">
+                    <label>Reference ID</label>
+                    <div class="input-group">
+                        <input class="form-control" id="id_SN104" name="reference_id" type="text">
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8">
+                </div>
+            </div>
+            <div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Save and continue</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+        </form>
+    </div>
+</div>   
+</div> 
+{% endblock %}
+
+{% block aditional.js %}
+<script src="/static/js/plugins/select2/select2.full.min.js"></script>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+
+    //Datemask dd/mm/yyyy
+    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+    //Datemask2 mm/dd/yyyy
+    $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+    //Money Euro
+    $("[data-mask]").inputmask();
+
+    //Date range picker
+    $('#reservation').daterangepicker();
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+        {
+          ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          },
+          startDate: moment().subtract(29, 'days'),
+          endDate: moment()
+        },
+        function (start, end) {
+          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+    );
+
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass: 'iradio_minimal-red'
+    });
+    //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    });
+
+    //Colorpicker
+    $(".my-colorpicker1").colorpicker();
+    //color picker with addon
+    $(".my-colorpicker2").colorpicker();
+
+    //Timepicker
+    $(".timepicker").timepicker({
+      showInputs: false
+    });
+  });
+</script>
+{% endblock %}

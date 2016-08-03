@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Visualizar EDI{% endblock %}
+{% block menu.edi %}active{% endblock %}
+{% block menu.edi.ver %}active{% endblock %}
+
+
+{% block extra.content %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Archivo <small>#{{ edi.filename }}</small></h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/edi">EDI</a></li>
+        <li class="active">{{ edi.filename }}</li>
+      </ol>
+    </section>
+
+
+<section class="invoice">
+        <div class="row">
+  <div class="col-xs-12">
+    <h2 class="page-header">
+      <img src="/static/img/logo.png" alt="Home" style="max-width: 100%;">
+      <medium class="pull-right">{% if master.GS_1 == 'PS' %}830 - Planning Schedule {% elif master.GS_1 == 'SS' %}862 - Shipping Schedule{% endif %}</medium>
+    </h2>
+  </div>
+</div>
+{% if edi %}
+	<div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+          From
+          <address>
+            <strong>{{ master.GS_2 }}</strong><br>
+            795 Folsom Ave, Suite 600<br>
+            San Francisco, CA 94107<br>
+            Phone: (804) 123-5432<br>
+            Email: info@codelab.mx
+          </address>
+        </div>
+        <div class="col-sm-4 invoice-col">
+          To
+          <address>
+            <strong>{{ master.GS_3 }}</strong><br>
+            795 Folsom Ave, Suite 600<br>
+            San Francisco, CA 94107<br>
+            Phone: (555) 539-1037<br>
+            Email: john.doe@bollhoff.com
+          </address>
+        </div>
+        <div class="col-sm-4 invoice-col">
+          <b>Control Number:</b> #{{ master.IEA_2 }}<br>
+          <br>
+          <b>Date:</b> {{ date_master|date }}<br>
+          <b>Creation Time:</b> {{ master.GS_5|slice:":2" }}:{{ master.GS_5|slice:"2:" }}<br>
+          <b>Magna Version:</b> {{ master.GS_8 }}
+        </div>
+      </div>
+
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+        	{% if fst %}
+        
+        		<table class="table table-striped">
+        		<thead>
+        			<tr>
+        				<th>Quantity</th>
+        				<th>Date</th>
+        				<th>Forecast Interval</th>
+        				<th>Part Number</th>
+        				<th>Material</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+				{% for forecast in fst %}
+	        		<tr>
+	        			<td>{{ forecast.FST_1 }}</td>
+	        			<td>{{ forecast.FST_4|slice:":4" }}-{{ forecast.FST_4|slice:"4:-2" }}-{{ forecast.FST_4|slice:"6:" }}</td>
+	        			<td>{% if forecast.FST_3 == 'W' %}Weekly{% elif forecast.FST_3 == 'D' %}Discrete{% elif forecast.FST_3 == 'M' %}Monthly{% endif %}</td>
+                <td>{{ forecast.FST_5 }}</td>
+                <td>{{ forecast.FST_6 }}</td>
+                </tr>
+        {% endfor %}
+	        	</tbody>
+	        </table>
+	        {% endif %}
+         
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        {% if shp %}
+          <table class="table">
+            <tbody>
+            {% for shipment in shp %}
+            <tr>
+              <th style="width:50%">{{ shipment.SHP_1 }}:</th>
+              <td></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      {% if edi.information %}
+        <p class="lead">Aditional Information:</p>
+        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+          {{ edi.information }}
+        </p>
+      {% endif %}
+      </div>
+      <div class="col-xs-6">
+        <p class="lead">Description</p>
+        <div class="table-responsive">
+        {% if name %}
+          <table class="table">
+            <tbody>
+            {% for segment in name %}
+            <tr>
+              <th style="width:50%">{% if segment.N_1 == 'ST' %}Ship To{% elif segment.N_1 == 'SF' %}Ship From{% elif segment.N_1 == 'SU' %}Suppĺier{% elif segment.N_1 == 'MI' %}Planning Schedule Issuer{% endif %}:</th>
+            	<td>{{ segment.N_4 }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="row no-print">
+      <div class="col-xs-12">
+          <button type="button" class="btn btn-success pull-right" onclick="window.print();">
+            <i class="fa fa-print"></i> Imprimir
+          </button>
+        <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+          <i class="fa fa-download"></i> Descargar Edi
+        </button>
+      </div>
+    </div>
+{% endif %}
+</section>
+
+
+{% endblock %}
+{% block aditional.css %}<link rel="stylesheet" href="/static/js/plugins/datatables/dataTables.bootstrap.css">{% endblock %}
+{% block aditional.js %}
+<script src="/static/js/jspdf.min.js"></script>
+<script>
+  function genPDF() {
+   var doc = new jsPDF();
+
+// We'll make our own renderer to skip this editor
+var specialElementHandlers = {
+  '#editor': function(element, renderer){
+    return true;
+  }
+};
+
+// All units are in the set measurement for the document
+// This can be changed to "pt" (points), "mm" (Default), "cm", "in"
+doc.fromHTML($('#render_me').get(0), 15, 15, {
+  'width': 170, 
+  'elementHandlers': specialElementHandlers
+});
+
+  }
+
+</script>
+<script src="/static/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+{% endblock %}
+

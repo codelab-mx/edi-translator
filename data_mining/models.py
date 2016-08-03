@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
 from validators import file_size
@@ -6,6 +7,7 @@ import os
 class edi_address(models.Model):
 	#edi_name = models.CharField(max_length= 50)
 	edi_file = models.FileField(upload_to='edi/', validators=[file_size])
+	upload_date = models.DateTimeField(auto_now_add = True)
 	flag = models.BooleanField(default= False)
 	def filename(self):
 		return os.path.basename(self.edi_file.name)
@@ -23,9 +25,18 @@ class data_segments_master(models.Model):
 	GS_8 = models.CharField(blank = True, max_length = 50)
 	ST_1 = models.CharField(blank = True, max_length = 50)
 	ST_2 = models.CharField(blank = True, max_length = 50)
+	DTM_1 = models.CharField(blank = True, max_length = 50)
+	DTM_2 = models.CharField(blank = True, max_length = 50)
+	DTM_3 = models.CharField(blank = True, max_length = 50)
 	UIT_1 = models.CharField(blank = True, max_length = 50)
 	UIT_2 = models.CharField(blank = True, max_length = 50)
 	UIT_3 = models.CharField(blank = True, max_length = 50)
+	REF_1 = models.CharField(blank = True, max_length = 50)
+	REF_2 = models.CharField(blank = True, max_length = 50)
+	PER_1 = models.CharField(blank = True, max_length = 50)
+	PER_2 = models.CharField(blank = True, max_length = 50)
+	PER_3 = models.CharField(blank = True, max_length = 50)
+	PER_4 = models.CharField(blank = True, max_length = 50)
 	SHP_1 = models.CharField(blank = True, max_length = 50)
 	SHP_2 = models.CharField(blank = True, max_length = 50)
 	SHP_3 = models.CharField(blank = True, max_length = 50)
@@ -33,6 +44,8 @@ class data_segments_master(models.Model):
 	SHP_5 = models.CharField(blank = True, max_length = 50)
 	SHP_6 = models.CharField(blank = True, max_length = 50)
 	SHP_7 = models.CharField(blank = True, max_length = 50)
+	SDP_1 = models.CharField(blank = True, max_length = 50)
+	SDP_2 = models.CharField(blank = True, max_length = 50)	
 	CT_1 = 	models.CharField(blank = True, max_length = 50)
 	CT_2 = models.CharField(blank = True, max_length = 50)
 	SE_1 = 	models.CharField(blank = True, max_length = 50)
@@ -42,6 +55,17 @@ class data_segments_master(models.Model):
 	IEA_1 = models.CharField(blank = True, max_length = 50)
 	IEA_2 = models.CharField(blank = True, max_length = 50)
 
+class data_segments_BSS(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
+	BSS_1 = models.CharField(blank = True, max_length = 50)
+	BSS_2 = models.CharField(blank = True, max_length = 50)
+	BSS_3 = models.CharField(blank = True, max_length = 50)
+	BSS_4 = models.CharField(blank = True, max_length = 50)
+	BSS_5 = models.CharField(blank = True, max_length = 50)
+	BSS_6 = models.CharField(blank = True, max_length = 50)
+	BSS_7 = models.CharField(blank = True, max_length = 50)
+	BSS_8 = models.CharField(blank = True, max_length = 50)
+	BSS_11 = models.CharField(blank = True, max_length = 50)
 
 class data_segments_BFR(models.Model):
 	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
@@ -62,8 +86,31 @@ class data_segments_N(models.Model):
 	N_2 = models.CharField(blank = True, max_length = 50)
 	N_3 = models.CharField(blank = True, max_length = 50)
 	N_4 = models.CharField(blank = True, max_length = 50)
-
+	N3_0 = models.CharField(blank = True, max_length = 50)
+	N3_1 = models.CharField(blank = True, max_length = 50)
+	N4_0 = models.CharField(blank = True, max_length = 50)
+	N4_1 = models.CharField(blank = True, max_length = 50)
+	N4_2 = models.CharField(blank = True, max_length = 50)
+	N4_3 = models.CharField(blank = True, max_length = 50)
 class data_segments_830LIN(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
+	LIN_1 = models.CharField(blank = True, max_length = 50)
+	LIN_2 = models.CharField(blank = True, max_length = 50)
+	LIN_3 = models.CharField(blank = True, max_length = 50)
+	LIN_4 = models.CharField(blank = True, max_length = 50)
+	LIN_5 = models.CharField(blank = True, max_length = 50)
+	LIN_6 = models.CharField(blank = True, max_length = 50)
+	LIN_7 = models.CharField(blank = True, max_length = 50)
+	LIN_8 = models.CharField(blank = True, max_length = 50)
+	LIN_9 = models.CharField(blank = True, max_length = 50)
+	LIN_10 = models.CharField(blank = True, max_length = 50)
+	LIN_11 = models.CharField(blank = True, max_length = 50)
+	LIN_12 = models.CharField(blank = True, max_length = 50)
+	LIN_13 = models.CharField(blank = True, max_length = 50)
+	LIN_14 = models.CharField(blank = True, max_length = 50)
+	LIN_15 = models.CharField(blank = True, max_length = 50)
+
+class data_segments_862LIN(models.Model):
 	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE)
 	LIN_1 = models.CharField(blank = True, max_length = 50)
 	LIN_2 = models.CharField(blank = True, max_length = 50)
@@ -94,3 +141,22 @@ class data_segments_FST(models.Model):
 	FST_8 = models.CharField(blank = True, max_length = 50)
 	FST_9 = models.CharField(blank = True, max_length = 50)
 	FST_10 = models.CharField(blank = True, max_length = 50)
+
+class data_segments_ATH(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE, null = True)
+	ATH_0 = models.CharField(blank = True, max_length = 50)
+	ATH_1 = models.CharField(blank = True, max_length = 50)
+	ATH_2 = models.CharField(blank = True, max_length = 50)
+	ATH_3 = models.CharField(blank = True, max_length = 50)
+	ATH_4 = models.CharField(blank = True, max_length = 50)
+	ATH_5 = models.CharField(blank = True, max_length = 50)
+
+class data_segments_SHP(models.Model):
+	prim = models.ForeignKey(data_segments_master, on_delete= models.CASCADE, null = True)
+	SHP_1 = models.CharField(blank = True, max_length = 50)
+	SHP_2 = models.CharField(blank = True, max_length = 50)
+	SHP_3 = models.CharField(blank = True, max_length = 50)
+	SHP_4 = models.CharField(blank = True, max_length = 50)
+	SHP_5 = models.CharField(blank = True, max_length = 50)
+	SHP_6 = models.CharField(blank = True, max_length = 50)
+	SHP_7 = models.CharField(blank = True, max_length = 50)
