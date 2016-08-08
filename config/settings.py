@@ -21,7 +21,8 @@ ALLOWED_HOSTS = ['localhost:8000']
 # Application definition
 
 INSTALLED_APPS = [
-    'data_mining.apps.DataMiningConfig', 
+    'data_mining.apps.DataMiningConfig',
+    'data_generator.apps.DataGeneratorConfig',
 	'usuarios.apps.UsuariosConfig',
     'django.contrib.admin',
     'django.contrib.auth',
