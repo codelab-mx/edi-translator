@@ -21,6 +21,7 @@ ALLOWED_HOSTS = ['localhost:8000']
 # Application definition
 
 INSTALLED_APPS = [
+    'address.apps.AddressConfig',
     'data_mining.apps.DataMiningConfig',
     'data_generator.apps.DataGeneratorConfig',
 	'usuarios.apps.UsuariosConfig',
