@@ -72,22 +72,29 @@ def segment_lines():
 #############################
 def flow_862():
 	global cont, name, cont_FST
-	lista = {'GS':GS,
-			 'ST':ST,
-			 'BSS':BSS,
-			 'N1':N,
-			 'LIN':LIN_862,
-			 'UIT':UIT,
-			 'FST':FST,
-			 'SHP':SHP,
-			 'CTT':CTT,
-			 'SE':SE,
-			 'GE':GE,
-			 'IEA':IEA, 
-			}
-	strcont = segment_text[0]
-	trigger = lista[strcont]
-	trigger()
+
+	try:
+		lista = {'GS':GS,
+				 'ST':ST,
+				 'BSS':BSS,
+				 'DTM':DTM,
+				 'N1':N,
+				 'PER':PER,
+				 'LIN':LIN_862,
+				 'UIT':UIT,
+				 'FST':FST,
+				 'SHP':SHP,
+				 'REF':REF,
+				 'CTT':CTT,
+				 'SE':SE,
+				 'GE':GE,
+				 'IEA':IEA, 
+				}
+		strcont = segment_text[0]
+		trigger = lista[strcont]
+		trigger()
+	except:
+		do_nothing()
 	return
 
 		
@@ -97,30 +104,39 @@ def flow_862():
 #############################
 def flow_830():
 	global cont, name, cont_FST
-	lista = {'GS':GS,
-			 'ST':ST,
-			 'BFR':BFR,
-			 'DTM':DTM,
-			 'N1':N,
-			 'N3':N3,
-			 'N4':N4,
-			 'LIN':LIN_830,
-			 'PID':PID,
-			 'UIT':UIT,
-			 'REF':REF,
-			 'PER':PER,
-			 'ATH':ATH,
-			 'SDP':SDP,
-			 'FST':FST,
-			 'SHP':SHP,
-			 'CTT':CTT,
-			 'SE':SE,
-			 'GE':GE,
-			 'IEA':IEA, 
-			}
-	strcont = segment_text[0]
-	trigger = lista[strcont]
-	trigger()
+
+	try:
+
+		lista = {'GS':GS,
+				 'ST':ST,
+				 'BFR':BFR,
+				 'DTM':DTM,
+				 'N1':N,
+				 'N3':N3,
+				 'N4':N4,
+				 'PER':PER,
+				 'LIN':LIN_830,
+				 'PID':PID,
+				 'UIT':UIT,
+				 'REF':REF,
+				 'PER':PER,
+				 'ATH':ATH,
+				 'SDP':SDP,
+				 'FST':FST,
+				 'SHP':SHP,
+				 'CTT':CTT,
+				 'SE':SE,
+				 'GE':GE,
+				 'IEA':IEA, 
+				}
+		strcont = segment_text[0]
+		trigger = lista[strcont]
+		trigger()
+	except:
+		do_nothing()
+	return
+
+def do_nothing():
 	return
 
 ##########################################
@@ -508,6 +524,9 @@ def IEA():
 	model_master.IEA_1 = segment_text[1]
 	model_master.IEA_2 = segment_text[2]
 	model_master.save()
+	return
+
+def PER():
 	return
 
 def init_data(id_edi_local, address_local, flag_local):
