@@ -345,7 +345,7 @@ def ATH():
 	model_ATH.ATH_2 = segment_text[2]
 	model_ATH.ATH_3 = segment_text[3]
 	model_ATH.ATH_4 = segment_text[4]
-	model_ATH.ATH_4 = segment_text[5]
+	model_ATH.ATH_5 = segment_text[5]
 	model_ATH.save()
 	return
 

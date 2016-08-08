@@ -50,9 +50,9 @@
         <div class="col-sm-4 invoice-col">
           <b>Control Number:</b> #{{ master.IEA_2 }}<br>
           <br>
-          <b>Date:</b> {{ date_master|date }}<br>
+          <b>Date:</b> {{ master.GS_4|slice:":4" }}-{{ master.GS_4|slice:"4:-2" }}-{{ master.GS_4|slice:"6:" }}<br>
           <b>Creation Time:</b> {{ master.GS_5|slice:":2" }}:{{ master.GS_5|slice:"2:" }}<br>
-          <b>Magna Version:</b> {{ master.GS_8 }}
+          <b>Version:</b> {{ master.GS_8 }}
         </div>
       </div>
 
@@ -85,19 +85,60 @@
 	        {% endif %}
          
         </div>
+
+
+    <div class="col-xs-12 table-responsive">
+          {% if shps %}
+            <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Quantity Qualifier</th>
+                <th>Quantity</th>
+                <th>Date / Time Qualifier</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+            </thead>
+            <tbody>
+        {% for info in shps %}
+              <tr>
+                <td>{% if info.SHP_1 == '01' %}Discrete Quantity{% elif info.SHP_1 == '02' %}Cumulative Quantity{% endif %}</td>
+                <td>{{ info.SHP_2 }}</td>
+                <td>{% if info.SHP_3 == '011' %}Shipped{% elif info.SHP_3 == '051' %}Cumulative Quantity Start{% endif %}</td>
+                <td>{{ info.SHP_4|slice:":4" }}-{{ info.SHP_4|slice:"4:-2" }}-{{ info.SHP_4|slice:"6:" }}</td>
+                <td>{{ info.SHP_6|slice:":4" }}-{{ info.SHP_6|slice:"4:-2" }}-{{ info.SHP_6|slice:"6:" }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+         
+        </div>
     </div>
+
     <div class="row">
       <div class="col-xs-6">
-        {% if shp %}
-          <table class="table">
+        {% if ath %}
+           <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Resource</th>
+                <th>Authorization Date</th>
+                <th>Quantity</th>
+                <th>Start Date</th>
+              </tr>
+            </thead>
             <tbody>
-            {% for shipment in shp %}
-            <tr>
-              <th style="width:50%">{{ shipment.SHP_1 }}:</th>
-              <td></td>
-            </tr>
-            {% endfor %}
+        {% for auth in ath %}
+              <tr>
+                <td>{% if auth.ATH_1 == 'FI' %}Finished{% elif auth.ATH_1 == 'MT' %}Material{% elif auth.ATH_1 == 'PQ' %}Previous Quantity Authorized{% endif %}</td>
+                <td>{{ auth.ATH_2|slice:":4" }}-{{ auth.ATH_2|slice:"4:-2" }}-{{ auth.ATH_2|slice:"6:" }}</td>
+                <td>{{ auth.ATH_3 }}</td>
+                <td>{{ auth.ATH_5|slice:":4" }}-{{ auth.ATH_5|slice:"4:-2" }}-{{ auth.ATH_5|slice:"6:" }}</td>
+                </tr>
+        {% endfor %}
             </tbody>
+
           </table>
         {% endif %}
       {% if edi.information %}
