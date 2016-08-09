@@ -28,9 +28,9 @@
 {% if edi %}
 	<div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-          From
+          To:
           <address>
-            <strong>{{ master.GS_2 }}</strong><br>
+            <strong>{{ master.GS_3 }}</strong><br>
             795 Folsom Ave, Suite 600<br>
             San Francisco, CA 94107<br>
             Phone: (804) 123-5432<br>
@@ -38,9 +38,9 @@
           </address>
         </div>
         <div class="col-sm-4 invoice-col">
-          To
+          From:
           <address>
-            <strong>{{ master.GS_3 }}</strong><br>
+            <strong>{{ master.GS_2 }}</strong><br>
             795 Folsom Ave, Suite 600<br>
             San Francisco, CA 94107<br>
             Phone: (555) 539-1037<br>
@@ -157,7 +157,7 @@
             {% for segment in name %}
             <tr>
               <th style="width:50%">{% if segment.N_1 == 'ST' %}Ship To{% elif segment.N_1 == 'SF' %}Ship From{% elif segment.N_1 == 'SU' %}Suppĺier{% elif segment.N_1 == 'MI' %}Planning Schedule Issuer{% endif %}:</th>
-            	<td>{{ segment.N_4 }}</td>
+            	<td>{% if segment.N_3 == '92' or segment.N_3 == '93' %}{{ segment.N_4 }}{% elif segment.N_3 == '1' or segment.N_3 == '9' %}DNUS: {{ segment.N_4 }}{% endif %}</td>
             </tr>
             {% endfor %}
             </tbody>
