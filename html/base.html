@@ -39,6 +39,17 @@
         <ul class="sidebar-menu">
           <li class="{% block menu.inicio %}{% endblock %}"><a href="/"><i class="fa fa-dashboard"></i><span> Inicio</span></a></li>
 
+          <li class="treeview {% block menu.relacion %}{% endblock %}">
+          <a href="#">
+            <i class="fa fa-clone"></i> <span>Relaciones Comerciales</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{% block menu.relacion.ver %}{% endblock %}"><a href="/edi/"><i class="fa fa-table"></i> Ver Relaciones Comerciales</a></li>
+            <li class="{% block menu.relacion.agregar %}{% endblock %}"><a href="/edi/traducir/"><i class="fa fa-language"></i> Agregar Nueva</a></li>
+          </ul>
+        </li>
+
         <li class="treeview {% block menu.edi %}{% endblock %}">
           <a href="#">
             <i class="fa fa-clone"></i> <span>Traduccion</span>
