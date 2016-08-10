@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales - Nueva dirección{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.empresa %}active{% endblock %}
+{% block page.header %}Nueva Dirección Comercial EDI{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Registrar una nueva Dirección de <strong>Su Empresa</strong></p>
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.C_Name.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_Name }}
+	    		<span class="fa fa-building form-control-feedback"></span>
+	    		{{ form.C_Name.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Address.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_Address }}
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.C_Address.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_City.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_City }}
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.C_City.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Country.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_Country }}
+	    		<span class="fa fa-map-marker form-control-feedback"></span>
+	    		{{ form.C_Country.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_ZIP.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_ZIP }}
+	    		<span class="fa fa-hashtag form-control-feedback"></span>
+	    		{{ form.C_ZIP.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_E_mail.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_E_mail }}
+	    		<span class="fa fa-envelope-o form-control-feedback"></span>
+	    		{{ form.C_E_mail.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Phone.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_Phone }}
+	    		<span class="fa fa-phone form-control-feedback"></span>
+	    		{{ form.C_Phone.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Edi_Address.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.C_Edi_Address }}
+	    		<span class="fa fa-exchange form-control-feedback"></span>
+	    		{{ form.C_Edi_Address.errors }}
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+</div>
+</div>
+{% endblock %}

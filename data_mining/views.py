@@ -11,6 +11,7 @@ from models import data_segments_master, data_segments_BFR, data_segments_N, dat
 from . import models
 from django.contrib import messages
 from data import init_data
+from address.models import Partner_Data, Company_Data
 import datetime
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
@@ -40,15 +41,18 @@ def edi_viewer(request, edi_viewer):
 	edi = models.edi_address.objects.get(id=edi_viewer)
 	file_name = edi.filename
 	master = models.data_segments_master.objects.get(id=edi_viewer)
+	partner = Partner_Data.objects.filter(P_Edi_Address=master.GS_2)
+	address = Company_Data.objects.filter(C_Edi_Address=master.GS_3)
+	print master.GS_2
+	print partner
 	bfr = master.data_segments_bfr_set.all()
 	name = master.data_segments_n_set.all()
 	shps = master.data_segments_shp_set.all()
 	ath = master.data_segments_ath_set.all()
-	print ath
 	lin830 = master.data_segments_830lin_set.all()
 	lin862 = master.data_segments_862lin_set.all()
 	fst = master.data_segments_fst_set.all()
-	return render(request, 'EDI/viewer.html', {'ath':ath, 'shps':shps, 'edi':edi, 'master':master, 'bfr':bfr, 'name':name, 'lin862':lin862, 'lin830':lin830, 'fst':fst})
+	return render(request, 'EDI/viewer.html', {'address':address, 'partner':partner, 'ath':ath, 'shps':shps, 'edi':edi, 'master':master, 'bfr':bfr, 'name':name, 'lin862':lin862, 'lin830':lin830, 'fst':fst})
 
 ##########################
 #  GENERAR ARCHIVOS EDI  #

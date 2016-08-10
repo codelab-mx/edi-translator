@@ -28,24 +28,29 @@
 {% if edi %}
 	<div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-          To:
+          From: {% if address %}
           <address>
-            <strong>{{ master.GS_3 }}</strong><br>
+            <strong></strong><br>
             795 Folsom Ave, Suite 600<br>
             San Francisco, CA 94107<br>
             Phone: (804) 123-5432<br>
-            Email: info@codelab.mx
+            Email: info@codelab.mx<br>
+            EDI Address: {{ master.GS_3 }}
           </address>
+        {% else %} {{ master.GS_3 }} {% endif %}
         </div>
         <div class="col-sm-4 invoice-col">
-          From:
+          To:
+          {% if partner %}{% for data in partner %}
           <address>
-            <strong>{{ master.GS_2 }}</strong><br>
-            795 Folsom Ave, Suite 600<br>
+            <strong>{{ data.P_Name }}</strong><br>
+            {{ data.P_Address }}<br>
             San Francisco, CA 94107<br>
-            Phone: (555) 539-1037<br>
-            Email: john.doe@bollhoff.com
-          </address>
+            <strong>Phone:</strong> (804) 123-5432<br>
+            <strong>Email:</strong> {{ data.P_E_mail }}<br>
+            <strong>EDI Address:</strong> {{ master.GS_2 }}
+          </address>{% endfor %}
+        {% else %} {{ master.GS_2 }} {% endif %}
         </div>
         <div class="col-sm-4 invoice-col">
           <b>Control Number:</b> #{{ master.IEA_2 }}<br>
@@ -74,7 +79,9 @@
 				{% for forecast in fst %}
 	        		<tr>
 	        			<td>{{ forecast.FST_1 }}</td>
-	        			<td>{{ forecast.FST_4|slice:":4" }}-{{ forecast.FST_4|slice:"4:-2" }}-{{ forecast.FST_4|slice:"6:" }}</td>
+	        			<td>{% if forecast.FST_4|length = 8 %}{{ forecast.FST_4|slice:":4" }}-{{ forecast.FST_4|slice:"4:-2" }}-{{ forecast.FST_4|slice:"6:" }}
+                {% else %}{{ forecast.FST_4|slice:":4" }}-{{ forecast.FST_4|slice:"4:-3" }}-{{ forecast.FST_4|slice:"6:" }}{% endif %}
+                </td>
 	        			<td>{% if forecast.FST_3 == 'W' %}Weekly{% elif forecast.FST_3 == 'D' %}Discrete{% elif forecast.FST_3 == 'M' %}Monthly{% endif %}</td>
                 <td>{{ forecast.FST_5 }}</td>
                 <td>{{ forecast.FST_6 }}</td>
@@ -105,8 +112,11 @@
                 <td>{% if info.SHP_1 == '01' %}Discrete Quantity{% elif info.SHP_1 == '02' %}Cumulative Quantity{% endif %}</td>
                 <td>{{ info.SHP_2 }}</td>
                 <td>{% if info.SHP_3 == '011' %}Shipped{% elif info.SHP_3 == '051' %}Cumulative Quantity Start{% endif %}</td>
-                <td>{{ info.SHP_4|slice:":4" }}-{{ info.SHP_4|slice:"4:-2" }}-{{ info.SHP_4|slice:"6:" }}</td>
-                <td>{{ info.SHP_6|slice:":4" }}-{{ info.SHP_6|slice:"4:-2" }}-{{ info.SHP_6|slice:"6:" }}</td>
+                <td>{% if info.SHP_4|length = 8 %}{{ info.SHP_4|slice:":4" }}-{{ info.SHP_4|slice:"4:-2" }}-{{ info.SHP_4|slice:"6:" }}
+                {% else %}{{ info.SHP_4|slice:":4" }}-{{ info.SHP_4|slice:"4:-3" }}-{{ info.SHP_4|slice:"6:" }}{% endif %}
+                </td>
+                <td>{% if info.SHP_6|length = 8 %}{{ info.SHP_6|slice:":4" }}-{{ info.SHP_6|slice:"4:-2" }}-{{ info.SHP_6|slice:"6:" }}
+                {% else %}{{ info.SHP_6|slice:":4" }}-{{ info.SHP_6|slice:"4:-3" }}-{{ info.SHP_6|slice:"6:" }}{% endif %}</td>
                 </tr>
         {% endfor %}
             </tbody>
