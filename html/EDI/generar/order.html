@@ -79,11 +79,48 @@
 	                {{ form.PRF01.errors }}
                 </div>
             </div>
+             <div class="col-xs-4">
+                    <label>Reference Qualifier:</label>
+                    <div class="form-group">
+                        <select name="REF101" class="form-control select2" style="width:100%;">
+                            <option value="DK">Dock Code</option>
+                            <option value="LF">Line Feed</option>                      
+                        </select>
+                    </div>
+                    {{ form.REF101.errors }}
+                </div>
+
             <div class="row margin-bottom">
                 <div class="col-xs-4">
                     <label>Reference ID</label>
                     <div class="input-group">
-                        <input class="form-control" id="id_SN104" name="reference_id" type="text">
+                        {{ form.REF102 }}
+                       
+                        
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8">
+                </div>
+            </div>
+             <div class="col-xs-4">
+                    <label> Additional Reference Qualifier:</label>
+                    <div class="form-group">
+                        <select name="REF201" class="form-control select2" style="width:100%;">
+                            <option value="LF">Line Feed</option>                      
+                            <option value="DK">Dock Code</option>
+                        </select>
+                    </div>
+                    {{ form.REF201.errors }}
+                </div>
+
+            <div class="row margin-bottom">
+                <div class="col-xs-4">
+                    <label>Additional Reference ID</label>
+                    <div class="input-group">
+                        {{ form.REF202 }}                      
                         <div class="input-group-addon">
                             <i class="fa fa-barcode"></i>
                         </div>

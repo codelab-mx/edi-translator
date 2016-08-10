@@ -57,6 +57,8 @@ def segment_lines():
 	global lines, cont, segment_text, flag, name
 	texto = str(lines[cont])
 	segment_text = texto.split("*")
+	
+
 	if segment_text[1] == "PS":
 		flag = True
 	if flag == True:
