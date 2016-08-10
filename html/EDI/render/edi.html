@@ -17,7 +17,7 @@
                 <input type="text" class="form-control" id="input-fileName" value="{{ edi.BST03 }}-{{ edi.BST04 }}" placeholder="Enter file name">
               </div>
               <div class="modal-body">
-<textarea id="textarea" class="form-control" rows="10" readonly style="background:#fff">{% if edi %}ISA*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*{{ edi.PREFIX_NAME }}*{{ edi.NAME }}&nbsp;&nbsp;&nbsp;*{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T
+<textarea id="textarea" class="form-control" rows="10" readonly style="background:#fff">{% if edi %}ISA*00*          *00*          *{{ edi.PREFIX_NAME }}*{{ edi.NAME }}   *{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}      *{{ edi.BST03 }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T
 GS*SH*{{ edi.NAME }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.ST02 }}*X*04010
 ST*{{ edi.ST01 }}*{{ edi.ST02 }}
 BSN*{{ edi.BST01 }}*{{ edi.BST02 }}*{{ edi.BST03 }}*{{ edi.BST04 }}
@@ -41,7 +41,7 @@ CTT*55*345
 SE*56*{{ edi.ST02 }}{% else %}error{% endif %}</textarea>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                <a href="/crear/ver/" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</a>
                 <button id="btn-save" type="submit" class="btn btn-primary">Descargar Archivo</button>
               </div>
             </div>
@@ -74,7 +74,7 @@ SE*56*{{ edi.ST02 }}{% else %}error{% endif %}</textarea>
   </style>
 {% endblock %}
 {% block aditional.js %}
-{% load staticfiles %}<script src="{% static "js/FileSaver.min.js" %}"></script>
+{% load staticfiles %}<script src="{% static 'js/FileSaver.min.js' %}"></script>
 <script>
 $("#btn-save").click( function() {
   var text = $("#textarea").val();

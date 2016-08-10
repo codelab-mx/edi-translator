@@ -29,17 +29,21 @@
                 		</div>
                 		{{ form.PREFIX_NAME.errors }}
                 </div>
-                {{ form.NAME.errors }}
+                {{ form.PREFIX_NAME.errors }}
                 </div>
             </div>
 	    		<div class="col-xs-4">
                 <div class="form-group">
                 	<label>From:</label>
+                	{% if address %}
 	    			<select name="NAME" class="form-control select2" style="width: 100%;" >
 		    			{% for data in address %}
 		    				<option value="{{ data.C_Edi_Address }}">{{ data.C_Name }} - {{ data.C_Edi_Address }}</option>
 		    			{% endfor %}
 	    			</select>
+	    			{% else %}
+	    			<a href="/tradings/new_company/" class="btn btn-primary btn-block btn-flat" target="_blank">Add Address</a>
+	    			{% endif %}
                 </div>
                 {{ form.NAME.errors }}
                 </div>
@@ -53,21 +57,25 @@
                 		</div>
                 		{{ form.PREFIX_CLIENT.errors }}
                 </div>
-                {{ form.NAME.errors }}
                 </div>
             </div>
                 <div class="col-xs-4">
                 <div class="form-group">
                 	<label>To:</label>
-
+                	{% if partner %}
 	    			<select name="CLIENT" class="form-control select2" style="width: 100%;" >
 		    			{% for data in partner %}
 		    				<option value="{{ data.P_Edi_Address }}">{{ data.P_Name }} - {{ data.P_Edi_Address }}</option>
 		    			{% endfor %}
 	    			</select>
+	    			{% else %}
+	    			<a href="/tradings/new_partner/" class="btn btn-primary btn-block btn-flat" target="_blank">Add Partner</a>
+	    			{% endif %}
                 </div>
                 {{ form.CLIENT.errors }}
                 </div>
+                </div>
+                <div class="row">
                 <div class="col-xs-4">
                 	<label>{{ form.ST02.label }}</label>
                 	<div class="input-group">
