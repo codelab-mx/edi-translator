@@ -17,16 +17,12 @@
                 <input type="text" class="form-control" id="input-fileName" value="{{ edi.BST03 }}-{{ edi.BST04 }}" placeholder="Enter file name">
               </div>
               <div class="modal-body">
-<<<<<<< HEAD
-<textarea id="textarea" class="form-control" rows="10" readonly style="background:#fff">{% if edi %}ISA*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*{{ edi.PREFIX_NAME }}*{{ edi.NAME }}&nbsp;&nbsp;&nbsp;*{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T
-=======
 <textarea id="textarea" class="form-control" rows="10" readonly style="background:#fff">{% if edi %}ISA*00*          *00*          *{{ edi.PREFIX_NAME }}*{{ edi.NAME }}   *{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}      *{{ edi.BST03 }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T
->>>>>>> 0c3a1b45f8f4965fd239e0b182e6afd6d92f5fa8
 GS*SH*{{ edi.NAME }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.ST02 }}*X*04010
 ST*{{ edi.ST01 }}*{{ edi.ST02 }}
 BSN*{{ edi.BST01 }}*{{ edi.BST02 }}*{{ edi.BST03 }}*{{ edi.BST04 }}
 DTM*{{ edi.DTM01 }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.DTM04 }}
-{% if hl %}{% for header in hl %}HL*{{ header.HL01 }}*{{ header.HL02 }}*{{ header.HL03 }}
+{% if hl %}{% for header in hl %}&#13;HL*{{ header.HL01 }}*{{ header.HL02 }}*{{ header.HL03 }}
 {% if header.HL03 == 'S' %}MEA*{{ edi.MEA01 }}*{{ edi.MEA02 }}*{{ edi.MEA03 }}*{{ edi.MEA04 }}
 TD1*{{ edi.TD101 }}*{{ edi.TD102 }}
 TD5*{{ edi.TD501 }}*{{ edi.TD502 }}*{{ edi.TD503 }}*{{ edi.TD504 }}
@@ -36,17 +32,11 @@ N1*SF**1*DUNS
 N1*{{ edi.N101 }}*{{ edi.N103 }}*{{ edi.N104 }}
 N1*{{ edi.N201 }}*{{ edi.N203 }}*{{ edi.N204 }}
 N1*{{ edi.N301 }}*{{ edi.N303 }}*{{ edi.N304 }}
-{% elif header.HL03 == 'O' %}{% for ord in order %}LIN**{{ ord.LIN02 }}*{{ ord.LIN03 }}
-SN1**{{ ord.SN102 }}*{{ ord.SN103 }}*{{ ord.SN104 }}
-PRF*{{ ord.PRF01 }}{% if ord.REF101 %}&#13;REF*{{ ord.REF101 }}*{{ ord.REF102 }}{% endif %}{% if ord.REF201 %}&#13;REF*{{ ord.REF201 }}*{{ ord.REF202 }}{% endif %}{% endfor %}
-<<<<<<< HEAD
-{% elif header.HL03 == 'I' %}CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% endif %}{% endfor %}{% endif %}{% if measures %}{% for mea in measures %}{% if mea.MEA01 %}&#13;MEA*{{ mea.MEA01 }}*{{ mea.MEA02 }}*{{ mea.MEA03 }}*{{ mea.MEA04 }}{% endif %}{% if mea.MEA201 %}&#13;MEA*{{ mea.MEA201 }}*{{ mea.MEA202 }}*{{ mea.MEA203 }}*{{ mea.MEA204 }}{% endif %}{% if mea.MEA301 %}&#13;MEA*{{ mea.MEA301 }}*{{ mea.MEA302 }}*{{ mea.MEA303 }}*{{ mea.MEA304 }}{% endif %}{% if mea.MEA401 %}&#13;MEA*{{ mea.MEA401 }}*{{ mea.MEA402 }}*{{ mea.MEA403 }}*{{ mea.MEA404 }}{% endif %}{% endfor %}{% endif %}
-CTT*{{ hl|length }}*345
-=======
-{% elif header.HL03 == 'I' %}CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% endif %}{% endfor %}{% endif %}
-{% if measures %}{% for mea in measures %}MEA*{{ mea.MEA01 }}*{{ mea.MEA02 }}*{{ mea.MEA03 }}{% endfor %}{% endif %}
+{% elif header.HL03 == 'O' %}LIN**{{ header.LIN02 }}*{{ header.LIN03 }}
+SN1**{{ header.SN102 }}*{{ header.SN103 }}*{{ header.SN104 }}
+PRF*{{ header.PRF01 }}&#13;REF*{{ header.REF101 }}*{{ header.REF102 }}&#13;REF*{{ header.REF201 }}*{{ header.REF202 }}{% for ord in order %}{% if ord.REF101 %}&#13;REF*{{ ord.REF101 }}*{{ ord.REF102 }}{% endif %}{% if ord.REF201 %}&#13;REF*{{ ord.REF201 }}*{{ ord.REF202 }}{% endif %}{% endfor %}
+{% elif header.HL03 == 'I' %}{% if header.MEA03 %}&#13;MEA*{{ header.MEA01 }}*{{ header.MEA02 }}*{{ header.MEA03 }}{% endif %}{% if header.MEA203 %}&#13;MEA*{{ header.MEA201 }}*{{ header.MEA202 }}*{{ header.MEA203 }}{% endif %}{% if header.MEA303 %}&#13;MEA*{{ header.MEA301 }}*{{ header.MEA302 }}*{{ header.MEA303 }}{% endif %}{% if header.MEA403 %}&#13;MEA*{{ header.MEA401 }}*{{ header.MEA402 }}*{{ header.MEA403 }}{% endif %}REF*{{ header.REF_ITEM101 }}*{{ header.REF_ITEM102 }}*CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% if header.REF_CLD102 %}&#13;REF*{{ header.REF_CLD101 }}*{{ header.REF_CLD102 }}{% endif %}{% if header.REF_CLD202 %}&#13;REF*{{ header.REF_CLD201 }}*{{ header.REF_CLD202 }}{% endif %}{% if header.REF_CLD302 %}&#13;REF*{{ header.REF_CLD301 }}*{{ header.REF_CLD302 }}{% endif %}{% if header.REF_CLD402 %}&#13;REF*{{ header.REF_CLD401 }}*{{ header.REF_CLD402 }}{% endif %}{% endif %}{% endfor %}{% endif %}
 CTT*55*345
->>>>>>> 0c3a1b45f8f4965fd239e0b182e6afd6d92f5fa8
 SE*56*{{ edi.ST02 }}{% else %}error{% endif %}</textarea>
               </div>
               <div class="modal-footer">
@@ -92,3 +82,6 @@ $("#btn-save").click( function() {
   saveAs(blob, filename);
 });</script>
 {% endblock %}
+
+
+
