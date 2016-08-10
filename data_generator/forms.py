@@ -1,5 +1,5 @@
 from django import forms
-from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_I_CLD, Data_Generator_Hierarchial
+from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_Hierarchial
 from django.core.validators import RegexValidator
 
 class ASN_Heading(forms.ModelForm):
