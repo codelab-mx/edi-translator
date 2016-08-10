@@ -28,16 +28,16 @@
 {% if edi %}
 	<div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-          From: {% if address %}
+          From: {% if address %}{% for data in address %}
           <address>
-            <strong></strong><br>
-            795 Folsom Ave, Suite 600<br>
-            San Francisco, CA 94107<br>
-            Phone: (804) 123-5432<br>
-            Email: info@codelab.mx<br>
-            EDI Address: {{ master.GS_3 }}
-          </address>
-        {% else %} {{ master.GS_3 }} {% endif %}
+            <strong>{{ data.C_Name }}</strong><br>
+            {{ data.C_Address }}<br>
+            {{ data.C_Country }} {{ data.C_City }}, {{ data.C_ZIP }}<br>
+            <strong>Phone:</strong> (804) 123-5432<br>
+            <strong>Email:</strong> {{ data.C_E_mail }}<br>
+            <strong>EDI Address:</strong> {{ master.GS_3 }}
+          </address>{% endfor %}
+        {% else %}<address><strong>EDI Address:</strong> {{ master.GS_3 }} </address>{% endif %}
         </div>
         <div class="col-sm-4 invoice-col">
           To:
@@ -50,7 +50,7 @@
             <strong>Email:</strong> {{ data.P_E_mail }}<br>
             <strong>EDI Address:</strong> {{ master.GS_2 }}
           </address>{% endfor %}
-        {% else %} {{ master.GS_2 }} {% endif %}
+        {% else %}<address> <strong>EDI Address:</strong> {{ master.GS_2 }}</address> {% endif %}
         </div>
         <div class="col-sm-4 invoice-col">
           <b>Control Number:</b> #{{ master.IEA_2 }}<br>

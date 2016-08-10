@@ -17,7 +17,8 @@
                 <input type="text" class="form-control" id="input-fileName" value="{{ edi.BST03 }}-{{ edi.BST04 }}" placeholder="Enter file name">
               </div>
               <div class="modal-body">
-<textarea id="textarea" class="form-control" rows="10" readonly style="background:#fff">{% if edi %}ISA*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*ZZ*814592838-SE&nbsp;&nbsp;&nbsp;*ZZ*4421742122
+<textarea id="textarea" class="form-control" rows="10" readonly style="background:#fff">{% if edi %}ISA*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*00*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*{{ edi.PREFIX_NAME }}*{{ edi.NAME }}&nbsp;&nbsp;&nbsp;*{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T
+GS*SH*{{ edi.NAME }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.ST02 }}*X*04010
 ST*{{ edi.ST01 }}*{{ edi.ST02 }}
 BSN*{{ edi.BST01 }}*{{ edi.BST02 }}*{{ edi.BST03 }}*{{ edi.BST04 }}
 DTM*{{ edi.DTM01 }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.DTM04 }}
@@ -27,10 +28,15 @@ TD1*{{ edi.TD101 }}*{{ edi.TD102 }}
 TD5*{{ edi.TD501 }}*{{ edi.TD502 }}*{{ edi.TD503 }}*{{ edi.TD504 }}
 TD3*{{ edi.TD301 }}*{{ edi.TD302 }}*{{ edi.TD303 }}
 REF*{{ edi.REF01 }}*{{ edi.REF02 }}
+N1*SF**1*DUNS
+N1*{{ edi.N101 }}*{{ edi.N103 }}*{{ edi.N104 }}
+N1*{{ edi.N201 }}*{{ edi.N203 }}*{{ edi.N204 }}
+N1*{{ edi.N301 }}*{{ edi.N303 }}*{{ edi.N304 }}
 {% elif header.HL03 == 'O' %}{% for ord in order %}LIN**{{ ord.LIN02 }}*{{ ord.LIN03 }}
 SN1**{{ ord.SN102 }}*{{ ord.SN103 }}*{{ ord.SN104 }}
-PRF*{{ ord.PRF01 }}{% endfor %}
+PRF*{{ ord.PRF01 }}{% if ord.REF101 %}&#13;REF*{{ ord.REF101 }}*{{ ord.REF102 }}{% endif %}{% if ord.REF201 %}&#13;REF*{{ ord.REF201 }}*{{ ord.REF202 }}{% endif %}{% endfor %}
 {% elif header.HL03 == 'I' %}CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% endif %}{% endfor %}{% endif %}
+{% if measures %}{% for mea in measures %}MEA*{{ mea.MEA01 }}*{{ mea.MEA02 }}*{{ mea.MEA03 }}{% endfor %}{% endif %}
 CTT*55*345
 SE*56*{{ edi.ST02 }}{% else %}error{% endif %}</textarea>
               </div>

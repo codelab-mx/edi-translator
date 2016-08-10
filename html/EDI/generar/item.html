@@ -42,37 +42,148 @@
 	                {{ form.CLD03.errors }}
                 </div>
             </div>
-
-
             <div class="row margin-bottom">
+            <div class="col-xs-4">
+                <label>Measurement Qualifier:</label>
+                <div class="form-group">
+                        <select name="MEA02" class="form-control select2" style="width:100%;">
+                            <option value="LN">Lenght</option>
+                            <option value="TH">Thickness</option>
+                            <option value="WD">Width</option>
+                            <option value="WT">Weight</option>
+                        
+                        </select>
+                    </div>
+                    {{ form.MEA02.errors }}
+                </div>
                 <div class="col-xs-4">
-                    <label>Measure Value</label>
+                    <label>Measurement Value</label>
                     <div class="input-group">
-                        <input class="form-control" id="id_SN104" name="reference_id" type="text">
+                        {{ form.MEA03 }}
                         <div class="input-group-addon">
                             <i class="fa fa-barcode"></i>
                         </div>
+                        {{ form.MEA03.errors }}
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <label>Composite Measure</label>
+                    <label>Unit</label>
                     <div class="input-group">
-                        <input class="form-control" id="id_SN104" name="reference_id" type="text">
+                        {{ form.MEA04 }}
                         <div class="input-group-addon">
                             <i class="fa fa-barcode"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <label>Reference ID</label>
-                    <div class="input-group">
-                        <input class="form-control" id="id_SN104" name="reference_id" type="text">
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
+                        {{ form.MEA04.errors }}
                     </div>
                 </div>
             </div>
+
+            <div class="row margin-bottom">
+            <div class="col-xs-4">
+                <label>Measurement Qualifier:</label>
+                <div class="form-group">
+                        <select name="MEA202" class="form-control select2" style="width:100%;">
+                            <option value="TH">Thickness</option>
+                            <option value="LN">Lenght</option>
+                            <option value="WD">Width</option>
+                            <option value="WT">Weight</option>
+                        
+                        </select>
+                    </div>
+                    {{ form.ME2A02.errors }}
+                </div>
+                <div class="col-xs-4">
+                    <label>Measurement Value</label>
+                    <div class="input-group">
+                        {{ form.MEA203 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                        {{ form.MEA203.errors }}
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <label>Unit</label>
+                    <div class="input-group">
+                        {{ form.MEA204 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                        {{ form.MEA204.errors }}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-bottom">
+            <div class="col-xs-4">
+                <label>Measurement Qualifier:</label>
+                <div class="form-group">
+                        <select name="MEA302" class="form-control select2" style="width:100%;">
+                            <option value="WD">Width</option>
+                            <option value="LN">Lenght</option>
+                            <option value="TH">Thickness</option>
+                            <option value="WT">Weight</option>
+                        
+                        </select>
+                    </div>
+                    {{ form.MEA302.errors }}
+                </div>
+                <div class="col-xs-4">
+                    <label>Measurement Value</label>
+                    <div class="input-group">
+                        {{ form.MEA303 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                        {{ form.MEA303.errors }}
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <label>Unit</label>
+                    <div class="input-group">
+                        {{ form.MEA304 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                    {{ form.MEA304.errors }}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-bottom">
+            <div class="col-xs-4">
+                <label>Measurement Qualifier:</label>
+                <div class="form-group">
+                        <select name="MEA402" class="form-control select2" style="width:100%;">
+                            <option value="WT">Weight</option>
+                            <option value="LN">Lenght</option>
+                            <option value="TH">Thickness</option>
+                            <option value="WD">Width</option>
+                        
+                        </select>
+                    </div>
+                    {{ form.MEA402.errors }}
+                </div>
+                <div class="col-xs-4">
+                    <label>Measurement Value</label>
+                    <div class="input-group">
+                        {{ form.MEA403 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                        {{ form.MEA403.errors }}
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <label>Unit</label>
+                    <div class="input-group">
+                        {{ form.MEA404 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-barcode"></i>
+                        </div>
+                        {{ form.MEA404.errors }}
+                    </div>
+                </div>
+            </div>
+
 
 
             <div class="row">
@@ -88,7 +199,7 @@
 	    	</div>
         </form>
 	</div>
-    </div>
+</div>
 </div>
 {% endblock %}
 
