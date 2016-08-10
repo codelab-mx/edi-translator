@@ -35,9 +35,8 @@ N1*{{ edi.N301 }}*{{ edi.N303 }}*{{ edi.N304 }}
 {% elif header.HL03 == 'O' %}{% for ord in order %}LIN**{{ ord.LIN02 }}*{{ ord.LIN03 }}
 SN1**{{ ord.SN102 }}*{{ ord.SN103 }}*{{ ord.SN104 }}
 PRF*{{ ord.PRF01 }}{% if ord.REF101 %}&#13;REF*{{ ord.REF101 }}*{{ ord.REF102 }}{% endif %}{% if ord.REF201 %}&#13;REF*{{ ord.REF201 }}*{{ ord.REF202 }}{% endif %}{% endfor %}
-{% elif header.HL03 == 'I' %}CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% endif %}{% endfor %}{% endif %}
-{% if measures %}{% for mea in measures %}MEA*{{ mea.MEA01 }}*{{ mea.MEA02 }}*{{ mea.MEA03 }}{% endfor %}{% endif %}
-CTT*55*345
+{% elif header.HL03 == 'I' %}CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% endif %}{% endfor %}{% endif %}{% if measures %}{% for mea in measures %}{% if mea.MEA01 %}&#13;MEA*{{ mea.MEA01 }}*{{ mea.MEA02 }}*{{ mea.MEA03 }}*{{ mea.MEA04 }}{% endif %}{% if mea.MEA201 %}&#13;MEA*{{ mea.MEA201 }}*{{ mea.MEA202 }}*{{ mea.MEA203 }}*{{ mea.MEA204 }}{% endif %}{% if mea.MEA301 %}&#13;MEA*{{ mea.MEA301 }}*{{ mea.MEA302 }}*{{ mea.MEA303 }}*{{ mea.MEA304 }}{% endif %}{% if mea.MEA401 %}&#13;MEA*{{ mea.MEA401 }}*{{ mea.MEA402 }}*{{ mea.MEA403 }}*{{ mea.MEA404 }}{% endif %}{% endfor %}{% endif %}
+CTT*{{ hl|length }}*345
 SE*56*{{ edi.ST02 }}{% else %}error{% endif %}</textarea>
               </div>
               <div class="modal-footer">
