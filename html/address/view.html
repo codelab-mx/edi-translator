@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.ver %}active{% endblock %}
+{% block page.header %}Socios Comerciales{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">
+{% if companies|length > 0 %}
+<div class="box">
+	<div class="box-body">
+    <table id="example1" class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Dirección EDI</th>
+          <th>Razón Social</th>
+          <th>E-mail</th>
+          <th>Dirección Física</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for company in companies %}
+          <tr>
+            <td><a href="ver/{{ company.id }}">{{ company.C_Edi_Address }}</a></td>
+            <td>{{ company.C_Name }}</td>
+            <td>{{ company.C_E_mail }}</td>
+            <td>{{ company.C_Address }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="register-box">
+  <div class="register-box-body">
+    <p class="login-box-msg">¡Asocie una dirección EDI a su empresa!</p>
+    <div class="input-group-btn">
+      <a href="/tradings/new_company/"><button type="button" class="btn btn-block btn-primary btn-flat">Asociar Dirección</button></a>
+    </div>
+  </div>
+</div>
+{% endif %}
+</div>
+<div class="col-xs-12">
+{% if partners|length > 0 %}
+<div class="box">
+  <div class="box-header">
+  {% if groups %}
+     <div class="input-group-btn">
+      <button aria-expanded="false" type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">Crear
+        <span class="fa fa-caret-down"></span>
+      </button>
+      <ul class="dropdown-menu" style="float:right">
+        {% for group in groups %}
+        <li><a href="nuevo/{{ group.name }}">{{ group.name|capfirst }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  </div>
+  <div class="box-body">
+    <table id="table2" class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Dirección EDI</th>
+          <th>Razón Social</th>
+          <th>DUN</th>
+          <th>E-mail</th>
+          <th>Dirección Física</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for partner in partners %}
+          <tr>
+            <td><a href="ver/{{ partner.id }}">{{ partner.P_Edi_Address }}</a></td>
+            <td>{{ partner.P_Name }}</td>
+            <td>{{ partner.DUNS }}</td>
+            <td>{{ partner.P_E_mail }}</td>
+            <td>{{ partner.P_Address }}</td>
+            <td></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="register-box">
+  <div class="register-box-body">
+    <p class="login-box-msg">¡Asocie una dirección EDI a un socio Comercial!</p>
+    <div class="input-group-btn">
+      <a href="/tradings/new_partner/"><button type="button" class="btn btn-block btn-primary btn-flat">Crear Socio Comercial</button></a>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+</div>
+{% endblock %}
+{% block aditional.css %}<link rel="stylesheet" href="/static/js/plugins/datatables/dataTables.bootstrap.css">{% endblock %}
+{% block aditional.js %}
+<script src="/static/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+<script>
+  $(function () {
+    $("#table2").DataTable();
+    $('#table').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+{% endblock %}

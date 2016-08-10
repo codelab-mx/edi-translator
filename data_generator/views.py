@@ -6,12 +6,14 @@ from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Gener
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from . import models
-
+from address.models import Partner_Data, Company_Data
 # Create your views here.
 def ASN_New(request):
 	global master
 	form = ASN_Heading(request.POST or None)
 	master = Data_Generator_Master()
+	partner = Partner_Data.objects.all()
+	address = Company_Data.objects.all()
 	if form.is_valid():
 		master.ST01 = "856"
 		master.CLIENT = form.cleaned_data.get('CLIENT')
@@ -32,7 +34,7 @@ def ASN_New(request):
 		cont = 0
 		print master.id
 		return HttpResponseRedirect(('{}/shipment/{}/').format(master.id, cont))
-	return render(request, 'EDI/generar/heading.html', {'form':form,})
+	return render(request, 'EDI/generar/heading.html', {'form':form, 'partner':partner, 'address':address})
 
 def ASN_New_Shipment(request, master_id , cont):
 	global master, hierarchial

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales - Nuevo Socio{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.socio %}active{% endblock %}
+{% block page.header %}Nuevo Socio Comercial{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Registrar un Socio nuevo al sistema</p>
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.P_Name.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_Name }}
+	    		<span class="fa fa-building form-control-feedback"></span>
+	    		{{ form.P_Name.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Address.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_Address }}
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.P_Address.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_City.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_City }}
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.P_City.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Country.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_Country }}
+	    		<span class="fa fa-map-marker form-control-feedback"></span>
+	    		{{ form.P_Country.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_ZIP.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_ZIP }}
+	    		<span class="fa fa-hashtag form-control-feedback"></span>
+	    		{{ form.P_ZIP.errors }}
+	    	</div>
+	    	
+	    	<div class="form-group has-feedback {% if form.P_E_mail.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_E_mail }}
+	    		<span class="fa fa-envelope-o form-control-feedback"></span>
+	    		{{ form.P_E_mail.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Phone.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_Phone }}
+	    		<span class="fa fa-phone form-control-feedback"></span>
+	    		{{ form.P_Phone.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Edi_Address.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.P_Edi_Address }}
+	    		<span class="fa fa-exchange form-control-feedback"></span>
+	    		{{ form.P_Edi_Address.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.DUNS.errors %}has-error{% else %}{% endif %}">
+	    		{{ form.DUNS }}
+	    		<span class="fa fa-unlock-alt form-control-feedback"></span>
+	    		{{ form.DUNS.errors }}
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+</div>
+</div>
+{% endblock %}
