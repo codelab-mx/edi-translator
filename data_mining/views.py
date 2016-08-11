@@ -125,3 +125,20 @@ def edi_translate(request, edi):
 		else:
 			return HttpResponseRedirect("/edi/")
 	return render(request, 'EDI/traducir.html', {'edi_files':edi_files})
+
+##########################
+#  BORRAR  ARCHIVOS EDI  #
+##########################
+@login_required
+def delete_edi(request, edi):
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	if request.user.is_active:
+		try:
+			edi_files = models.edi_address.objects.get(id=edi)
+			path = os.path.join(BASE_DIR, "media/{}".format(edi_files.edi_file))
+			edi_files.delete()
+			os.remove(path)
+			return  HttpResponseRedirect("/edi/")
+		except:
+			return  HttpResponseRedirect("/edi/")
+	return render(request, 'EDI/', {'edi_files':edi_files})

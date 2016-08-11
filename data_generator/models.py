@@ -95,4 +95,42 @@ class Data_Generator_Order(models.Model):
 	REF201 = models.CharField(blank = True, max_length = 50)
 	REF202 = models.CharField(blank = True, max_length = 50)
 
+class Data_Generator_Order_REF(models.Model):
+	PRIM = models.ForeignKey(Data_Generator_Hierarchial, on_delete= models.CASCADE, blank = True)
+	REF01 = models.CharField(blank = True, max_length = 50)
+	REF02 = models.CharField(blank = True, max_length = 50)
+
+class Data_Generator_I_MEA(models.Model):
+	PRIM = models.ForeignKey(Data_Generator_Master, on_delete= models.CASCADE, blank = True)
+	MEA01 = models.CharField(blank = True, max_length = 50)
+	MEA02 = models.CharField(blank = True, max_length = 50)
+	MEA03 = models.CharField(blank = True, max_length = 50)
+	MEA04 = models.CharField(blank = True, max_length = 50)
+	MEA201 = models.CharField(blank = True, max_length = 50)
+	MEA202 = models.CharField(blank = True, max_length = 50)
+	MEA203 = models.CharField(blank = True, max_length = 50)
+	MEA204 = models.CharField(blank = True, max_length = 50)
+	MEA301 = models.CharField(blank = True, max_length = 50)
+	MEA302 = models.CharField(blank = True, max_length = 50)
+	MEA303 = models.CharField(blank = True, max_length = 50)
+	MEA304 = models.CharField(blank = True, max_length = 50)
+	MEA401 = models.CharField(blank = True, max_length = 50)
+	MEA402 = models.CharField(blank = True, max_length = 50)
+	MEA403 = models.CharField(blank = True, max_length = 50)
+	MEA404 = models.CharField(blank = True, max_length = 50)
+
+class Data_Generator_I_REF(models.Model):
+	PRIM = models.ForeignKey(Data_Generator_Hierarchial, on_delete= models.CASCADE, blank = True)
+	REF01 = models.CharField(blank = True, max_length = 50)
+	REF02 = models.CharField(blank = True, max_length = 50)
+
+class Data_Generator_I_CLD(models.Model):
+	CLD01 = models.CharField(blank = True, max_length = 50)
+	CLD02 = models.CharField(blank = True, max_length = 50)
+	CLD03 = models.CharField(blank = True, max_length = 50)
+
+class Data_Generator_REFI(models.Model):
+	PRIM = models.ForeignKey(Data_Generator_Master, on_delete= models.CASCADE, blank = True)
+	REF01 = models.CharField(blank = True, max_length = 50)
+	REF02 = models.CharField(blank = True, max_length = 50)
 
