@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template.loader import get_template
 from .forms import ASN_Heading, ASN_Shipment, ASN_Order, ASN_Item
-from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order, Data_Generator_I_CLD, Data_Generator_I_MEA
+from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from . import models
@@ -128,9 +128,9 @@ def ASN_New_Item(request, master_id, cont):
 	for master_id in master_files:
 		m_id = master.id
 	hierarchial_order = Data_Generator_Hierarchial()
-	measures = Data_Generator_I_MEA()
+	#measures = Data_Generator_I_MEA()
 	form = ASN_Item(request.POST or None)
-	item_cld = Data_Generator_I_CLD()
+	#item_cld = Data_Generator_I_CLD()
 	if form.is_valid():
 		if flag == True:
 			cont_integer = int(cont)
@@ -192,8 +192,8 @@ def index_render(request, master_id):
 	edi = models.Data_Generator_Master.objects.get(id=master_id)
 	hl = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id)
 	order = Data_Generator_Order.objects.filter(PRIM_id=master_id)
-	measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
-	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order, 'measures':measures,})
+	#measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
+	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order,})
 
 
 
