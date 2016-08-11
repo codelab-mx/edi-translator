@@ -1,5 +1,5 @@
 from django import forms
-from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_I_CLD, Data_Generator_Hierarchial
+from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_Hierarchial
 from django.core.validators import RegexValidator
 
 class ASN_Heading(forms.ModelForm):
@@ -106,6 +106,16 @@ class ASN_Item(forms.ModelForm):
 	MEA402 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	MEA403 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	MEA404 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD101 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD102 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD201= forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD202 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD301 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD302 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD401 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD402 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_ITEM101 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_ITEM102 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	class Meta:
 		model = Data_Generator_Hierarchial
 		fields = ["CLD01", "CLD02", "CLD03"]

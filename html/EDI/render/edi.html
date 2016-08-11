@@ -82,7 +82,7 @@ REF*{{ header.REF_CLD401 }}*{{ header.REF_CLD402 }}{% endif %}{% endif %}{% endf
 $("#btn-save").click( function() {
   var text = $("#someid").text();
   var filename = $("#input-fileName").val()
-  var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+  var blob = new Blob([text]);
   saveAs(blob, filename);
 });</script>
 <script>

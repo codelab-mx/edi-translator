@@ -12,7 +12,7 @@ from . import models
 from django.contrib import messages
 from data import init_data
 from address.models import Partner_Data, Company_Data
-import datetime
+import datetime, os
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
 #############################

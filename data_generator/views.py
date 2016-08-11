@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template.loader import get_template
 from .forms import ASN_Heading, ASN_Shipment, ASN_Order, ASN_Item
-from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order, Data_Generator_I_CLD, Data_Generator_I_MEA
+from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from . import models
@@ -105,18 +105,16 @@ def ASN_New_Order(request, master_id, cont):
 		hierarchial_order.HL01 = str(cont_integer)
 		hierarchial_order.HL02 = "1"
 		hierarchial_order.HL03 = "O"
-		order.LIN02 = form.cleaned_data.get('LIN02')
-		order.LIN03 = form.cleaned_data.get('LIN03')
-		order.SN102 = form.cleaned_data.get('SN102')
-		order.SN103 = form.cleaned_data.get('SN103')
-		order.SN104 = form.cleaned_data.get('SN104')
-		order.PRF01 = form.cleaned_data.get('PRF01')
-		order.REF101 = form.cleaned_data.get('REF101')
-		order.REF102 = form.cleaned_data.get('REF102')
-		order.REF201 = form.cleaned_data.get('REF201')
-		order.REF202 = form.cleaned_data.get('REF202')
-		order.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
-		order.save()
+		hierarchial_order.LIN02 = form.cleaned_data.get('LIN02')
+		hierarchial_order.LIN03 = form.cleaned_data.get('LIN03')
+		hierarchial_order.SN102 = form.cleaned_data.get('SN102')
+		hierarchial_order.SN103 = form.cleaned_data.get('SN103')
+		hierarchial_order.SN104 = form.cleaned_data.get('SN104')
+		hierarchial_order.PRF01 = form.cleaned_data.get('PRF01')
+		hierarchial_order.REF101 = form.cleaned_data.get('REF101')
+		hierarchial_order.REF102 = form.cleaned_data.get('REF102')
+		hierarchial_order.REF201 = form.cleaned_data.get('REF201')
+		hierarchial_order.REF202 = form.cleaned_data.get('REF202')
 		hierarchial_order.save()
 		return HttpResponseRedirect(("/crear/856/{}/item/{}/").format(master.id, cont_integer))
 	return render(request, 'EDI/generar/order.html', {'form':form,})
@@ -128,9 +126,9 @@ def ASN_New_Item(request, master_id, cont):
 	for master_id in master_files:
 		m_id = master.id
 	hierarchial_order = Data_Generator_Hierarchial()
-	measures = Data_Generator_I_MEA()
+	#measures = Data_Generator_I_MEA()
 	form = ASN_Item(request.POST or None)
-	item_cld = Data_Generator_I_CLD()
+	#item_cld = Data_Generator_I_CLD()
 	if form.is_valid():
 		if flag == True:
 			cont_integer = int(cont)
@@ -144,27 +142,35 @@ def ASN_New_Item(request, master_id, cont):
 		hierarchial_order.HL01 = str(cont_integer_mas)
 		hierarchial_order.HL02 = cont_integer
 		hierarchial_order.HL03 = "I"
-		measures.MEA01 = "PD"
-		measures.MEA02 = form.cleaned_data.get('MEA02')
-		measures.MEA03 = form.cleaned_data.get('MEA03')
-		measures.MEA04 = form.cleaned_data.get('MEA04')
-		measures.MEA201 = "PD"
-		measures.MEA202 = form.cleaned_data.get('MEA202')
-		measures.MEA203 = form.cleaned_data.get('MEA203')
-		measures.MEA204 = form.cleaned_data.get('MEA204')
-		measures.MEA301 = "PD"
-		measures.MEA302 = form.cleaned_data.get('MEA302')
-		measures.MEA303 = form.cleaned_data.get('MEA303')
-		measures.MEA304 = form.cleaned_data.get('MEA304')
-		measures.MEA401 = "PD"
-		measures.MEA402 = form.cleaned_data.get('MEA402')
-		measures.MEA403 = form.cleaned_data.get('MEA403')
-		measures.MEA404 = form.cleaned_data.get('MEA404')
-		measures.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+		hierarchial_order.MEA01 = "PD"
+		hierarchial_order.MEA02 = form.cleaned_data.get('MEA02')
+		hierarchial_order.MEA03 = form.cleaned_data.get('MEA03')
+		hierarchial_order.MEA04 = form.cleaned_data.get('MEA04')
+		hierarchial_order.MEA201 = "PD"
+		hierarchial_order.MEA202 = form.cleaned_data.get('MEA202')
+		hierarchial_order.MEA203 = form.cleaned_data.get('MEA203')
+		hierarchial_order.MEA204 = form.cleaned_data.get('MEA204')
+		hierarchial_order.MEA301 = "PD"
+		hierarchial_order.MEA302 = form.cleaned_data.get('MEA302')
+		hierarchial_order.MEA303 = form.cleaned_data.get('MEA303')
+		hierarchial_order.MEA304 = form.cleaned_data.get('MEA304')
+		hierarchial_order.MEA401 = "PD"
+		hierarchial_order.MEA402 = form.cleaned_data.get('MEA402')
+		hierarchial_order.MEA403 = form.cleaned_data.get('MEA403')
+		hierarchial_order.MEA404 = form.cleaned_data.get('MEA404')
 		hierarchial_order.CLD01 = form.cleaned_data.get('CLD01')
 		hierarchial_order.CLD02 = form.cleaned_data.get('CLD02')
 		hierarchial_order.CLD03 = form.cleaned_data.get('CLD03')
-		measures.save()
+		hierarchial_order.REF_CLD101 = form.cleaned_data.get('REF_CLD101')
+		hierarchial_order.REF_CLD102 = form.cleaned_data.get('REF_CLD102')
+		hierarchial_order.REF_CLD201 = form.cleaned_data.get('REF_CLD201')
+		hierarchial_order.REF_CLD202 = form.cleaned_data.get('REF_CLD202')
+		hierarchial_order.REF_CLD301 = form.cleaned_data.get('REF_CLD301')
+		hierarchial_order.REF_CLD302 = form.cleaned_data.get('REF_CLD302')
+		hierarchial_order.REF_CLD401 = form.cleaned_data.get('REF_CLD401')
+		hierarchial_order.REF_CLD402 = form.cleaned_data.get('REF_CLD402')
+		hierarchial_order.REF_ITEM101 = form.cleaned_data.get('REF_ITEM101')
+		hierarchial_order.REF_ITEM102 = form.cleaned_data.get('REF_ITEM102')
 		hierarchial_order.save()
 		if (request.POST.get('next')):
 			return HttpResponseRedirect(('/crear/ver/{}').format(master.id))
@@ -192,8 +198,8 @@ def index_render(request, master_id):
 	edi = models.Data_Generator_Master.objects.get(id=master_id)
 	hl = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id)
 	order = Data_Generator_Order.objects.filter(PRIM_id=master_id)
-	measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
-	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order, 'measures':measures,})
+	#measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
+	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order,})
 
 
 
