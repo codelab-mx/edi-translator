@@ -7,11 +7,12 @@ from django.shortcuts import render, render_to_response
 from django.template.loader import get_template
 from django.shortcuts import render
 from forms import DocumentForm
-from models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, data_segments_SHP
+from models import data_segments_master, data_segments_BFR, data_segments_N, data_segments_830LIN, data_segments_FST, data_segments_SHP, data_segments_ATH
 from . import models
 from django.contrib import messages
 from data import init_data
-import datetime
+from address.models import Partner_Data, Company_Data
+import datetime, os
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
 #############################
@@ -21,7 +22,7 @@ is_admin es una variable que nos permite filtrar si el usuario es administrador
 @permission_required('polls.can_vote')
 @permission_required('polls.can_vote', login_url='/loginpage/')
 '''
-@login_required
+@login_required (login_url='/login/')
 def edi_index(request):
 	if request.user.is_active:
 		edi_files = models.edi_address.objects.all()
@@ -40,15 +41,18 @@ def edi_viewer(request, edi_viewer):
 	edi = models.edi_address.objects.get(id=edi_viewer)
 	file_name = edi.filename
 	master = models.data_segments_master.objects.get(id=edi_viewer)
-	s_1 = master.GS_4
-	date_master = datetime.datetime.strptime(s_1, "%Y%m%d").date()
+	partner = Partner_Data.objects.filter(P_Edi_Address=master.GS_2)
+	address = Company_Data.objects.filter(C_Edi_Address=master.GS_3)
+	print master.GS_2
+	print partner
 	bfr = master.data_segments_bfr_set.all()
 	name = master.data_segments_n_set.all()
-	shps = 1
+	shps = master.data_segments_shp_set.all()
+	ath = master.data_segments_ath_set.all()
 	lin830 = master.data_segments_830lin_set.all()
 	lin862 = master.data_segments_862lin_set.all()
 	fst = master.data_segments_fst_set.all()
-	return render(request, 'EDI/viewer.html', {'shps':shps, 'edi':edi, 'master':master, 'bfr':bfr, 'name':name, 'lin862':lin862, 'lin830':lin830, 'fst':fst, 'date_master':date_master})
+	return render(request, 'EDI/viewer.html', {'address':address, 'partner':partner, 'ath':ath, 'shps':shps, 'edi':edi, 'master':master, 'bfr':bfr, 'name':name, 'lin862':lin862, 'lin830':lin830, 'fst':fst})
 
 ##########################
 #  GENERAR ARCHIVOS EDI  #
@@ -121,3 +125,20 @@ def edi_translate(request, edi):
 		else:
 			return HttpResponseRedirect("/edi/")
 	return render(request, 'EDI/traducir.html', {'edi_files':edi_files})
+
+##########################
+#  BORRAR  ARCHIVOS EDI  #
+##########################
+@login_required
+def delete_edi(request, edi):
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	if request.user.is_active:
+		try:
+			edi_files = models.edi_address.objects.get(id=edi)
+			path = os.path.join(BASE_DIR, "media/{}".format(edi_files.edi_file))
+			edi_files.delete()
+			os.remove(path)
+			return  HttpResponseRedirect("/edi/")
+		except:
+			return  HttpResponseRedirect("/edi/")
+	return render(request, 'EDI/', {'edi_files':edi_files})
