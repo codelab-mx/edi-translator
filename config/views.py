@@ -11,7 +11,7 @@ import subprocess, os
 
 def home(request):
 	if request.user.is_active:
-		return render(request, 'index/index.html', {})
+		return HttpResponseRedirect("/tradings/")
 	elif not request.user.is_active:
 		return HttpResponseRedirect("/logout/")
 	else:
