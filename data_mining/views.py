@@ -16,27 +16,18 @@ import datetime, os
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
 #############################
-'''
-Solamente los usuarios administradores podrán acceder a este apartado
-is_admin es una variable que nos permite filtrar si el usuario es administrador
-@permission_required('polls.can_vote')
-@permission_required('polls.can_vote', login_url='/loginpage/')
-'''
-@login_required (login_url='/login/')
+
+@permission_required('auth.add_user', login_url='/tradings/')
+@login_required(login_url='/login/')
 def edi_index(request):
-	if request.user.is_active:
-		edi_files = models.edi_address.objects.all()
-		return render(request, 'EDI/ver.html', {'edi_files':edi_files})
-	elif not request.user.is_active:
-		return HttpResponseRedirect("/logout/")
-	else:
-		return HttpResponseRedirect("/")
+	edi_files = models.edi_address.objects.all()
+	return render(request, 'EDI/ver.html', {'edi_files':edi_files})
 
 ################
 #  EDI VIEWER  #
 ################
-
-@login_required
+@permission_required('data_mining.change_edi_address', login_url='/')
+@login_required (login_url='/login/')
 def edi_viewer(request, edi_viewer):
 	edi = models.edi_address.objects.get(id=edi_viewer)
 	file_name = edi.filename
@@ -54,91 +45,52 @@ def edi_viewer(request, edi_viewer):
 	fst = master.data_segments_fst_set.all()
 	return render(request, 'EDI/viewer.html', {'address':address, 'partner':partner, 'ath':ath, 'shps':shps, 'edi':edi, 'master':master, 'bfr':bfr, 'name':name, 'lin862':lin862, 'lin830':lin830, 'fst':fst})
 
-##########################
-#  GENERAR ARCHIVOS EDI  #
-##########################
-'''
-Solamente los usuarios administradores podrán acceder a este apartado
-is_admin es una variable que nos permite filtrar si el usuario es administrador
-
-'''
-def edi_generator(request):
-	if request.user.is_active:
-		groups = Group.objects.all()
-		return render(request, 'EDI/generar.html', {})
-	elif not request.user.is_active:
-		return HttpResponseRedirect("/logout/")
-	else:
-		return HttpResponseRedirect("/")
-
-#########################################
-#  FORMULARIO PARA EDITAR ARCHIVOS EDI  #
-#########################################
-
-@login_required
-def edi_information_editor(request, edi_editor):
-	if request.user.is_active:
-		info = models.edi_address.objects.get(edi_file=('edi/{}').format(edi_editor))
-		print info
-		return render(request, 'EDI/editar.html', {'info':info})
-	elif not request.user.is_active:
-		return HttpResponseRedirect("/logout/")
-	else:
-		return HttpResponseRedirect("/")
-
-
 
 ########################################
 #  FORMULARIO PARA SUBIR ARCHIVOS EDI  #
 ########################################
-
-@login_required
+@permission_required('data_mining.add_edi_address', login_url='/')
+@login_required (login_url='/login/')
 def edi_translator(request):
-	if request.user.is_active:
-		form = DocumentForm(request.POST, request.FILES)
-		if form.is_valid():
-			new_file = models.edi_address(edi_file = request.FILES['docfile'])
-			new_file.save()
-			print new_file.id
-			return HttpResponseRedirect(('{}').format(new_file.id))
-		return render(request, 'EDI/traducir.html', {'form': form})
-	elif not request.user.is_active:
-		return HttpResponseRedirect("/logout/")
-	else:
-		return HttpResponseRedirect("/")
-
+	form = DocumentForm(request.POST, request.FILES)
+	if form.is_valid():
+		new_file = models.edi_address(edi_file = request.FILES['docfile'])
+		new_file.save()
+		print new_file.id
+		return HttpResponseRedirect(('{}').format(new_file.id))
+	return render(request, 'EDI/traducir.html', {'form': form})
+	
 #################################
 #  TRADUCCIÓN DE  ARCHIVOS EDI  #
 #################################
-@login_required
+@permission_required('data_mining.add_edi_address', login_url='/')
+@login_required (login_url='/login/')
 def edi_translate(request, edi):
-	if request.user.is_active:
-		edi_files = models.edi_address.objects.filter(id=edi)
-		for edi in edi_files:
-			id_edi_local = edi.id
-			address_local = edi.edi_file
-			flag_local = edi.flag
-		if flag_local == False:
-			print 'id_edi_local', id_edi_local
-			init_data(id_edi_local, address_local, flag_local)
-			return HttpResponseRedirect("/edi/")
-		else:
-			return HttpResponseRedirect("/edi/")
+	edi_files = models.edi_address.objects.filter(id=edi)
+	for edi in edi_files:
+		id_edi_local = edi.id
+		address_local = edi.edi_file
+		flag_local = edi.flag
+	if flag_local == False:
+		init_data(id_edi_local, address_local, flag_local)
+		return HttpResponseRedirect("/edi/")
+	else:
+		return HttpResponseRedirect("/edi/")
 	return render(request, 'EDI/traducir.html', {'edi_files':edi_files})
 
 ##########################
 #  BORRAR  ARCHIVOS EDI  #
 ##########################
-@login_required
+@permission_required('data_mining.delete_edi_address', login_url='/logout/')
+@login_required (login_url='/login/')
 def delete_edi(request, edi):
 	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	if request.user.is_active:
-		try:
-			edi_files = models.edi_address.objects.get(id=edi)
-			path = os.path.join(BASE_DIR, "media/{}".format(edi_files.edi_file))
-			edi_files.delete()
-			os.remove(path)
-			return  HttpResponseRedirect("/edi/")
-		except:
-			return  HttpResponseRedirect("/edi/")
+	try:
+		edi_files = models.edi_address.objects.get(id=edi)
+		path = os.path.join(BASE_DIR, "media/{}".format(edi_files.edi_file))
+		edi_files.delete()
+		os.remove(path)
+		return  HttpResponseRedirect("/edi/")
+	except:
+		return  HttpResponseRedirect("/edi/")
 	return render(request, 'EDI/', {'edi_files':edi_files})
