@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import auth
 from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.template.context_processors import csrf
@@ -9,28 +10,17 @@ from django.contrib.auth.models import User, Group
 from .forms import UserLoginForm, UserRegister
 import subprocess, os
 
+@permission_required('data_mining.add_edi_address', login_url='/logout/')
+@login_required (login_url='/login/')
 def home(request):
-	if request.user.is_active:
-		return HttpResponseRedirect("/tradings/")
-	elif not request.user.is_active:
-		return HttpResponseRedirect("/logout/")
-	else:
-		return HttpResponseRedirect("/login/")
+	return HttpResponseRedirect("/tradings/")
+
 
 def login_crm(request):
-	try:
-		admins = Group.objects.get(name="administrador").user_set.all().count()
-	except Group.DoesNotExist:
-		admins = None
-	try:
-		users = Group.objects.get(name="usuario").user_set.all().count()
-	except Group.DoesNotExist:
-		users = None
-	print users
-	print admins
-	if admins == None or users == None or admins == 0:
+	users = User.objects.exclude(is_superuser=1).count()
+	if users == 0:
 		return HttpResponseRedirect("/setup")
-	elif (admins and users >= 0) and request.user.is_active:
+	elif users >= 0 and request.user.is_active:
 		return HttpResponseRedirect("/")
 	else:
 		form = UserLoginForm(request.POST or None)
@@ -42,25 +32,15 @@ def login_crm(request):
 			return HttpResponseRedirect("/")
 		return render(request, 'auth/login.html', {"form":form})
 
+@login_required (login_url='/login/')
 def logout_crm(request):
-	if request.user.is_authenticated():
-		logout(request)
-		return HttpResponseRedirect("/")
-	else:
-		return HttpResponseRedirect("/login/")
+	logout(request)
+	return HttpResponseRedirect("/login/")
 
 def setup(request):
-	try:
-		admins = Group.objects.get(name="administrador").user_set.all().count()
-	except Group.DoesNotExist:
-		admins = None
-	try:
-		users = Group.objects.get(name="usuario").user_set.all().count()
-	except Group.DoesNotExist:
-		users = None
-	print users
-	print admins
-	if admins == None or users == None:
+	s_u = User.objects.filter(is_superuser=1).count()
+	users = User.objects.exclude(is_superuser=1).count()
+	if s_u == 0:
 		if(request.POST.get('mybtn')):
 			a = int(request.POST.get('mytextbox'))
 			if a == 1:
@@ -68,10 +48,9 @@ def setup(request):
 				command = "python {}/manage.py loaddata initial_data.json".format(BASE_DIR)
 				process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
 				output = process.communicate()[0]
-				print output
 				return HttpResponseRedirect("/login")
 		return render(request, 'auth/setup.html', {})
-	elif admins == 0 and users == 0:
+	elif s_u >= 0 and users == 0:
 		reg_form = UserRegister(request.POST or None)
 		if reg_form.is_valid():
 			user = reg_form.save(commit=False)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render
 from django.template.loader import get_template
 from .forms import ASN_Heading, ASN_Shipment, ASN_Order, ASN_Item
@@ -7,7 +8,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from . import models
 from address.models import Partner_Data, Company_Data
-# Create your views here.
+
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
 def ASN_New(request):
 	global master
 	form = ASN_Heading(request.POST or None)
@@ -36,11 +39,12 @@ def ASN_New(request):
 		return HttpResponseRedirect(('{}/shipment/{}/').format(master.id, cont))
 	return render(request, 'EDI/generar/heading.html', {'form':form, 'partner':partner, 'address':address})
 
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
 def ASN_New_Shipment(request, master_id , cont):
 	global master, hierarchial
 	cont_integer = int(cont)
 	cont_integer = cont_integer + 1
-
 	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
 	for master_id in master_files:
 		m_id = master.id
@@ -87,7 +91,8 @@ def ASN_New_Shipment(request, master_id , cont):
 		return HttpResponseRedirect(('/crear/856/{}/order/{}/').format(master.id, cont_integer))
 	return render(request, 'EDI/generar/shipment.html', {'form':form, 'master_files':master_files})
 
-
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
 def ASN_New_Order(request, master_id, cont):
 	global master, flag, contador
 	flag = False
@@ -119,6 +124,8 @@ def ASN_New_Order(request, master_id, cont):
 		return HttpResponseRedirect(("/crear/856/{}/item/{}/").format(master.id, cont_integer))
 	return render(request, 'EDI/generar/order.html', {'form':form,})
 
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
 def ASN_New_Item(request, master_id, cont):
 	global flag, contador
 	print flag
@@ -179,21 +186,16 @@ def ASN_New_Item(request, master_id, cont):
 		if (request.POST.get('item')):
 			flag = True
 			return HttpResponseRedirect(('/crear/856/{}/item/{}/').format(master.id, cont_integer))
-
-
 	return render(request, 'EDI/generar/item.html', {'form':form,})
 
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
 def render_list(request):
-	if request.user.is_active:
-		edi_files = models.Data_Generator_Master.objects.all()
-		return render(request, 'EDI/render/view-list.html', {'edi_files':edi_files})
-	elif not request.user.is_active:
-		return HttpResponseRedirect("/logout/")
-	else:
-		return HttpResponseRedirect("/")
+	edi_files = models.Data_Generator_Master.objects.all()
+	return render(request, 'EDI/render/view-list.html', {'edi_files':edi_files})
 
-
-
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
 def index_render(request, master_id):
 	edi = models.Data_Generator_Master.objects.get(id=master_id)
 	hl = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id)
@@ -201,5 +203,17 @@ def index_render(request, master_id):
 	#measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
 	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order,})
 
-
+##########################
+#  BORRAR  ARCHIVOS EDI  #
+##########################
+@permission_required('data_generator.delete_data_generator_master', login_url='/logout/')
+@login_required (login_url='/login/')
+def delete_edi(request, master_id):
+	try:
+		edi = models.Data_Generator_Master.objects.get(id=master_id)
+		edi.delete()
+		return  HttpResponseRedirect("/crear/ver")
+	except:
+		return  HttpResponseRedirect("/crear/ver")
+	return render(request, 'EDI/', {'edi_files':edi_files})
 
