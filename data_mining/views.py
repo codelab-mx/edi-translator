@@ -17,7 +17,7 @@ import datetime, os
 #  VISUALIZAR ARCHIVOS EDI  #
 #############################
 
-@permission_required('auth.add_user', login_url='/tradings/')
+@permission_required('data_mining.change_edi_address', login_url='/tradings/')
 @login_required(login_url='/login/')
 def edi_index(request):
 	edi_files = models.edi_address.objects.all()
