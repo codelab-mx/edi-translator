@@ -201,5 +201,20 @@ def index_render(request, master_id):
 	#measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
 	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order,})
 
+##########################
+#  BORRAR  ARCHIVOS EDI  #
+##########################
+
+def delete_edi(request, master_id):
+	
+	if request.user.is_active:
+		try:
+			edi = models.Data_Generator_Master.objects.get(id=master_id)
+			edi.delete()
+			
+			return  HttpResponseRedirect("/crear/ver")
+		except:
+			return  HttpResponseRedirect("/crear/ver")
+	return render(request, 'EDI/', {'edi_files':edi_files})
 
 
