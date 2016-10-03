@@ -1,14 +1,14 @@
 {% extends "starter.html" %}
 {% block title %}Log In{% endblock %}
 {% block body.class %}login-page{% endblock %}
-{% block body.background %}style="background-image: url('/static/img/overlay.png'), url('/static/img/background.jpg');background-size: auto,cover;"{% endblock %}
+{% block body.background %}{% load staticfiles %}style="background-image: url('{% static "img/overlay.png" %}'), url('{% static "img/background.jpg" %}');background-size: auto,cover;"{% endblock %}
 {% block body.login %}
   <div class="login-box {% if form.errors %}box box-danger{% endif %}">
     <div class="login-box-body">
       <div class="login-logo">
-        <img src="/static/img/logo.png" alt="Home" style="max-width: 100%;">
+        {% load staticfiles %}<img src="{% static 'img/logo.png' %}" alt="Home" style="max-width: 100%;">
       </div>
-      <p style="text-align: center;">EDI Translator V 0.5.1</p>
+      <p style="text-align: center;">EDI Translator V 1.5.1</p>
       {% if form.errors and not form.non_field_errors %}
         <div class="alert alert-mini alert-warning margin-bottom-30">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

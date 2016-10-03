@@ -20,7 +20,7 @@
         <div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">
-      <img src="/static/img/logo.png" alt="Home" style="max-width: 100%;">
+      {% load staticfiles %}<img src="{% static 'img/logo.png' %}" alt="Home" style="max-width: 100%;">
       <medium class="pull-right">{% if master.GS_1 == 'PS' %}830 - Planning Schedule {% elif master.GS_1 == 'SS' %}862 - Shipping Schedule{% endif %}</medium>
     </h2>
   </div>
@@ -28,25 +28,24 @@
 {% if edi %}
 	<div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-          From: {% if address %}{% for data in address %}
+          To: {% if address %}{% for data in address %}
           <address>
             <strong>{{ data.C_Name }}</strong><br>
             {{ data.C_Address }}<br>
             {{ data.C_Country }} {{ data.C_City }}, {{ data.C_ZIP }}<br>
-            <strong>Phone:</strong> (804) 123-5432<br>
+            <strong>Phone:</strong> {{ data.C_Phone }}<br>
             <strong>Email:</strong> {{ data.C_E_mail }}<br>
             <strong>EDI Address:</strong> {{ master.GS_3 }}
           </address>{% endfor %}
         {% else %}<address><strong>EDI Address:</strong> {{ master.GS_3 }} </address>{% endif %}
         </div>
         <div class="col-sm-4 invoice-col">
-          To:
+          From:
           {% if partner %}{% for data in partner %}
           <address>
             <strong>{{ data.P_Name }}</strong><br>
-            {{ data.P_Address }}<br>
-            San Francisco, CA 94107<br>
-            <strong>Phone:</strong> (804) 123-5432<br>
+            {{ data.P_Address }} {{ data.P_City }}, {{ data.P_ZIP }}<br>
+            <strong>Phone:</strong> {{ data.P_Phone }}<br>
             <strong>Email:</strong> {{ data.P_E_mail }}<br>
             <strong>EDI Address:</strong> {{ master.GS_2 }}
           </address>{% endfor %}
@@ -181,9 +180,9 @@
           <button type="button" class="btn btn-success pull-right" onclick="window.print();">
             <i class="fa fa-print"></i> Imprimir
           </button>
-        <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <a href="{{ edi.edi_file.url }}"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
           <i class="fa fa-download"></i> Descargar Edi
-        </button>
+        </button></a>
       </div>
     </div>
 {% endif %}
@@ -191,9 +190,9 @@
 
 
 {% endblock %}
-{% block aditional.css %}<link rel="stylesheet" href="/static/js/plugins/datatables/dataTables.bootstrap.css">{% endblock %}
+{% block aditional.css %}{% load staticfiles %}<link rel="stylesheet" href="{% static 'js/plugins/datatables/dataTables.bootstrap.css' %}">{% endblock %}
 {% block aditional.js %}
-<script src="/static/js/jspdf.min.js"></script>
+{% load staticfiles %}<script src="{% static 'js/jspdf.min.js' %}"></script>
 <script>
   function genPDF() {
    var doc = new jsPDF();
@@ -215,8 +214,8 @@ doc.fromHTML($('#render_me').get(0), 15, 15, {
   }
 
 </script>
-<script src="/static/js/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+{% load staticfiles %}<script src="{% static 'js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+{% load staticfiles %}<script src="{% static 'js/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
 <script>
   $(function () {
     $("#example1").DataTable();

@@ -1,5 +1,5 @@
 from django import forms
-from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_Hierarchial
+from models import Data_Generator_Master, Data_Generator_Order, Data_Generator_Hierarchial, Data_Generator_Loads
 from django.core.validators import RegexValidator
 
 class ASN_Heading(forms.ModelForm):
@@ -24,16 +24,17 @@ class ASN_Heading(forms.ModelForm):
 		fields = ["ST02", "BST01", "BST03", "BST04", "DTM04", "ST01", "CLIENT", "NAME", "PREFIX_NAME", "PREFIX_CLIENT"]
 
 class ASN_Shipment(forms.ModelForm):
+
 	N101 = forms.CharField(required=False, label='Operation', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	N102 = forms.CharField(required=False, widget=forms.HiddenInput(), initial="")
+	N102 = forms.CharField(required=False, label='Operation', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N103 = forms.CharField(required=False, label='Identification Method', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N104 = forms.CharField(required=False, label='Identification', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N201 = forms.CharField(required=False, label='Operation', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	N202 = forms.CharField(required=False, widget=forms.HiddenInput(), initial="")
+	N202 = forms.CharField(required=False, label='Identification Method', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N203 = forms.CharField(required=False, label='Identification Method', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N204 = forms.CharField(required=False, label='Identification', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N301 = forms.CharField(required=False, label='Operation', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	N302 = forms.CharField(required=False, widget=forms.HiddenInput(), initial="")
+	N302 = forms.CharField(required=False, label='Identification', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N303 = forms.CharField(required=False, label='Identification Method', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	N304 = forms.CharField(required=False, label='Identification', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	HL01 = forms.CharField(required=False, widget=forms.HiddenInput(), initial="PD")
@@ -43,22 +44,22 @@ class ASN_Shipment(forms.ModelForm):
 	MEA02 = forms.CharField(required=False, label='Weight Qualifier', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	MEA03 = forms.CharField(required=False, label='Weight Value', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	MEA04 = forms.CharField(required=False, label='Weight Unit', widget=forms.TextInput(attrs={'placeholder': 'KG MM L LBS .. ETC', 'class': 'form-control'}))
-	TD101 = forms.CharField(required=False, label='Packaging Code', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	TD101 = forms.CharField(required=False, label='Packaging Code', widget=forms.TextInput(attrs={'placeholder': 'No. Guia', 'class':  'form-control'}))
 	TD102 = forms.CharField(required=False, label='Landing Quantity', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	TD501 = forms.CharField(required=False, widget=forms.HiddenInput(), initial="B")
 	TD502 = forms.CharField(required=False, widget=forms.HiddenInput(), initial="2")
-	TD503 = forms.CharField(required=False, label='ID Code', widget=forms.TextInput(attrs={'placeholder': 'Code Identifying a Party','class': 'form-control'}))
-	TD504 = forms.CharField(required=False, label='Transportation Method', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	TD503 = forms.CharField(required=False, label='ID Code', widget=forms.TextInput(attrs={'placeholder': '','class': 'form-control'}))
+	TD504 = forms.CharField(required=False, label='Transportation Method', widget=forms.TextInput(attrs={'placeholder': 'TL','class': 'form-control'}))
 	TD507 = forms.CharField(required=False, label='Location Qualifier', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	TD508 = forms.CharField(required=False, label='Location ID', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	TD301 = forms.CharField(required=False, label='Equipment Code', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	TD302 = forms.CharField(required=False, label='Equipment Initial', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	TD303 = forms.CharField(required=False, label='Equipment Number', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	TD401 = forms.CharField(required=False,  label='Special Handling Code', widget=forms.TextInput(attrs={'placeholder': 'Optional', 'class': 'form-control'}))
-	TD402 = forms.CharField(required=False, label='Hazardous Qualifier', widget=forms.TextInput(attrs={'placeholder': 'Optional', 'class': 'form-control'}))
-	TD403 = forms.CharField(required=False,  label='Hazardous Code', widget=forms.TextInput(attrs={'placeholder': 'Optional', 'class': 'form-control'}))
-	TD404 = forms.CharField(required=False,  label='Description', widget=forms.TextInput(attrs={'placeholder': 'Optional', 'class': 'form-control'}))
-	TD405 = forms.CharField(required=False,  label='Condition', widget=forms.TextInput(attrs={'placeholder': 'Optional', 'class': 'form-control'}))
+	TD401 = forms.CharField(required=False,  label='Special Handling Code', widget=forms.TextInput(attrs={'placeholder': '', 'class': 'form-control'}))
+	TD402 = forms.CharField(required=False, label='Hazardous Qualifier', widget=forms.TextInput(attrs={'placeholder': '', 'class': 'form-control'}))
+	TD403 = forms.CharField(required=False,  label='Hazardous Code', widget=forms.TextInput(attrs={'placeholder': '', 'class': 'form-control'}))
+	TD404 = forms.CharField(required=False,  label='Description', widget=forms.TextInput(attrs={'placeholder': '', 'class': 'form-control'}))
+	TD405 = forms.CharField(required=False,  label='Condition', widget=forms.TextInput(attrs={'placeholder': '', 'class': 'form-control'}))
 	REF01 = forms.CharField(required=False, label='Reference Qualifier', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	REF02 = forms.CharField(required=False, label='Reference ID', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	class Meta:
@@ -74,7 +75,7 @@ class ASN_Order(forms.ModelForm):
 	LIN02 = forms.CharField(required=False, label='Product Qualifier', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	LIN03 = forms.CharField(required=False, label='Product ID', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	SN102 = forms.CharField(required=False, label='Number of Units Shiped', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	SN103 = forms.CharField(required=False, label='Unit', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	SN103 = forms.CharField(required=False, label='Unit', widget=forms.TextInput(attrs={'placeholder': 'Piezas','class': 'form-control'}))
 	SN104 = forms.CharField(required=False, label='Quantity Shipped', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	PRF01 = forms.CharField(required=False, label='Purchase Order Number', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	REF101 = forms.CharField(required=False, label='Reference', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -119,3 +120,11 @@ class ASN_Item(forms.ModelForm):
 	class Meta:
 		model = Data_Generator_Hierarchial
 		fields = ["CLD01", "CLD02", "CLD03"]
+
+
+class ASN_Item2(forms.ModelForm):
+	REF_CLD1 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	REF_CLD2 = forms.CharField(required=False, label='Measure', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	class Meta:
+		model = Data_Generator_Loads
+		fields = ["REF_CLD1", "REF_CLD2"]

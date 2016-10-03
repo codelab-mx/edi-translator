@@ -1,16 +1,15 @@
 {% extends "starter.html" %}
-{% block title %}Registrar Administrador{% endblock %}
+{% block title %}Actualizar Base de datos{% endblock %}
 {% block body.class %}login-page{% endblock %}
-{% block body.background %}style="background-image: url('/static/img/overlay.png'), url('/static/img/background.jpg');background-size: auto,cover;"{% endblock %}
-
+{% block body.background %}{% load staticfiles %}style="background-image: url('{% static "img/overlay.png" %}'), url('{% static "img/background.jpg" %}');background-size: auto,cover;"{% endblock %}
 {% block body.login %}
 <div class="col-xs-12">		
 <div class="login-box">
 	<div class="register-box-body">
 	<div class="login-logo">
-        <img src="/static/img/logo.png" alt="Home" style="max-width: 100%;">
+        {% load staticfiles %}<img src="{% static 'img/logo.png' %}" alt="Boellhoff" style="max-width: 100%;">
       </div>
-      <p style="text-align: center;">EDI Translator V 0.5.1</p>
+      <p style="text-align: center;">EDI Translator V 1.5.1</p>
     	<p class="login-box-msg">La plataforma se ha instalado correctamente, es necesario sincronizar la base de datos </p>
     	<form action="#" method="POST">{% csrf_token %}
     		<input type="hidden" value="1" name="mytextbox"/>

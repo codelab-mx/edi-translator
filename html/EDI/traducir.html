@@ -3,6 +3,8 @@
 {% block menu.edi %}active{% endblock %}
 {% block menu.edi.traducir %}active{% endblock %}
 {% block page.header %}Traducir archivo EDI{% endblock %}
+{% block breadcrumb.1 %}EDI{% endblock %}
+{% block breadcrumb.2 %}Traducir{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">		
 <div class="register-box box-primary">
@@ -21,21 +23,9 @@
     			<button type="submit" class="btn btn-primary btn-block btn-flat">Traducir</button>
     		</form>
     	</div>
-    	<!--
-        <div class="overlay ">
-        	<i class="fa fa-refresh fa-spin" style="color:#3c8dbc"></i>
-        </div>-->
     </div>
 </div>
 </div>
-
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 
 {% endblock %}
 {% block aditional.css%}

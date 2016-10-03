@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales - Nueva dirección{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.empresa %}active{% endblock %}
+{% block page.header %}Editar Dirección Comercial EDI{% endblock %}
+{% block breadcrumb.1 %}Relaciones comerciales{% endblock %}
+{% block breadcrumb.2 %}Editar dirección{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Editar Dirección comercial de <strong>Su Empresa</strong></p>
+    	{% if Address %}
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.C_Name.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_Name" name="C_Name" placeholder="Nombre Comercial" type="text" value="{{ Address.C_Name }}">
+	    		<span class="fa fa-building form-control-feedback"></span>
+	    		{{ form.C_Name.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Address.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_Address" name="C_Address" placeholder="Dirección Física" type="text" value="{{ Address.C_Address}}">
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.C_Address.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_City.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_City" name="C_City" placeholder="Ciudad" type="text" value="{{ Address.C_City }}">
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.C_City.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Country.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_Country" name="C_Country" placeholder="País" type="text" value="{{ Address.C_Country }}">
+	    		<span class="fa fa-map-marker form-control-feedback"></span>
+	    		{{ form.C_Country.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_ZIP.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_ZIP" name="C_ZIP" placeholder="Código Postal" type="text" value="{{ Address.C_ZIP }}">
+	    		<span class="fa fa-hashtag form-control-feedback"></span>
+	    		{{ form.C_ZIP.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_E_mail.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_E_mail" name="C_E_mail" placeholder="E-Mail" type="email" value="{{ Address.C_E_mail }}">
+	    		<span class="fa fa-envelope-o form-control-feedback"></span>
+	    		{{ form.C_E_mail.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Phone.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_Phone" name="C_Phone" placeholder="Teléfono" type="text" value="{{ Address.C_Phone }}">
+	    		<span class="fa fa-phone form-control-feedback"></span>
+	    		{{ form.C_Phone.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.C_Edi_Address.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_C_Edi_Address" name="C_Edi_Address" placeholder="Dirección EDI" type="text" value="{{ Address.C_Edi_Address}}">
+	    		<span class="fa fa-exchange form-control-feedback"></span>
+	    		{{ form.C_Edi_Address.errors }}
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Actualizar</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+	    {% else %}
+	    <div class="register-box-body">
+      		<p class="login-box-msg">No existe esa <strong>Dirección EDI</strong></p>
+      		<a href={% url 'view_tradings' %}><button type="button" class="btn btn-block btn-primary btn-flat">Ver Relaciones comerciales</button></a>
+    	</div>
+    	{% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

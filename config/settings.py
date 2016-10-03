@@ -15,7 +15,7 @@ SECRET_KEY = '3*wq-efs3bf7yw=yzob!l4%6c5qo2%)1x870hg!-crq)(sism!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost:8000']
+ALLOWED_HOSTS = ['traductor-edi.consulta-its.com']
 
 
 # Application definition
@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'address.apps.AddressConfig',
     'data_mining.apps.DataMiningConfig',
     'data_generator.apps.DataGeneratorConfig',
-	'usuarios.apps.UsuariosConfig',
+    'usuarios.apps.UsuariosConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,13 +68,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'sql/database.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'sql/database.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'boellhoffedit',
+        'USER': 'boellhoffuser',
+        'PASSWORD': 'YVhl3R6xQy',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -112,6 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+#STATIC_URL = 'https://codelab.mx/static/'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 

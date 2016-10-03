@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales - Nuevo Socio{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.socio %}active{% endblock %}
+{% block page.header %}Editar Socio Comercial{% endblock %}
+{% block breadcrumb.1 %}Relaciones Comerciales{% endblock %}
+{% block breadcrumb.2 %}Editar Socio Comercial{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Editar Socio Comercial</p>
+    	{% if Partner %}
+	    <form method="POST" action="">{% csrf_token %}
+	    	<div class="form-group has-feedback {% if form.P_Name.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_Name" name="P_Name" placeholder="Nombre Comercial" type="text" value="{{ Partner.P_Name }}">
+	    		<span class="fa fa-building form-control-feedback"></span>
+	    		{{ form.P_Name.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Address.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_Address" name="P_Address" placeholder="Dirección Física" type="text" value="{{ Partner.P_Address}}">
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.P_Address.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_City.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_City" name="P_City" placeholder="Ciudad" type="text" value="{{ Partner.P_City}}">
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    		{{ form.P_City.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Country.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_Country" name="P_Country" placeholder="País" type="text" value="{{ Partner.P_Country}}"> 
+	    		<span class="fa fa-map-marker form-control-feedback"></span>
+	    		{{ form.P_Country.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_ZIP.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_ZIP" name="P_ZIP" placeholder="Código Postal" type="text" value="{{ Partner.P_ZIP}}">
+	    		<span class="fa fa-hashtag form-control-feedback"></span>
+	    		{{ form.P_ZIP.errors }}
+	    	</div>
+	    	
+	    	<div class="form-group has-feedback {% if form.P_E_mail.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_E_mail" name="P_E_mail" placeholder="E-Mail" type="text" value="{{ Partner.P_E_mail}}">
+	    		<span class="fa fa-envelope-o form-control-feedback"></span>
+	    		{{ form.P_E_mail.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Phone.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_Phone" name="P_Phone" placeholder="Teléfono" type="text" value="{{ Partner.P_Phone }}">
+	    		<span class="fa fa-phone form-control-feedback"></span>
+	    		{{ form.P_Phone.errors }}
+	    	</div>
+	    	<div class="form-group has-feedback {% if form.P_Edi_Address.errors %}has-error{% else %}{% endif %}">
+	    		<input class="form-control" id="id_P_Edi_Address" name="P_Edi_Address" placeholder="Dirección EDI" type="text" value="{{ Partner.P_Edi_Address}}">
+	    		<span class="fa fa-exchange form-control-feedback"></span>
+	    		{{ form.P_Edi_Address.errors }}
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+	    			<input type="hidden" name="next" value="{{ next }}" />
+	    		</div>
+	    	</div>
+	    </form>
+	    {% else %}
+	    <div class="register-box-body">
+      		<p class="login-box-msg">Lo sentimos, el usuario <strong>{{ user_name }}</strong> no existe </p>
+      		<a href="/usuarios"><button type="button" class="btn btn-block btn-primary btn-flat">Ver usuarios</button></a>
+    	</div>
+    	{% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

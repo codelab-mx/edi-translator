@@ -4,6 +4,8 @@
 {% block menu.generar %}active{% endblock %}
 {% block menu.generar.ver %}active{% endblock %}
 {% block page.header %}Ver archivos EDI{% endblock %}
+{% block breadcrumb.1 %}Ver{% endblock %}
+{% block breadcrumb.2 %}Archivos EDI{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">
 <div class="box">
@@ -14,7 +16,9 @@
 				<tr>
 			        <th>#</th>
 			        <th>Nombre del Archivo</th>
-			        <th>Fecha de Subida</th>
+			        <th>Fecha</th>
+			        <th>Hora</th>
+			        <th>Número de Control</th>
 			        <th></th>
 		        </tr>
 		        </thead>
@@ -22,27 +26,24 @@
 		        {% for file in edi_files %}
 		        	<tr>
 		        	<td>{{ forloop.counter }}</td>
-              <td><a href="{{ file.id }}">{{ file.BST03 }}-{{ file.BST04 }}</a></td>
-		        	<td>{{ file.BST03|slice:"6:" }} - {{ file.BST03|slice:"4:-2" }} - {{ file.BST03|slice:":4" }}</td>
+              		<td><a href="{{ file.id }}">{{ file.BST03 }}-{{ file.BST04 }}</a></td>
+		        	<td>{{ file.BST03|slice:"6:" }}-{{ file.BST03|slice:"4:-2" }}-{{ file.BST03|slice:":4" }}</td>
+		        	<td>{{ file.BST04|slice:":2" }}:{{ file.BST04|slice:"2:" }}</td>
+		        	<td>{{ file.ST02 }}</td>
 		        	<td align="center">
-		        	{% if file.flag == 0 %} 
-		        		<a href="/edi/traducir/{{ file.id }}"><button type="button" class="btn btn-danger">Traducir</button></a>
-		        	{% else %}
 		        		<div class="btn-group">
 		        			<a href="{{ file.id }}"  class="btn btn-primary btn-flat">Ver</a>
-		        			<button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="editar/{{ file.filename }}">Editar</a></li>
-                    <li><a href="#">Descargar EDI</a></li>
-                    <li><a href="#">Descargar PDF</a></li>
-                    <li class="divider"></li>
-                    <li><a href={% url 'delete_edi' file.id %}>Eliminar</a></li>
-                  </ul>
-                </div>
-		        		{% endif %}</td>
+		        			{% if perms.data_mining.delete_edi_address %}
+		        				<button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
+				                    <span class="caret"></span>
+				                    <span class="sr-only">Toggle Dropdown</span>
+			                    </button>
+			                    <ul class="dropdown-menu" role="menu">
+			                    	<li><a href={% url 'delete_edi' file.id %}>Eliminar</a></li>
+			                    </ul>
+			                {% endif %}
+		        		</div>
+		        	</td>
 		        	</tr>
 		        {% endfor %}
 		      </tbody>

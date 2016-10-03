@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales - Nuevo Socio{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.socio %}active{% endblock %}
+{% block page.header %}Ver Socio Comercial{% endblock %}
+{% block breadcrumb.1 %}Relaciones Comerciales{% endblock %}
+{% block breadcrumb.2 %}Ver Socio Comercial{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Ver Socio Comercial</p>
+    	{% if Partner %}
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_Name" name="P_Name" placeholder="Nombre Comercial" type="text" value="{{ Partner.P_Name }}"readonly>
+	    		<span class="fa fa-building form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_Address" name="P_Address" placeholder="Dirección Física" type="text" value="{{ Partner.P_Address}}"readonly>
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_City" name="P_City" placeholder="Ciudad" type="text" value="{{ Partner.P_City}}"readonly>
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_Country" name="P_Country" placeholder="País" type="text" value="{{ Partner.P_Country}}"readonly> 
+	    		<span class="fa fa-map-marker form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_ZIP" name="P_ZIP" placeholder="Código Postal" type="text" value="{{ Partner.P_ZIP}}"readonly>
+	    		<span class="fa fa-hashtag form-control-feedback"></span>
+	    	</div>
+	    	
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_E_mail" name="P_E_mail" placeholder="E-Mail" type="text" value="{{ Partner.P_E_mail}}"readonly>
+	    		<span class="fa fa-envelope-o form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_Phone" name="P_Phone" placeholder="Teléfono" type="text" value="{{ Partner.P_Phone }}"readonly>
+	    		<span class="fa fa-phone form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_P_Edi_Address" name="P_Edi_Address" placeholder="Dirección EDI" type="text" value="{{ Partner.P_Edi_Address}}" readonly>
+	    		<span class="fa fa-exchange form-control-feedback"></span>
+	    	</div>
+	    	{% if perms.address.change_partner_data %}
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<a href={% url 'edit_partner' Partner.id %}><button type="button" class="btn btn-block btn-primary btn-flat">Editar</button></a>
+	    		</div>
+	    	</div>
+			{% endif %}
+	    {% else %}
+	    <div class="register-box-body">
+      		<p class="login-box-msg">No existe un <strong>Socio Comercial</strong> con esta dirección EDI</p>
+      		<a href={% url 'view_tradings' %}><button type="button" class="btn btn-block btn-primary btn-flat">Ver Relaciones comerciales</button></a>
+    	</div>
+    	{% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

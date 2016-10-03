@@ -2,13 +2,19 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render
 from django.template.loader import get_template
-from .forms import ASN_Heading, ASN_Shipment, ASN_Order, ASN_Item
-from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order
+from .forms import ASN_Heading, ASN_Shipment, ASN_Order, ASN_Item, ASN_Item2
+from models import Data_Generator_Master, Data_Generator_Hierarchial, Data_Generator_Order, Data_Generator_Loads, Data_Generator_CLD
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from . import models
 from address.models import Partner_Data, Company_Data
+from django.db.models import Sum
 
+##################################################
+#              GENERA FORMULARIO ASN             #
+#                     PASO 1                     #
+#  856, requiere importar Data_Generator Master  #
+##################################################
 @permission_required('data_generator.add_data_generator_master', login_url='/')
 @login_required (login_url='/login/')
 def ASN_New(request):
@@ -39,10 +45,15 @@ def ASN_New(request):
 		return HttpResponseRedirect(('{}/shipment/{}/').format(master.id, cont))
 	return render(request, 'EDI/generar/heading.html', {'form':form, 'partner':partner, 'address':address})
 
+##################################################
+#          Añadir información del envio          #
+#                     PASO 2                     #
+#  856, requiere importar Data_Generator Master  #
+##################################################
 @permission_required('data_generator.add_data_generator_master', login_url='/')
 @login_required (login_url='/login/')
 def ASN_New_Shipment(request, master_id , cont):
-	global master, hierarchial
+	global master, hierarchial, flag_load
 	cont_integer = int(cont)
 	cont_integer = cont_integer + 1
 	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
@@ -52,6 +63,9 @@ def ASN_New_Shipment(request, master_id , cont):
 	form = ASN_Shipment(request.POST or None)
 	if form.is_valid():
 		hierarchial.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+		master.N102 = form.cleaned_data.get('N102')
+		master.N202 = form.cleaned_data.get('N202')
+		master.N302 = form.cleaned_data.get('N302')
 		master.N101 = form.cleaned_data.get('N101')
 		master.N103 = form.cleaned_data.get('N103')
 		master.N104 = form.cleaned_data.get('N104')
@@ -88,20 +102,31 @@ def ASN_New_Shipment(request, master_id , cont):
 		master.REF01 = form.cleaned_data.get('REF01')
 		master.save()
 		hierarchial.save()
+		flag_load = False
 		return HttpResponseRedirect(('/crear/856/{}/order/{}/').format(master.id, cont_integer))
 	return render(request, 'EDI/generar/shipment.html', {'form':form, 'master_files':master_files})
 
+##################################################
+#          Añade información de orden            #
+#                     PASO 3                     #
+#  856, requiere importar Data_Generator Master  #
+#  Precaución con  las banderas                  #
+##################################################
 @permission_required('data_generator.add_data_generator_master', login_url='/')
 @login_required (login_url='/login/')
 def ASN_New_Order(request, master_id, cont):
-	global master, flag, contador
+	global master, flag, contador, flag_load
 	flag = False
 	contador = 2
-	cont_integer = int(cont)
-	cont_integer = cont_integer + 1
+	if flag_load == True:
+		cont_integer = int(cont)
+	if flag_load == False:
+		cont_integer = int(cont)
+		cont_integer = cont_integer + 1
 	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
 	for master_id in master_files:
 		m_id = master.id
+	hierarchial_render = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id) 
 	hierarchial_order = Data_Generator_Hierarchial()
 	order = Data_Generator_Order()
 	form = ASN_Order(request.POST or None)
@@ -122,20 +147,29 @@ def ASN_New_Order(request, master_id, cont):
 		hierarchial_order.REF202 = form.cleaned_data.get('REF202')
 		hierarchial_order.save()
 		return HttpResponseRedirect(("/crear/856/{}/item/{}/").format(master.id, cont_integer))
-	return render(request, 'EDI/generar/order.html', {'form':form,})
+	return render(request, 'EDI/generar/order.html', {'form':form, 'hierarchial_render':hierarchial_render})
 
+##################################################
+#          Bucle de Items                        #
+#                     PASO 4                     #
+#  856, requiere importar Data_Generator Master  #
+#  Precaución con  las banderas                  #
+##################################################
 @permission_required('data_generator.add_data_generator_master', login_url='/')
 @login_required (login_url='/login/')
 def ASN_New_Item(request, master_id, cont):
-	global flag, contador
+	global flag, contador, flag_load, loads, cld
 	print flag
 	master_files = models.Data_Generator_Master.objects.filter(id=master_id)
 	for master_id in master_files:
 		m_id = master.id
 	hierarchial_order = Data_Generator_Hierarchial()
-	#measures = Data_Generator_I_MEA()
+	hierarchial_render = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id) 
+	cld = Data_Generator_CLD()
+	db = Data_Generator_Loads()
+	loads = 1
 	form = ASN_Item(request.POST or None)
-	#item_cld = Data_Generator_I_CLD()
+
 	if form.is_valid():
 		if flag == True:
 			cont_integer = int(cont)
@@ -165,12 +199,11 @@ def ASN_New_Item(request, master_id, cont):
 		hierarchial_order.MEA402 = form.cleaned_data.get('MEA402')
 		hierarchial_order.MEA403 = form.cleaned_data.get('MEA403')
 		hierarchial_order.MEA404 = form.cleaned_data.get('MEA404')
-		hierarchial_order.CLD01 = form.cleaned_data.get('CLD01')
-		hierarchial_order.CLD02 = form.cleaned_data.get('CLD02')
-		hierarchial_order.CLD03 = form.cleaned_data.get('CLD03')
-		hierarchial_order.REF_CLD101 = form.cleaned_data.get('REF_CLD101')
+		cld.CLD01 = loads
+		cld.CLD02 = form.cleaned_data.get('CLD02')
+		cld.CLD03 = form.cleaned_data.get('CLD03')
 		hierarchial_order.REF_CLD102 = form.cleaned_data.get('REF_CLD102')
-		hierarchial_order.REF_CLD201 = form.cleaned_data.get('REF_CLD201')
+		hierarchial_order.REF_CLD201 = form.cleaned_data.get('REF_CLD102')
 		hierarchial_order.REF_CLD202 = form.cleaned_data.get('REF_CLD202')
 		hierarchial_order.REF_CLD301 = form.cleaned_data.get('REF_CLD301')
 		hierarchial_order.REF_CLD302 = form.cleaned_data.get('REF_CLD302')
@@ -179,29 +212,95 @@ def ASN_New_Item(request, master_id, cont):
 		hierarchial_order.REF_ITEM101 = form.cleaned_data.get('REF_ITEM101')
 		hierarchial_order.REF_ITEM102 = form.cleaned_data.get('REF_ITEM102')
 		hierarchial_order.save()
+		db.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+		db.Hierarchial = Data_Generator_Hierarchial.objects.filter(PRIM_id=m_id, HL03='I').last()
+		db.REF_CLD1 = form.cleaned_data.get('REF_CLD101')
+		db.REF_CLD2 = form.cleaned_data.get('REF_CLD102')
+		db.save()
 		if (request.POST.get('next')):
+			cld.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+			cld.Hierarchial = Data_Generator_Hierarchial.objects.filter(PRIM_id=m_id, HL03='I').last()
+			cld.save()
 			return HttpResponseRedirect(('/crear/ver/{}').format(master.id))
 		if (request.POST.get('order')):
+			cld.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+			cld.Hierarchial = Data_Generator_Hierarchial.objects.filter(PRIM_id=m_id, HL03='I').last()
+			flag_load = False
+			cld.save()
 			return HttpResponseRedirect(('/crear/856/{}/order/{}/').format(master.id, cont_integer_mas))
 		if (request.POST.get('item')):
+			cld.PRIM = models.Data_Generator_Master.objects.get(id=m_id)
+			cld.Hierarchial = Data_Generator_Hierarchial.objects.filter(PRIM_id=m_id, HL03='I').last()
 			flag = True
+			cld.save()
 			return HttpResponseRedirect(('/crear/856/{}/item/{}/').format(master.id, cont_integer))
-	return render(request, 'EDI/generar/item.html', {'form':form,})
+		if (request.POST.get('load')):
+			return HttpResponseRedirect(('/crear/856/{}/load/{}/').format(master.id, cont_integer))
+	return render(request, 'EDI/generar/item.html', {'form':form, 'hierarchial_render':hierarchial_render})
 
+
+##################################################
+#          Bucle de cargas                       #
+#                     PASO 5                     #
+#  856, requiere importar Data_Generator Master  #
+##################################################
+@permission_required('data_generator.add_data_generator_master', login_url='/')
+@login_required (login_url='/login/')
+def New_Load(request, master_id, cont):
+	global flag, contador, flag_load, hierarchial_order, loads, cld
+	hierarchial_order = Data_Generator_Hierarchial()
+	cont_integer = int(cont)
+	master.id = master_id
+	cont_integer_mas = cont_integer + contador
+	db = Data_Generator_Loads()
+	form = ASN_Item2(request.POST or None)
+	hierarchial_render = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id) 
+	if form.is_valid():
+		loads = loads + 1
+		db.PRIM = models.Data_Generator_Master.objects.get(id=master_id)
+		db.Hierarchial = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id, HL03='I').last()
+		db.REF_CLD1 = form.cleaned_data.get('REF_CLD1')
+		db.REF_CLD2 = form.cleaned_data.get('REF_CLD2')
+		cld.PRIM = models.Data_Generator_Master.objects.get(id=master_id)
+		cld.Hierarchial = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id, HL03='I').last()
+		cld.CLD01 = loads
+		
+		db.save()
+		if (request.POST.get('item')):
+			flag = True
+			cld.save()
+			return HttpResponseRedirect(('/crear/856/{}/item/{}/').format(master.id, cont_integer))
+		if (request.POST.get('repeat')):
+			return HttpResponseRedirect(('/crear/856/{}/load/{}/').format(master.id, cont_integer))
+		if (request.POST.get('order')):
+			flag_load = True
+			cld.save()
+			return HttpResponseRedirect(('/crear/856/{}/order/{}/').format(master.id, cont_integer_mas))
+		if (request.POST.get('exit')):
+			cld.save()
+			return HttpResponseRedirect(('/crear/ver/{}').format(master.id))		
+		
+	return render(request, 'EDI/generar/load.html', {'form':form, 'hierarchial_render':hierarchial_render})
+##########################
+#  LISTAR  ARCHIVOS EDI  #
+##########################
 @permission_required('data_generator.add_data_generator_master', login_url='/')
 @login_required (login_url='/login/')
 def render_list(request):
-	edi_files = models.Data_Generator_Master.objects.all()
+	edi_files = models.Data_Generator_Master.objects.all().order_by('id').reverse()
 	return render(request, 'EDI/render/view-list.html', {'edi_files':edi_files})
 
+#############################
+#  RENDERIZAR ARCHIVO  EDI  #
+#############################
 @permission_required('data_generator.add_data_generator_master', login_url='/')
 @login_required (login_url='/login/')
 def index_render(request, master_id):
 	edi = models.Data_Generator_Master.objects.get(id=master_id)
-	hl = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id)
+	hl = Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id).order_by('id')
+	#sn102 = models.Data_Generator_Hierarchial.objects.filter(PRIM_id=master_id).aggregate(Sum('SN102'))
 	order = Data_Generator_Order.objects.filter(PRIM_id=master_id)
-	#measures = Data_Generator_I_MEA.objects.filter(PRIM_id=master_id)
-	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order,})
+	return render(request, 'EDI/render/edi.html', {'edi':edi, 'hl':hl, 'order':order})
 
 ##########################
 #  BORRAR  ARCHIVOS EDI  #

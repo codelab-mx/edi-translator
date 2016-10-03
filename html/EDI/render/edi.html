@@ -4,6 +4,8 @@
 {% block menu.generar %}active{% endblock %}
 {% block menu.generar.ver %}active{% endblock %}
 {% block page.header %}Ver archivos EDI{% endblock %}
+{% block breadcrumb.1 %}Ver{% endblock %}
+{% block breadcrumb.2 %}{{ edi.BST03|slice:"2:" }}-{{ edi.BST04 }}{% endblock %}
 {% block page.content %}
 <form role="form">
 
@@ -14,27 +16,19 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <input type="text" class="form-control" id="input-fileName" value="{{ edi.BST03 }}-{{ edi.BST04 }}" placeholder="Enter file name">
+                <input type="text" class="form-control" id="input-fileName" value="{{ edi.BST03|slice:"2:" }}-{{ edi.BST04 }}" placeholder="Enter file name">
               </div>
               <div class="modal-body">
 {% if edi %}
-<pre id="someid" style="max-height:300px; background:#fff"><span class="item">ISA*00*          *00*          *{{ edi.PREFIX_NAME }}*{{ edi.NAME }}   *{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}      *{{ edi.BST03 }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T</span>
-<span class="item">GS*SH*{{ edi.NAME }}*{{ edi.CLIENT }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.ST02 }}*X*04010</span>
+<pre id="someid" style="max-height:300px; background:#fff">ISA*00*          *00*          *{{ edi.PREFIX_NAME }}*{{ edi.NAME }}   *{{ edi.PREFIX_CLIENT }}*{{ edi.CLIENT }}      *{{ edi.BST03|slice:"2:" }}*{{ edi.BST04 }}*U*00401**0000000{{ edi.ST02 }}*0*T
+GS*SH*{{ edi.NAME }}*{{ edi.CLIENT }}*{{ edi.BST03|slice:"2:" }}*{{ edi.BST04 }}*{{ edi.ST02 }}*X*03060
 <span class="item">ST*{{ edi.ST01 }}*{{ edi.ST02 }}</span>
-BSN*{{ edi.BST01 }}*{{ edi.BST02 }}*{{ edi.BST03 }}*{{ edi.BST04 }}
-DTM*{{ edi.DTM01 }}*{{ edi.BST03 }}*{{ edi.BST04 }}*{{ edi.DTM04 }}<br>&#13;{% if hl %}{% for header in hl %}HL*{{ header.HL01 }}*{{ header.HL02 }}*{{ header.HL03 }}<br>&#13;{% if header.HL03 == 'S' %}MEA*{{ edi.MEA01 }}*{{ edi.MEA02 }}*{{ edi.MEA03 }}*{{ edi.MEA04 }}
-TD1*{{ edi.TD101 }}*{{ edi.TD102 }}
-TD5*{{ edi.TD501 }}*{{ edi.TD502 }}*{{ edi.TD503 }}*{{ edi.TD504 }}
-TD3*{{ edi.TD301 }}*{{ edi.TD302 }}*{{ edi.TD303 }}
-REF*{{ edi.REF01 }}*{{ edi.REF02 }}
-N1*SF**1*DUNS
-N1*{{ edi.N101 }}*{{ edi.N103 }}*{{ edi.N104 }}
-N1*{{ edi.N201 }}*{{ edi.N203 }}*{{ edi.N204 }}
-N1*{{ edi.N301 }}*{{ edi.N303 }}*{{ edi.N304 }}{% elif header.HL03 == 'O' %}LIN**{{ header.LIN02 }}*{{ header.LIN03 }}
-SN1**{{ header.SN102 }}*{{ header.SN103 }}*{{ header.SN104 }}
-PRF*{{ header.PRF01 }}<br>&#13;REF*{{ header.REF101 }}*{{ header.REF102 }}<br>&#13;REF*{{ header.REF201 }}*{{ header.REF202 }}
-{% for ord in order %}{% if ord.REF101 %}<br>&#13;REF*{{ ord.REF101 }}*{{ ord.REF102 }}{% endif %}{% if ord.REF201 %}<br>&#13;REF*{{ ord.REF201 }}*{{ ord.REF202 }}{% endif %}{% endfor %}{% elif header.HL03 == 'I' %}{% if header.MEA03 %}MEA*{{ header.MEA01 }}*{{ header.MEA02 }}*{{ header.MEA03 }}{% endif %}{% if header.MEA203 %}<br>&#13;MEA*{{ header.MEA201 }}*{{ header.MEA202 }}*{{ header.MEA203 }}{% endif %}{% if header.MEA303 %}<br>&#13;MEA*{{ header.MEA301 }}*{{ header.MEA302 }}*{{ header.MEA303 }}{% endif %}{% if header.MEA403 %}<br>&#13;MEA*{{ header.MEA401 }}*{{ header.MEA402 }}*{{ header.MEA403 }}{% endif %}REF*{{ header.REF_ITEM101 }}*{{ header.REF_ITEM102 }}<br>&#13;CLD*{{ header.CLD01 }}*{{ header.CLD02 }}*{{ header.CLD03 }}{% if header.REF_CLD102 %}<br>&#13;REF*{{ header.REF_CLD101 }}*{{ header.REF_CLD102 }}{% endif %}{% if header.REF_CLD202 %}<br>&#13;REF*{{ header.REF_CLD201 }}*{{ header.REF_CLD202 }}{% endif %}{% if header.REF_CLD302 %}<br>REF*{{ header.REF_CLD301 }}*{{ header.REF_CLD302 }}{% endif %}{% if header.REF_CLD402 %}
-REF*{{ header.REF_CLD401 }}*{{ header.REF_CLD402 }}{% endif %}{% endif %}{% endfor %}{% endif %}</pre>{% endif %}
+<span class="item">BSN*{{ edi.BST01 }}*{{ edi.ST02 }}*{{ edi.BST03|slice:"2:" }}*{{ edi.BST04 }}</span>
+<span class="item">DTM*{{ edi.DTM01 }}*{{ edi.BST03|slice:"2:" }}*{{ edi.BST04 }}**21</span>{% if hl %}{% for header in hl %}<br>&#13;<span class="item">HL*{{ header.HL01 }}*{{ header.HL02 }}*{{ header.HL03 }}</span>{% if header.HL03 == 'S' %}<br>&#13;<span class="item">MEA*{{ edi.MEA01 }}*{{ edi.MEA02 }}*{{ edi.MEA03 }}*{{ edi.MEA04 }}</span>{% if edi.TD101 %}<br>&#13;<span class="item">TD1*{{ edi.TD101 }}*{{ edi.TD102 }}</span>{% endif %}{% if edi.TD501 %}<br>&#13;<span class="item">TD5*{{ edi.TD501 }}*{{ edi.TD502 }}*{{ edi.TD503 }}*{{ edi.TD504 }}</span>{% endif %}{% if edi.TD301 %}<br>&#13;<span class="item">TD3*{{ edi.TD301 }}*{{ edi.TD302 }}*{{ edi.TD303 }}</span>{% endif %}{% if edi.TD401 %}<br>&#13;<span class="item">TD4*{{ edi.TD401 }}*{{ edi.TD402 }}*{{ edi.TD403 }}*{{ edi.TD404 }}*{{ edi.TD405 }}</span>{% endif %}{% if edi.REF01 %}<br>&#13;<span class="item">REF*{{ edi.REF01 }}*{{ edi.REF02 }}</span>{% endif %}{% if edi.N302 %}<br>&#13;<span class="item">N1*{{ edi.N102 }}**{{ edi.N202 }}*{{ edi.N302 }}</span>{% endif %}{% if edi.N103 %}<br>&#13;<span class="item">N1*{{ edi.N101 }}**{{ edi.N103 }}*{{ edi.N104 }}</span>{% endif %}{% if edi.N203 %}<br>&#13;<span class="item">N1*{{ edi.N201 }}**{{ edi.N203 }}*{{ edi.N204 }}</span>{% endif %}{% if edi.N303 %}<br>&#13;<span class="item">N1*{{ edi.N301 }}**{{ edi.N303 }}*{{ edi.N304 }}</span>{% endif %}{% elif header.HL03 == 'O' %}<br>&#13;<span class="item">LIN**{{ header.LIN02 }}*{{ header.LIN03 }}</span>{% if header.SN102 %}<br>&#13;<span class="item">SN1**{{ header.SN102 }}*{{ header.SN103 }}*{{ header.SN104 }}</span>{% endif %}{% if header.PRF01 %}<br>&#13;<span class="item">PRF*{{ header.PRF01 }}</span>{% endif %}{% if header.REF101 %}<br>&#13;<span class="item">REF*{{ header.REF101 }}*{{ header.REF102 }}</span>{% endif %}{% if header.REF201 %}<br>&#13;<span class="item">REF*{{ header.REF201 }}*{{ header.REF202 }}</span>{% endif %}{% for ord in order %}{% if ord.REF101 %}<br>&#13;<span class="item">REF*{{ ord.REF101 }}*{{ ord.REF102 }}{% endif %}{% if ord.REF201 %}</span><br>&#13;<span class="item">REF*{{ ord.REF201 }}*{{ ord.REF202 }}</span>{% endif %}{% endfor %}{% elif header.HL03 == 'I' %}{% if header.MEA403 %}<br>&#13;<span class="item">MEA*{{ header.MEA401 }}*{{ header.MEA402 }}*{{ header.MEA403 }}</span>{% endif %}{% if header.REF_ITEM101 %}<br>&#13;<span class="item">REF*{{ header.REF_ITEM101 }}*{{ header.REF_ITEM102 }}</span>{% endif %}{% if header.data_generator_cld_set.all %}{% for detail in header.data_generator_cld_set.all %}<br>&#13;<span class="item">CLD*{{ detail.CLD01 }}*{{ detail.CLD02 }}*{{ detail.CLD03 }}</span>{% endfor %}{% endif %}{% if header.data_generator_loads_set.all %}{% for detail in header.data_generator_loads_set.all %}{% if detail.REF_CLD1 %}<br>&#13;<span class="item">REF*{{ detail.REF_CLD1 }}*{{ detail.REF_CLD2 }}</span>{% endif %}{% endfor %}{% endif %}{% endif %}{% endfor %}
+<span class="item">CTT*{{ hl|length }}*<span id="sumsn">...</span></span>
+<span class="item">SE*<span id="liness">...</span>*{{ edi.ST02 }}</span>{% endif %}
+GE*1*{{ edi.ST02 }}
+IEA*1*0000000{{ edi.ST02 }}</pre>{% endif %}
               </div>
               <div class="modal-footer">
                 <a href="/crear/ver/" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</a>
@@ -45,15 +39,7 @@ REF*{{ header.REF_CLD401 }}*{{ header.REF_CLD402 }}{% endif %}{% endif %}{% endf
         </div>
       </div>
 </form>
-
-
-    </span>
-    <span class="item"></span>
-    <span class="item"></span>
-    <span class="item"></span>
-    <span class="item"></span>
-
-<span id="liness">...</span>
+{% for sum in hl %}{% if sum.SN102 %}<input class='totalprice hide' value='{{ sum.SN102 }}'/>{% endif %}{% endfor %}
 {% endblock %}
 {% block aditional.css %}
 <style>
@@ -86,6 +72,14 @@ $("#btn-save").click( function() {
   saveAs(blob, filename);
 });</script>
 <script>
-document.getElementById("liness").innerHTML = '*' + $('.item').length + ' lines';
+document.getElementById("liness").innerHTML =$('.item').length;
+</script>
+<script>
+var sum = 0.0;
+$('.totalprice').each(function()
+{
+    sum += parseFloat(this.value);
+});
+document.getElementById("sumsn").innerHTML =sum;
 </script>
 {% endblock %}

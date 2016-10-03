@@ -3,15 +3,15 @@
   <div class="wrapper">
     <header class="main-header">
       <a href="/" class="logo">
-        <span class="logo-mini"><img src="/static/img/logo-min.png" alt="Home"></span>
-        <span class="logo-lg"><img src="/static/img/logo-blank.png" alt="Home" style="max-height: 50px; max-width: 200px"></span>
+        <span class="logo-mini">{% load staticfiles %}<img src="{% static 'img/logo-min.png' %}" alt="Home"></span>
+        <span class="logo-lg">{% load staticfiles %}<img src="{% static 'img/logo-blank.png' %}" alt="Home" style="max-height: 50px; max-width: 200px"></span>
       </a>
       <nav class="navbar navbar-static-top" role="navigation">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
           <!-- Menu -->
-            <li><a href="/logout"><i class="fa fa-sign-out"></i><span class="hidden-xs"> Cerrar Sesión</span></a></li>
+            <li><a href={% url 'logout' %}><i class="fa fa-sign-out"></i><span class="hidden-xs"> Cerrar Sesión</span></a></li>
           </ul>
         </div>
       </nav>
@@ -21,62 +21,54 @@
       <section class="sidebar">
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="/static/img/no-photo.jpg" class="user-image" alt="Foto de Pérfil" style="border-radius: 50%;">
+            <img src="{% static 'img/no-photo.jpg' %}" class="user-image" alt="Foto de Pérfil" style="border-radius: 50%;">
           </div>
           <div class="pull-left info">
             <p>{{ request.user.first_name }} {{ request.user.last_name }} {{ request.sessions.all }}</p>
             <a href="#"><i class="fa fa-circle text-success"></i> {{ request.user.groups.first|default_if_none:"Developer"|capfirst }}</a>
           </div>
         </div>
-        <form action="#" method="get" class="sidebar-form">
-          <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Buscar...">
-            <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-            </span>
-          </div>
-        </form>
         <ul class="sidebar-menu">
-          <li class="{% block menu.inicio %}{% endblock %}"><a href="/"><i class="fa fa-dashboard"></i><span> Inicio</span></a></li>
-
+          <li class="{% block menu.inicio %}{% endblock %}"><a href={% url 'view_tradings' %}><i class="fa fa-dashboard"></i><span> Inicio</span></a></li>
+          {% if perms.address.add_company_data %}
           <li class="treeview {% block menu.relacion %}{% endblock %}">
           <a href="#">
             <i class="fa fa-clone"></i> <span>Relaciones Comerciales</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="{% block menu.relacion.ver %}{% endblock %}"><a href="/tradings/"><i class="fa fa-table"></i> Ver Relaciones Comerciales</a></li>
-            <li class="{% block menu.relacion.empresa %}{% endblock %}"><a href="/tradings/new_company/"><i class="fa fa-language"></i> Agregar Nueva Dirección</a></li>
-            <li class="{% block menu.relacion.socio %}{% endblock %}"><a href="/tradings/new_partner/"><i class="fa fa-language"></i> Agregar Nuevo Socio</a></li>
+            <li class="{% block menu.relacion.ver %}{% endblock %}"><a href={% url 'view_tradings' %}><i class="fa fa-table"></i> Ver Relaciones Comerciales</a></li>
+            <li class="{% block menu.relacion.empresa %}{% endblock %}"><a href={% url 'new_company' %}><i class="fa fa-building-o"></i> Nueva Dirección Propia</a></li>
+            <li class="{% block menu.relacion.socio %}{% endblock %}"><a href={% url 'new_partner' %}><i class="fa fa-users"></i> Nuevo Socio Comercial</a></li>
           </ul>
         </li>
-
+        {% endif %}
+        {% if perms.data_mining.add_edi_address %}        
         <li class="treeview {% block menu.edi %}{% endblock %}">
           <a href="#">
             <i class="fa fa-clone"></i> <span>Traduccion</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="{% block menu.edi.ver %}{% endblock %}"><a href="/edi/"><i class="fa fa-table"></i> Ver Traducciones</a></li>
-            <li class="{% block menu.edi.traducir %}{% endblock %}"><a href="/edi/traducir/"><i class="fa fa-language"></i> Traducir Nuevo Archivo</a></li>
+            <li class="{% block menu.edi.ver %}{% endblock %}"><a href={% url 'view_edis' %}><i class="fa fa-table"></i> Ver Traducciones</a></li>
+            <li class="{% block menu.edi.traducir %}{% endblock %}"><a href={% url 'edi_translator' %}><i class="fa fa-language"></i> Traducir Nuevo Archivo</a></li>
           </ul>
-        </li>
+        </li>{% endif %}
+        {% if perms.data_generator.add_data_generator_master %}
         <li class="treeview {% block menu.generar %}{% endblock %}">
           <a href="#">
             <i class="fa fa-clone"></i> <span>Generar</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="{% block menu.generar.ver %}{% endblock %}"><a href="/crear/ver"><i class="fa fa-table"></i> Ver Archivos Generados</a></li>
-            <li class="{% block menu.generar.nuevo %}{% endblock %}"><a href="/crear/856"><i class="fa fa-language"></i> Generar Nuevo Archivo</a></li>
+            <li class="{% block menu.generar.ver %}{% endblock %}"><a href={% url 'render_list' %}><i class="fa fa-table"></i> Ver Archivos Generados</a></li>
+            <li class="{% block menu.generar.nuevo %}{% endblock %}"><a href={% url '856' %}><i class="fa fa-file-o"></i> Generar Nuevo Archivo</a></li>
           </ul>
-        </li>
-        {% if perms.auth.add_user %}
-          <li class="{% block menu.usuarios %}{% endblock %}"><a href="/usuarios"><i class="fa fa-users"></i><span> Usuarios</span></a></li>
+        </li>{% endif %}
+          {% if perms.auth.add_user %}
+          <li class="{% block menu.usuarios %}{% endblock %}"><a href={% url 'usuarios' %}><i class="fa fa-users"></i><span> Usuarios</span></a></li>
           {% endif %}
-          <li class="{% block menu.perfil %}{% endblock %}"><a href="#perfil"><i class="fa fa-user"></i><span> Perfil</span></a></li>
-          <li class="{% block menu.configuracion %}{% endblock %}"><a href="#ajustes"><i class="fa fa-wrench"></i><span> Configuración</span></a></li>
-          <li><a href="/logout/"><i class="fa fa-sign-out"></i><span> Cerrar Sesión</span></a></li>
+          <li><a href={% url 'logout' %}><i class="fa fa-sign-out"></i><span> Cerrar Sesión</span></a></li>
         </ul>
       </section>
     </aside>
@@ -87,9 +79,8 @@
         <h1>{% block page.header %}Home{% endblock %}</h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-
-          <li>Breadcrmb</li>
-          <li class="active">Here</li>
+          <li>{% block breadcrumb.1 %}Home{% endblock %}</li>
+          <li class="active">{% block breadcrumb.2 %}Home{% endblock %}</li>
         </ol>
       </section>
       {% block message %}{% endblock %}

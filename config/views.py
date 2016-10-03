@@ -10,12 +10,18 @@ from django.contrib.auth.models import User, Group
 from .forms import UserLoginForm, UserRegister
 import subprocess, os
 
-@permission_required('data_mining.add_edi_address', login_url='/logout/')
+######################
+#  PÁGINA PRINCIPAL  #
+######################
 @login_required (login_url='/login/')
+@permission_required('data_mining.add_edi_address', login_url='/logout/')
 def home(request):
 	return HttpResponseRedirect("/tradings/")
 
 
+##############################################
+#  LOGIN DE USUARIOS LIGADO A UserLoginForm  #
+##############################################
 def login_crm(request):
 	users = User.objects.exclude(is_superuser=1).count()
 	if users == 0:
@@ -32,11 +38,17 @@ def login_crm(request):
 			return HttpResponseRedirect("/")
 		return render(request, 'auth/login.html', {"form":form})
 
+###############################
+#  LOGOUT SEGURO DE USUARIOS  #
+###############################
 @login_required (login_url='/login/')
 def logout_crm(request):
 	logout(request)
 	return HttpResponseRedirect("/login/")
 
+#################################################
+#  CONFIGURACIÓN INICIAL, REQUIERE FIXTURES.PY  #
+#################################################
 def setup(request):
 	s_u = User.objects.filter(is_superuser=1).count()
 	users = User.objects.exclude(is_superuser=1).count()
@@ -62,6 +74,10 @@ def setup(request):
 		return render(request, 'auth/registro.html', {'reg_form':reg_form})
 	else:
 		return HttpResponseRedirect("/login")
+
+################################################
+#  RESPUESTA 404, IMPORTAR render_to_response  #
+################################################
 
 def handler404(request):
 	response = render_to_response('404.html', {}, context_instance = RequestContext(request))

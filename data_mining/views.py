@@ -13,20 +13,20 @@ from django.contrib import messages
 from data import init_data
 from address.models import Partner_Data, Company_Data
 import datetime, os
+
 #############################
 #  VISUALIZAR ARCHIVOS EDI  #
 #############################
-
-@permission_required('data_mining.change_edi_address', login_url='/tradings/')
+@permission_required('data_mining.add_edi_address', login_url='/tradings/')
 @login_required(login_url='/login/')
 def edi_index(request):
-	edi_files = models.edi_address.objects.all()
+	edi_files = models.edi_address.objects.all().order_by('id').reverse()
 	return render(request, 'EDI/ver.html', {'edi_files':edi_files})
 
 ################
 #  EDI VIEWER  #
 ################
-@permission_required('data_mining.change_edi_address', login_url='/')
+@permission_required('data_mining.add_edi_address', login_url='/')
 @login_required (login_url='/login/')
 def edi_viewer(request, edi_viewer):
 	edi = models.edi_address.objects.get(id=edi_viewer)

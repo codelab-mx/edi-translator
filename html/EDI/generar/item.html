@@ -1,163 +1,78 @@
 {% extends "base.html" %}
 {% block title %}Nuevo {{ grupo }}{% endblock %}
-{% block menu.usuarios %}active{% endblock %}
-{% block page.header %}Información del Objeto{% endblock %}
+{% block menu.generar %}active{% endblock %}
+{% block menu.generar.nuevo %}active{% endblock %}
+{% block page.header %}Información del Producto{% endblock %}
+{% block breadcrumb.1 %}856{% endblock %}
+{% block breadcrumb.2 %}Producto{% endblock %}
 {% block page.content %}
+{% if hierarchial_render %}
+<div class="col-md-12">
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-text-width"></i>
+            <h3 class="box-title">Historial</h3>
+        </div>
+        <div class="box-body">
+            {% for info in hierarchial_render %}
+                <ul>
+                    {% if info.HL03 == 'O' %}<li><h3>Orden: {{ info.REF102 }}</h3></li>
+                    {% elif info.HL03 == 'I' %}<li>Producto: {{ info.REF_ITEM102 }}
+                        {% if info.data_generator_loads_set.all %}
+                            <ul>
+                                {% for ref in info.data_generator_loads_set.all %}
+                                    <li>Ref:{{ ref.REF_CLD2 }}</li>
+                                {% endfor %}
+                                {% for detail in info.data_generator_cld_set.all %}
+                                    <li><strong>Load: {{ detail.CLD01 }}</strong></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>{% endif %}
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="col-xs-12">
 <div class="box box-danger">
-	<div class="box-header with-border">
-		<h3 class="box-title">Add Item Information</h3>
-	</div>
-	<div class="box-body">
-		<form method="POST" action="">{% csrf_token %}
-        	<div class="row margin-bottom">
-                <div class="col-xs-4">
-                	<label>{{ form.CLD01.label }}</label>
-                	<div class="input-group">
-                		{{ form.CLD01 }}
-                		<div class="input-group-addon">
-                			<i class="fa fa-circle-o-notch"></i>
-                		</div>
-	                </div>
-	                {{ form.CLD01.errors }}
+    <div class="box-header with-border">
+        <h3 class="box-title">Add Item Information</h3>
+    </div>
+    <div class="box-body">
+        <form method="POST" action="">{% csrf_token %}
+            <div class="row margin-bottom">
+                <div class="col-xs-6">
+                    <label>{{ form.CLD02.label }}</label>
+                    <div class="input-group">
+                        {{ form.CLD02 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-cubes"></i>
+                        </div>
+                    </div>
+                    {{ form.CLD02.errors }}
                 </div>
-                <div class="col-xs-4">
-                	<label>{{ form.CLD02.label }}</label>
-                	<div class="input-group">
-                		{{ form.CLD02 }}
-                		<div class="input-group-addon">
-                			<i class="fa fa-cubes"></i>
-                		</div>
-	                </div>
-	                {{ form.CLD02.errors }}
-                </div>
-                <div class="col-xs-4">
-                	<label>{{ form.CLD03.label }}</label>
-                	<div class="input-group">
-                		{{ form.CLD03 }}
-                		<div class="input-group-addon">
-                			<i class="fa fa-qrcode"></i>
-                		</div>
-	                </div>
-	                {{ form.CLD03.errors }}
+                <div class="col-xs-6">
+                    <label>{{ form.CLD03.label }}</label>
+                    <div class="input-group">
+                        {{ form.CLD03 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-qrcode"></i>
+                        </div>
+                    </div>
+                    {{ form.CLD03.errors }}
                 </div>
             </div>
             <div class="row margin-bottom">
-            <div class="col-xs-4">
-                <label>Measurement Qualifier:</label>
-                <div class="form-group">
-                        <select name="MEA02" class="form-control select2" style="width:100%;">
-                            <option value="LN">Lenght</option>
-                            <option value="TH">Thickness</option>
-                            <option value="WD">Width</option>
-                            <option value="WT">Weight</option>
-                        
-                        </select>
-                    </div>
-                    {{ form.MEA02.errors }}
-                </div>
                 <div class="col-xs-4">
-                    <label>Measurement Value</label>
-                    <div class="input-group">
-                        {{ form.MEA03 }}
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
-                        {{ form.MEA03.errors }}
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <label>Unit</label>
-                    <div class="input-group">
-                        {{ form.MEA04 }}
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
-                        {{ form.MEA04.errors }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row margin-bottom">
-            <div class="col-xs-4">
-                <label>Measurement Qualifier:</label>
-                <div class="form-group">
-                        <select name="MEA202" class="form-control select2" style="width:100%;">
-                            <option value="TH">Thickness</option>
-                            <option value="LN">Lenght</option>
-                            <option value="WD">Width</option>
-                            <option value="WT">Weight</option>
-                        
-                        </select>
-                    </div>
-                    {{ form.ME2A02.errors }}
-                </div>
-                <div class="col-xs-4">
-                    <label>Measurement Value</label>
-                    <div class="input-group">
-                        {{ form.MEA203 }}
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
-                        {{ form.MEA203.errors }}
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <label>Unit</label>
-                    <div class="input-group">
-                        {{ form.MEA204 }}
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
-                        {{ form.MEA204.errors }}
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom">
-            <div class="col-xs-4">
-                <label>Measurement Qualifier:</label>
-                <div class="form-group">
-                        <select name="MEA302" class="form-control select2" style="width:100%;">
-                            <option value="WD">Width</option>
-                            <option value="LN">Lenght</option>
-                            <option value="TH">Thickness</option>
-                            <option value="WT">Weight</option>
-                        
-                        </select>
-                    </div>
-                    {{ form.MEA302.errors }}
-                </div>
-                <div class="col-xs-4">
-                    <label>Measurement Value</label>
-                    <div class="input-group">
-                        {{ form.MEA303 }}
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
-                        {{ form.MEA303.errors }}
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <label>Unit</label>
-                    <div class="input-group">
-                        {{ form.MEA304 }}
-                        <div class="input-group-addon">
-                            <i class="fa fa-barcode"></i>
-                        </div>
-                    {{ form.MEA304.errors }}
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom">
-            <div class="col-xs-4">
-                <label>Measurement Qualifier:</label>
-                <div class="form-group">
+                    <label>Measurement Qualifier:</label>
+                    <div class="form-group">
                         <select name="MEA402" class="form-control select2" style="width:100%;">
                             <option value="WT">Weight</option>
                             <option value="LN">Lenght</option>
                             <option value="TH">Thickness</option>
-                            <option value="WD">Width</option>
-                        
+                            <option value="WD">Width</option>    
                         </select>
                     </div>
                     {{ form.MEA402.errors }}
@@ -183,54 +98,51 @@
                     </div>
                 </div>
             </div>
-<div class="row margin-bottom">
-                        <div class="col-xs-6">
-                         <label>Reference Qualifier:</label>
-                        <div class="form-group">
-                    <select name="REF_ITEM101" class="form-control select2" style="width:100%;">
-                        <option value="HC">Heat Code</option>
-                        <option value="LS">Bar Coded Serial Number</option>
-                        <option value="SE">Serial Number</option>
-
-                    
-                    </select>
+            <div class="row margin-bottom">
+                <div class="col-xs-6">
+                    <label>Reference Qualifier:</label>
+                    <div class="form-group">
+                        <select name="REF_ITEM101" class="form-control select2" style="width:100%;">
+                            <option value="">None</option>
+                            <option value="HC">Heat Code</option>
+                            <option value="LS">Bar Coded Serial Number</option>
+                            <option value="SE">Serial Number</option>
+                        </select>
+                    </div>
                 </div>
-                </div>
-                            <div class="col-xs-6">
-                                <label>Reference ID</label>
-                                <div class="input-group">
-                                    {{ form.REF_ITEM102 }}
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-check-square-o"></i>
-                                    </div>
-                                </div>
-                                {{ form.REF_ITEM102.errors }}
-                            </div>
-
+                <div class="col-xs-6">
+                    <label>Reference ID</label>
+                    <div class="input-group">
+                        {{ form.REF_ITEM102 }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-check-square-o"></i>
                         </div>
-                <div class="panel box box-success">
-                  <div class="box-header with-border">
+                    </div>
+                    {{ form.REF_ITEM102.errors }}
+                </div>
+            </div>
+            <div class="panel box box-success">
+                <div class="box-header with-border">
                     <h4 class="box-title">
-                      <a aria-expanded="false" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                        Loads Additional Data<small> Reference</small>
-                      </a>
+                        <a class="" aria-expanded="true" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Loads Data<small> Reference &amp; More</small>
+                        </a>
                     </h4>
-                  </div>
-                  <div aria-expanded="false" id="collapseThree" class="panel-collapse collapse">
+                </div>
+                <div style="" aria-expanded="true" id="collapseOne" class="panel-collapse collapse in">
                     <div class="box-body">
                         <div class="row margin-bottom">
-                        <div class="col-xs-6">
-                         <label>Reference Qualifier:</label>
-                        <div class="form-group">
-                    <select name="REF_CLD101" class="form-control select2" style="width:100%;">
-                        <option value="HC">Heat Code</option>
-                        <option value="LS">Bar Coded Serial Number</option>
-                        <option value="SE">Serial Number</option>
-
-                    
-                    </select>
-                </div>
-                </div>
+                            <div class="col-xs-6">
+                                <label>Reference Qualifier:</label>
+                                <div class="form-group">
+                                    <select name="REF_CLD101" class="form-control select2" style="width:100%;">
+                                        <option value="">None</option>
+                                        <option value="HC">Heat Code</option>
+                                        <option value="LS">Bar Coded Serial Number</option>
+                                        <option value="SE">Serial Number</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-xs-6">
                                 <label>Reference ID</label>
                                 <div class="input-group">
@@ -241,105 +153,26 @@
                                 </div>
                                 {{ form.REF_CLD102.errors }}
                             </div>
-
                         </div>
-
-<div class="row margin-bottom">
-                        <div class="col-xs-6">
-                         <label>Reference Qualifier:</label>
-                        <div class="form-group">
-                    <select name="REF_CLD201" class="form-control select2" style="width:100%;">
-                        <option value="HC">Heat Code</option>
-                        <option value="LS">Bar Coded Serial Number</option>
-                        <option value="SE">Serial Number</option>
-
-                    
-                    </select>
+                    </div>
                 </div>
+            </div>
+            <div class="row margin-bottom">
+                <div class="col-xs-3">
+                    <input type="submit" value="Add item and create order" name="order" class="btn btn-block btn-social btn-primary" />
                 </div>
-                            <div class="col-xs-6">
-                                <label>Reference ID</label>
-                                <div class="input-group">
-                                    {{ form.REF_CLD202 }}
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-check-square-o"></i>
-                                    </div>
-                                </div>
-                                {{ form.REF_CLD202.errors }}
-                            </div>
-
-                        </div>
-<div class="row margin-bottom">
-                        <div class="col-xs-6">
-                         <label>Reference Qualifier:</label>
-                        <div class="form-group">
-                    <select name="REF_CLD301" class="form-control select2" style="width:100%;">
-                        <option value="HC">Heat Code</option>
-                        <option value="LS">Bar Coded Serial Number</option>
-                        <option value="SE">Serial Number</option>
-
-                    
-                    </select>
+                <div class="col-xs-3">
+                    <input type="submit" value="Add item and create item" name="item" class="btn btn-block btn-social btn-primary" />
                 </div>
+                <div class="col-xs-3">
+                    <input type="submit" value="Add a new Load" name="load" class="btn btn-block btn-social btn-primary"/>
                 </div>
-                            <div class="col-xs-6">
-                                <label>Reference ID</label>
-                                <div class="input-group">
-                                    {{ form.REF_CLD302 }}
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-check-square-o"></i>
-                                    </div>
-                                </div>
-                                {{ form.REF_CLD302.errors }}
-                            </div>
-
-                        </div>
-<div class="row margin-bottom">
-                        <div class="col-xs-6">
-                         <label>Reference Qualifier:</label>
-                        <div class="form-group">
-                    <select name="REF_CLD401" class="form-control select2" style="width:100%;">
-                        <option value="HC">Heat Code</option>
-                        <option value="LS">Bar Coded Serial Number</option>
-                        <option value="SE">Serial Number</option>
-
-                    
-                    </select>
+                <div class="col-xs-3">
+                    <input type="submit" value="Save everything and exit" name="next" class="btn btn-block btn-social btn-primary"/>
                 </div>
-                </div>
-                            <div class="col-xs-6">
-                                <label>Reference ID</label>
-                                <div class="input-group">
-                                    {{ form.REF_CLD402 }}
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-check-square-o"></i>
-                                    </div>
-                                </div>
-                                {{ form.REF_CLD402.errors }}
-                            </div>
-
-                        </div>
-
-                        </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-            <div class="row">
-	    		<div class="col-xs-4">
-	    			<input type="submit" value="Add item and create order" name="order" class="btn btn-block btn-social btn-primary" />
-	    		</div>
-	    		<div class="col-xs-4">
-	    			<input type="submit" value="Add item and create item" name="item" class="btn btn-block btn-social btn-primary" />
-	    		</div>
-	    		<div class="col-xs-4">
-	    			<input type="submit" value="Save everything and exit" name="next" class="btn btn-block btn-social btn-primary"/>
-	    		</div>
-	    	</div>
+            </div>
         </form>
-	</div>
+    </div>
 </div>
 </div>
 {% endblock %}

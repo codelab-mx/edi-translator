@@ -134,4 +134,19 @@ class Data_Generator_Order(models.Model):
 	REF201 = models.CharField(blank = True, max_length = 50)
 	REF202 = models.CharField(blank = True, max_length = 50)
 
+class Data_Generator_Loads(models.Model):
+	PRIM = models.ForeignKey(Data_Generator_Master, on_delete= models.CASCADE, blank = True)
+	Hierarchial = models.ForeignKey(Data_Generator_Hierarchial, on_delete= models.CASCADE, blank = True)
+	REF_CLD1 = models.CharField(blank = True, max_length = 50)
+	REF_CLD2 = models.CharField(blank = True, max_length = 50)
+	CLD01 = models.CharField(blank = True, max_length = 50)
+	CLD02 = models.CharField(blank = True, max_length = 50)
+	CLD03 = models.CharField(blank = True, max_length = 50)
+
+class Data_Generator_CLD(models.Model):
+	PRIM = models.ForeignKey(Data_Generator_Master, on_delete= models.CASCADE, blank = True)
+	Hierarchial = models.ForeignKey(Data_Generator_Hierarchial, on_delete= models.CASCADE, blank = True)
+	CLD01 = models.CharField(blank = True, max_length = 50)
+	CLD02 = models.CharField(blank = True, max_length = 50)
+	CLD03 = models.CharField(blank = True, max_length = 50)
 

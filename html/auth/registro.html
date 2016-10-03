@@ -1,8 +1,7 @@
 {% extends "starter.html" %}
 {% block title %}Registrar Administrador{% endblock %}
 {% block body.class %}login-page{% endblock %}
-{% block body.background %}style="background-image: url('/static/img/overlay.png'), url('/static/img/background.jpg');background-size: auto,cover;"{% endblock %}
-
+{% block body.background %}{% load staticfiles %}style="background-image: url('{% static "img/overlay.png" %}'), url('{% static "img/background.jpg" %}');background-size: auto,cover;"{% endblock %}
 {% block body.login %}
 <div class="col-xs-12">		
 <div class="login-box">

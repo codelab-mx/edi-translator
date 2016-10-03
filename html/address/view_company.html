@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Relaciones Comerciales - Nueva dirección{% endblock %}
+{% block menu.relacion %}active{% endblock %}
+{% block menu.relacion.empresa %}active{% endblock %}
+{% block page.header %}Ver Dirección Comercial EDI{% endblock %}
+{% block breadcrumb.1 %}Relaciones comerciales{% endblock %}
+{% block breadcrumb.2 %}Ver dirección{% endblock %}
+{% block page.content %}
+<div class="col-xs-12">		
+<div class="register-box">
+	<div class="register-box-body">
+    	<p class="login-box-msg">Ver Dirección comercial de <strong>Su Empresa</strong></p>
+    	{% if Address %}
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_Name" name="C_Name" placeholder="Nombre Comercial" type="text" value="{{ Address.C_Name }}" readonly>
+	    		<span class="fa fa-building form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_Address" name="C_Address" placeholder="Dirección Física" type="text" value="{{ Address.C_Address}}" readonly>
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback ">
+	    		<input class="form-control" id="id_C_City" name="C_City" placeholder="Ciudad" type="text" value="{{ Address.C_City }}" readonly>
+	    		<span class="fa fa-location-arrow form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_Country" name="C_Country" placeholder="País" type="text" value="{{ Address.C_Country }}" readonly>
+	    		<span class="fa fa-map-marker form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_ZIP" name="C_ZIP" placeholder="Código Postal" type="text" value="{{ Address.C_ZIP }}" readonly>
+	    		<span class="fa fa-hashtag form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_E_mail" name="C_E_mail" placeholder="E-Mail" type="email" value="{{ Address.C_E_mail }}" readonly>
+	    		<span class="fa fa-envelope-o form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_Phone" name="C_Phone" placeholder="Teléfono" type="text" value="{{ Address.C_Phone }}" readonly>
+	    		<span class="fa fa-phone form-control-feedback"></span>
+	    	</div>
+	    	<div class="form-group has-feedback">
+	    		<input class="form-control" id="id_C_Edi_Address" name="C_Edi_Address" placeholder="Dirección EDI" type="text" value="{{ Address.C_Edi_Address}}" readonly>
+	    		<span class="fa fa-exchange form-control-feedback"></span>
+	    	</div>
+	    	{% if perms.address.change_company_data %}
+	    	<div class="row">
+	    		<div class="col-xs-8"></div>
+	    		<div class="col-xs-4">
+	    			<a href={% url 'edit_company' Address.id %}><button type="button" class="btn btn-block btn-primary btn-flat">Editar</button></a>
+	    		</div>
+	    	</div>
+			{% endif %}
+	    {% else %}
+	    <div class="register-box-body">
+      		<p class="login-box-msg">No se encontró la <strong>Dirección EDI</strong> en la base de datos</p>
+      		<a href={% url 'view_tradings' %}><button type="button" class="btn btn-block btn-primary btn-flat">Ver Relaciones comerciales</button></a>
+    	</div>
+    	{% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

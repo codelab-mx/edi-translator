@@ -3,6 +3,8 @@
 {% block menu.edi %}active{% endblock %}
 {% block menu.edi.ver %}active{% endblock %}
 {% block page.header %}Ver archivos EDI{% endblock %}
+{% block breadcrumb.1 %}EDI{% endblock %}
+{% block breadcrumb.2 %}Lista{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">
 <div class="box">
@@ -13,7 +15,10 @@
 				<tr>
 			        <th>#</th>
 			        <th>Nombre del Archivo</th>
-			        <th>Fecha de Subida</th>
+			        <th>Fecha</th>
+              <th>Hora</th>
+              <th>Tipo de Archivo</th>
+              <th>Número de Control</th>
 			        <th></th>
 		        </tr>
 		        </thead>
@@ -22,24 +27,36 @@
 		        	<tr>
 		        	<td>{{ forloop.counter }}</td>
               <td><a href="ver/{{ file.id }}">{{ file.filename }} </a></td>
-		        	<td>{{ file.upload_date|date:"d M Y" }}</td>
+		        	<td>{% for master in file.data_segments_master_set.all %}{{ master.GS_4|slice:":4" }}-{{ master.GS_4|slice:"4:-2" }}-{{ master.GS_4|slice:"6:" }}{% endfor %}</td>
+              <td>{% for master in file.data_segments_master_set.all %}{{ master.GS_5|slice:":2" }}:{{ master.GS_5|slice:"2:" }}{% endfor %}</td>
+              <td>{% for master in file.data_segments_master_set.all %}{% if master.GS_1 == 'PS' %}830 - Planning Schedule {% elif master.GS_1 == 'SS' %}862 - Shipping Schedule{% endif %}{% endfor %}</td>
+              <td>{% for master in file.data_segments_master_set.all %}{{ master.IEA_2 }}{% endfor %}</td>
 		        	<td align="center">
 		        	{% if file.flag == 0 %} 
-		        		<a href="/edi/traducir/{{ file.id }}"><button type="button" class="btn btn-danger">Traducir</button></a>
+                <div class="btn-group">
+		        		  <a href="/edi/traducir/{{ file.id }}"><button type="button" class="btn btn-danger">Traducir</button></a>
+                  {% if perms.data_mining.delete_edi_address %}
+                  <button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                     <li><a href={% url 'edi_delete' file.id %}>Eliminar</a></li>
+                  </ul>
+                  {% endif %}
+                </div>
 		        	{% else %}
 		        		<div class="btn-group">
 		        			<a href="ver/{{ file.id }}"  class="btn btn-primary btn-flat">Ver</a>
+                  {% if perms.data_mining.delete_edi_address %}
 		        			<button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="editar/{{ file.filename }}">Editar</a></li>
-                    <li><a href="#">Descargar EDI</a></li>
-                    <li><a href="#">Descargar PDF</a></li>
-                    <li class="divider"></li>
-                     <li><a href={% url 'delete_edi' file.id %}>Eliminar</a></li>
+                     <li><a href={% url 'edi_delete' file.id %}>Eliminar</a></li>
                   </ul>
+                  {% endif %}
                 </div>
 		        		{% endif %}</td>
 		        	</tr>
@@ -61,10 +78,10 @@
 </div>
 </div>
 {% endblock %}
-{% block aditional.css %}<link rel="stylesheet" href="/static/js/plugins/datatables/dataTables.bootstrap.css">{% endblock %}
+{% block aditional.css %}{% load staticfiles %}<link rel="stylesheet" href="{% static 'js/plugins/datatables/dataTables.bootstrap.css' %}">{% endblock %}
 {% block aditional.js %}
-<script src="/static/js/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+{% load staticfiles %}<script src="{% static 'js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+{% load staticfiles %}<script src="{% static 'js/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
 <script>
   $(function () {
     $("#example1").DataTable();

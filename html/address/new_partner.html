@@ -3,6 +3,8 @@
 {% block menu.relacion %}active{% endblock %}
 {% block menu.relacion.socio %}active{% endblock %}
 {% block page.header %}Nuevo Socio Comercial{% endblock %}
+{% block breadcrumb.1 %}Relaciones Comerciales{% endblock %}
+{% block breadcrumb.2 %}Nuevo Socio Comercial{% endblock %}
 {% block page.content %}
 <div class="col-xs-12">		
 <div class="register-box">
@@ -49,11 +51,6 @@
 	    		{{ form.P_Edi_Address }}
 	    		<span class="fa fa-exchange form-control-feedback"></span>
 	    		{{ form.P_Edi_Address.errors }}
-	    	</div>
-	    	<div class="form-group has-feedback {% if form.DUNS.errors %}has-error{% else %}{% endif %}">
-	    		{{ form.DUNS }}
-	    		<span class="fa fa-unlock-alt form-control-feedback"></span>
-	    		{{ form.DUNS.errors }}
 	    	</div>
 	    	<div class="row">
 	    		<div class="col-xs-8"></div>

@@ -9,7 +9,7 @@ Reseña: data.py lee los datos de un archivo edi que tiene informacion bajo la n
 Los guarda en una base de datos para despues poder ser comparada.
 
 """
-import glob, errno, os, sys, django
+import glob, errno, os, sys, django, re
 
 ###########################
 # Configuracion de django #
@@ -56,7 +56,8 @@ def read_file():
 def segment_lines():
 	global lines, cont, segment_text, flag, name
 	texto = str(lines[cont])
-	segment_text = texto.split("*")
+	segment_text = re.split('[*~@]', texto)
+	#segment_text = texto.split("*")
 	if segment_text[1] == "PS":
 		flag = True
 	if flag == True:
